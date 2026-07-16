@@ -93,6 +93,7 @@ em { font-style: italic; }
 }
 .mini:hover { background: var(--accent-ink); }
 
+.nav-cv { display: none; }
 .burger { display: none; }
 
 /* ============================================================
@@ -307,9 +308,9 @@ a.row:hover .row__go { opacity: 1; color: var(--accent); }
 @media (max-width: 900px) {
   .side {
     position: sticky; top: 0; bottom: auto; width: 100%; height: auto;
-    flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: nowrap;
     padding: 1rem var(--pad); border-right: 0; border-bottom: 1px solid var(--line);
-    background: color-mix(in oklab, var(--bg) 90%, transparent); backdrop-filter: blur(12px);
+    background: var(--bg);
   }
   .side__top { display: flex; align-items: center; gap: 1rem; flex: 1; }
   .mark__name { font-size: 1.1rem; }
@@ -320,8 +321,9 @@ a.row:hover .row__go { opacity: 1; color: var(--accent); }
   body.nav-open .burger span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
   body.nav-open .burger span:nth-child(2) { transform: translateY(-3.25px) rotate(-45deg); }
 
+  .side__top { position: relative; z-index: 2; }
   .side__nav {
-    position: fixed; inset: 0; z-index: -1; margin: 0;
+    position: fixed; inset: 0; z-index: 1; margin: 0;
     align-items: center; justify-content: center; gap: .5rem;
     background: var(--bg); opacity: 0; pointer-events: none; transform: translateY(-10px);
     transition: opacity .35s var(--ease), transform .35s var(--ease);
@@ -331,7 +333,12 @@ a.row:hover .row__go { opacity: 1; color: var(--accent); }
   body.nav-open .side__nav { opacity: 1; pointer-events: auto; transform: none; }
   body.nav-open { overflow: hidden; }
 
-  .side__bottom { order: 2; }
+  .side__bottom { display: none; }
+  .nav-cv {
+    display: inline-flex; align-items: center; gap: .45rem; margin-top: 1.4rem;
+    padding: .75rem 1.6rem; background: var(--accent); color: #fff;
+    border-radius: var(--r-sm); font-size: 1.05rem; font-weight: 600;
+  }
 
   .content { margin-left: 0; }
   .block { max-width: 100%; }
