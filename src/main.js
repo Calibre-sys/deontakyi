@@ -64,7 +64,7 @@ function activeNav () {
       }
     })
   }, { rootMargin: '-42% 0px -52% 0px' })
-  ;['intro', 'about', 'work', 'path', 'events', 'proof', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s) })
+  ;['intro', 'about', 'work', 'path', 'education', 'events', 'proof', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) io.observe(s) })
 }
 
 /* ── mobile nav ─────────────────────────────────────────── */
