@@ -129,7 +129,7 @@ export function Hero() {
               <FileText className="size-4" /> Read CV
             </button>
           </motion.div>
-          <motion.dl {...rise(4)} className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-border sm:grid-cols-4">
+          <motion.dl {...rise(4)} className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-4">
             {STATS.map((s) => (
               <div key={s.label} className="bg-background p-4 sm:p-5">
                 <dt className="sr-only">{s.label}</dt>
