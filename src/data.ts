@@ -25,6 +25,8 @@ export const STATS = [
 
 export type Paper = {
   id: string;
+  /** Short name used as the big index entry. */
+  name: string;
   title: string;
   venue: string;
   venueShort: string;
@@ -45,6 +47,7 @@ export const ME_AS_AUTHOR = "Deon Yeboah Takyi-Amponsem";
 export const PAPERS: Paper[] = [
   {
     id: "hfu",
+    name: "Flow units, found automatically",
     title:
       "Automated hydraulic flow unit determination using FZI-Z-score probability, K-means clustering with autoencoders, and machine learning classification: a case study of the Subei Basin, China",
     venue: "Journal of Applied Geophysics",
@@ -75,6 +78,7 @@ export const PAPERS: Paper[] = [
   },
   {
     id: "injectors",
+    name: "What the water injectors do",
     title: "Analyzing the Effects of Water Injectors on Oil Production Using Causality Models",
     venue: "SPE Africa Technology Conference",
     venueShort: "SPE ATC 2026",
@@ -212,6 +216,7 @@ export type Project = {
   impact?: string;
   stack: string[];
   video?: string;
+  poster?: string;
   link?: string;
   private?: boolean;
 };
@@ -225,6 +230,7 @@ export const PROJECTS: Project[] = [
     impact: "Processing time cut by more than 90%",
     stack: ["Apps Script", "Google APIs", "Automation"],
     video: "/media/soh-demo.mp4",
+    poster: "/media/soh-poster.jpg",
     private: true,
   },
   {
@@ -235,6 +241,7 @@ export const PROJECTS: Project[] = [
     impact: "Replaces manual petrophysics workflows",
     stack: ["Python", "Unsupervised ML", "Regression"],
     video: "/media/reschar-demo.mp4",
+    poster: "/media/reschar-poster.jpg",
   },
   {
     id: "fortel",
@@ -243,6 +250,7 @@ export const PROJECTS: Project[] = [
       "A no-code ML web app: upload private data securely and train models without writing a line of code. I designed and built the whole front end.",
     stack: ["JavaScript", "HTML/CSS", "React", "Node.js"],
     video: "/media/fortel-demo.mp4",
+    poster: "/media/fortel-poster.jpg",
     link: "https://fortel.onrender.com",
   },
   {
@@ -313,7 +321,7 @@ export const SHELVES: { id: string; title: string; caption: string; books: Book[
         author: "Jeremy Howard & Sylvain Gugger",
         isbn: "9781492045526",
         note: "Taught me to build and train first and pick up the theory along the way.",
-        tint: ["#1f3b57", "#d9482b"],
+        tint: ["#1f3b57", "#f6f2f0"],
       },
       {
         id: "tensorflow",
@@ -321,7 +329,7 @@ export const SHELVES: { id: string; title: string; caption: string; books: Book[
         author: "Giancarlo Zaccone & Md. Rezaul Karim",
         isbn: "9781786469786",
         note: "Computation graphs, CNNs and RNNs from the TensorFlow side.",
-        tint: ["#20262e", "#ff8f00"],
+        tint: ["#20262e", "#f3c623"],
       },
     ],
   },
@@ -347,7 +355,7 @@ export const SHELVES: { id: string; title: string; caption: string; books: Book[
 
 export const EXPERIENCE = [
   {
-    when: "Nov 2025 — Now",
+    when: "Nov 2025 to now",
     org: "SOH Energy",
     role: "Business Development / Technical Associate",
     points: [
@@ -358,7 +366,7 @@ export const EXPERIENCE = [
     ],
   },
   {
-    when: "Sep 2024 — Now",
+    when: "Sep 2024 to now",
     org: "AI-DPRS Research Lab, KNUST",
     role: "Reservoir Characterization Lead (ML Research)",
     points: [
@@ -369,7 +377,7 @@ export const EXPERIENCE = [
     ],
   },
   {
-    when: "Sep 2023 — Jan 2024",
+    when: "Sep 2023–Jan 2024",
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
     points: [
@@ -381,7 +389,7 @@ export const EXPERIENCE = [
 
 export const EDUCATION = [
   {
-    when: "2021 — 2025",
+    when: "2021–2025",
     org: "KNUST",
     role: "BSc Petroleum Engineering",
     points: [
@@ -391,7 +399,7 @@ export const EDUCATION = [
     ],
   },
   {
-    when: "2018 — 2021",
+    when: "2018–2021",
     org: "Mfantsipim School",
     role: "WASSCE, General Science",
     points: [],
@@ -403,14 +411,21 @@ export const EDUCATION = [
 export type Moment = { id: string; src: string; title: string; tag: string; w: number; h: number };
 
 export const MOMENTS: Moment[] = [
-  { id: "atc", src: "/media/atc-2026.jpg", title: "Africa Technology Conference 2026, Abidjan", tag: "Delegate · SPE", w: 480, h: 640 },
   { id: "bb1", src: "/media/buildingbytes-1.jpg", title: "Building Bytes Pitch Program, Kumasi", tag: "Pitch", w: 1080, h: 720 },
   { id: "e4m2", src: "/media/energy4me-2.jpg", title: "SPE Energy4me school outreach", tag: "Volunteer", w: 480, h: 319 },
   { id: "bb2", src: "/media/buildingbytes-2.jpg", title: "Building Bytes, demo day", tag: "Pitch", w: 1080, h: 720 },
   { id: "e4m1", src: "/media/energy4me-1.jpg", title: "Energy4me, teaching energy basics", tag: "Volunteer", w: 800, h: 312 },
+  { id: "atc", src: "/media/atc-2026.jpg", title: "Africa Technology Conference 2026, Abidjan", tag: "Delegate", w: 480, h: 640 },
 ];
 
 export const REFERENCES = [
   { name: "Dr. Stephen Adjei, PhD", role: "Principal Investigator, AI-DPRS · Lecturer, Petroleum Eng., KNUST" },
   { name: "Mr. Felix Andoh", role: "Operator, Tema Tank Farm" },
+];
+
+export const EVENTS = [
+  { name: "Africa Technology Conference 2026", detail: "Delegate, Abidjan, Côte d'Ivoire. Our water-injector paper was presented here." },
+  { name: "Building Bytes Pitch Program", detail: "Pitched and demoed a product in Kumasi." },
+  { name: "SPE Energy4me", detail: "Volunteer, teaching school students how energy is found and produced." },
+  { name: "SPE KNUST Chapter", detail: "Treasurer on the executive, 2024/25. Member since 2021." },
 ];

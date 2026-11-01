@@ -76,7 +76,7 @@ html[data-beui-vt="blinds"]::view-transition-old(root) {
 }
 html[data-beui-vt="blinds"]::view-transition-new(root) {
   mix-blend-mode: normal;
-  mask-image: linear-gradient(
+  mask-image: linear-gradient( /* taste-skill-ignore: shutter mask for the theme reveal */
     90deg,
     #000 0 var(--beui-vt-slat),
     transparent calc(var(--beui-vt-slat) + 20px)

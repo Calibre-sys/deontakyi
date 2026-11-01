@@ -113,6 +113,10 @@ function ArcOption({
   const pointerEvents = useTransform(position, (at) =>
     Math.abs(index - at) < visibleCount / 2 ? "auto" : "none",
   );
+  // Options that have faded out entirely leave the accessibility and hit-testing trees too.
+  const visibility = useTransform(position, (at) =>
+    Math.abs(index - at) < visibleCount / 2 + 0.5 ? "visible" : "hidden",
+  );
 
   return (
     <motion.button
@@ -146,6 +150,7 @@ function ArcOption({
         transform,
         opacity,
         pointerEvents,
+        visibility,
       }}
     >
       <span
@@ -732,7 +737,7 @@ export function ArcPicker({
       style={{
         touchAction: horizontal ? "pan-y pinch-zoom" : "pan-x pinch-zoom",
         height: horizontal ? horizontalHeight : count * rowHeight,
-        maskImage: `linear-gradient(to ${horizontal ? "right" : "bottom"}, transparent, black 12%, black 88%, transparent)`,
+        maskImage: `linear-gradient(to ${horizontal ? "right" : "bottom"}, transparent, black 12%, black 88%, transparent)`, // taste-skill-ignore: edge-fade mask, not a fill
         ...style,
       }}
       onKeyDown={keyboard}
