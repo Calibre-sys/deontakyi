@@ -1,6 +1,6 @@
 # deontakyi — portfolio
 
-Personal site of Deon Takyi-Amponsem. Built with Vite, React, Tailwind CSS v4 and Motion, with components adapted from [beUI](https://beui.dev) (MIT): Arc Picker, Theme Toggle and Action Swap. Layout: a reading column beside a fixed picture that changes with the section in view (`src/components/stage.tsx`).
+Personal site of Deon Takyi-Amponsem. Built with Vite, React, Tailwind CSS v4 and Motion, with components adapted from [beUI](https://beui.dev) (MIT): Arc Picker, Theme Toggle and Action Swap. The page is one story in chapters (`src/components/story.tsx`), with a timeline rail that tracks progress (`src/components/rail.tsx`).
 
 ```bash
 npm install

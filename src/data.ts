@@ -429,3 +429,16 @@ export const EVENTS = [
   { name: "SPE Energy4me", detail: "Volunteer, teaching school students how energy is found and produced." },
   { name: "SPE KNUST Chapter", detail: "Treasurer on the executive, 2024/25. Member since 2021." },
 ];
+
+/* ── The story, in chapters. The rail down the side reads these like a well log. ── */
+
+export const CHAPTERS = [
+  { id: "rock", year: "2018", label: "Cape Coast to Kumasi" },
+  { id: "spe", year: "2021", label: "SPE KNUST" },
+  { id: "field", year: "2023", label: "Tema" },
+  { id: "self-taught", year: "2024", label: "Self-taught" },
+  { id: "lab", year: "2024", label: "The lab" },
+  { id: "soh", year: "2025", label: "SOH Energy" },
+  { id: "abidjan", year: "2026", label: "Abidjan" },
+  { id: "contact", year: "Next", label: "Your problem" },
+];

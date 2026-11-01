@@ -5,7 +5,7 @@
 
 export function OutreachEmail() {
   return (
-    <div data-ui className="w-[78%] max-w-[30rem] bg-paper p-7 text-[15px] leading-relaxed text-ink">
+    <div data-ui className="w-[78%] max-w-[30rem] bg-panel p-7 text-[15px] leading-relaxed text-ink">
       <p className="text-[13px] text-muted">From SOH Energy · To a contact on the manpower list</p>
       <p className="mt-1 font-semibold">Are you available for upcoming projects?</p>
       <p className="mt-5">Good morning,</p>
@@ -15,7 +15,7 @@ export function OutreachEmail() {
       </p>
       <div className="mt-5 flex flex-wrap gap-2">
         <span className="bg-accent px-4 py-2 font-semibold text-accent-ink">Yes, I'm available</span>
-        <span className="bg-field px-4 py-2 font-semibold">Not at the moment</span>
+        <span className="bg-panel-2 px-4 py-2 font-semibold">Not at the moment</span>
       </div>
       <p className="mt-5 text-[13px] text-muted">
         Replies are logged to the sheet automatically. No reply after three days sends a reminder.
@@ -33,7 +33,7 @@ const APPLICANTS = [
 
 export function Shortlist() {
   return (
-    <div data-ui className="w-[82%] max-w-[34rem] bg-paper p-7 text-ink">
+    <div data-ui className="w-[82%] max-w-[34rem] bg-panel p-7 text-ink">
       <p className="text-[13px] text-muted">Shortlist · Business Development Associate · 58 CVs screened</p>
       <table className="mt-4 w-full text-left text-[14px]">
         <thead>

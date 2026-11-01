@@ -42,7 +42,7 @@ function bandPolygon(lo: number, hi: number) {
   return pts.map(([x, y]) => `${px(x).toFixed(1)},${py(y).toFixed(1)}`).join(" ");
 }
 
-const TONES = ["var(--surface)", "color-mix(in oklab, var(--accent) 12%, var(--surface))", "color-mix(in oklab, var(--accent) 26%, var(--surface))", "color-mix(in oklab, var(--accent) 42%, var(--surface))", "color-mix(in oklab, var(--accent) 60%, var(--surface))"];
+const TONES = ["var(--panel)", "color-mix(in oklab, var(--accent) 12%, var(--panel))", "color-mix(in oklab, var(--accent) 26%, var(--panel))", "color-mix(in oklab, var(--accent) 42%, var(--panel))", "color-mix(in oklab, var(--accent) 60%, var(--panel))"];
 
 export function FlowUnitLab() {
   const [porosity, setPorosity] = useState(18); // percent
@@ -95,7 +95,7 @@ export function FlowUnitLab() {
           </div>
         </div>
 
-        <figure data-ui className="bg-paper p-4">
+        <figure data-ui className="bg-panel p-4">
           <svg viewBox={`0 0 ${W} ${H}`} className="block w-full overflow-hidden" role="img" aria-label={`Log-log plot of RQI against normalised porosity. The sample sits in flow unit ${unit + 1}.`}>
             <defs>
               <clipPath id="plot">
@@ -109,7 +109,7 @@ export function FlowUnitLab() {
               <motion.circle
                 r={8}
                 fill="var(--ink)"
-                stroke="var(--paper)"
+                stroke="var(--ground)"
                 strokeWidth={3}
                 animate={{ cx: px(phiZ), cy: py(rqi) }}
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}

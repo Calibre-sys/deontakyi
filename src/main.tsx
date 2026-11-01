@@ -1,6 +1,7 @@
-import "@fontsource/besley/800.css";
-import "@fontsource/libre-franklin/400.css";
-import "@fontsource/libre-franklin/600.css";
+import "@fontsource/big-shoulders-display/800";
+import "@fontsource/big-shoulders-display/900";
+import "@fontsource/schibsted-grotesk/400";
+import "@fontsource/schibsted-grotesk/600";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";

@@ -75,7 +75,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
               className="absolute inset-0 cursor-default bg-black/70"
             />
             <motion.div
-              className="relative flex h-[92dvh] w-full max-w-5xl flex-col overflow-hidden bg-bg sm:h-[86vh]"
+              className="relative flex h-[92dvh] w-full max-w-5xl flex-col overflow-hidden bg-ground sm:h-[86vh]"
               initial={reduce ? false : { y: 40, scale: 0.97, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
               exit={reduce ? { opacity: 0 } : { y: 24, scale: 0.98, opacity: 0 }}
@@ -105,7 +105,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
                     target="_blank"
                     rel="noopener"
                     aria-label="Open in new tab"
-                    className="hidden size-9 items-center justify-center text-muted transition-colors hover:bg-field hover:text-ink sm:flex"
+                    className="hidden size-9 items-center justify-center text-muted transition-colors hover:bg-panel-2 hover:text-ink sm:flex"
                   >
                     <ExternalLink className="size-4" />
                   </a>
@@ -123,7 +123,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
                   <X className="size-4" />
                 </IconButton>
               </header>
-              <div className="relative flex min-h-0 flex-1 items-center justify-center bg-field">
+              <div className="relative flex min-h-0 flex-1 items-center justify-center bg-panel-2">
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
                     key={item.src}
@@ -178,7 +178,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex size-10 items-center justify-center text-muted transition-colors hover:bg-field hover:text-ink"
+      className="flex size-10 items-center justify-center text-muted transition-colors hover:bg-panel-2 hover:text-ink"
     >
       {children}
     </button>

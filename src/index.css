@@ -2,45 +2,66 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Direction: the split stage. Palette: rose grey and green. Type: Besley over Libre Franklin. */
+/*
+ * Crude and flare. A near-black ground like crude oil, bone-coloured ink like a core sample,
+ * and one gas-flare orange for the things you can press and the line that tracks your progress.
+ * The lab chapter flips to bone paper, like a journal page.
+ */
 :root {
-  --bg: #ebe5e3;
-  --surface: #e1dad7;
-  --field: #d6cdc9;
-  --paper: #f6f2f0;
-  --ink: #2b2622;
-  --muted: #5f5752;
-  --accent: #0f7d45;
+  --ground: #ecebe7;
+  --panel: #e0ded8;
+  --panel-2: #d3d0c8;
+  --ink: #14120f;
+  --muted: #5b5348;
+  --accent: #c93c06;
   --accent-ink: #ffffff;
 
-  --font-display: "Besley", Georgia, serif;
-  --font-text: "Libre Franklin", system-ui, sans-serif;
+  --font-display: "Big Shoulders Display", Impact, sans-serif;
+  --font-text: "Schibsted Grotesk", system-ui, sans-serif;
 
-  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-small: clamp(0.8125rem, 0.8rem + 0.08vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1.02rem + 0.2vw, 1.1875rem);
-  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --step-head: clamp(2rem, 1.3rem + 2.6vw, 3.5rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --step-head: clamp(2.75rem, 1.6rem + 5vw, 6.5rem);
 
-  --gutter: clamp(20px, 4.4vw, 64px);
+  --gutter: clamp(20px, 4vw, 56px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dark {
-  --bg: #1d1a18;
-  --surface: #262220;
-  --field: #302b28;
-  --paper: #2c2724;
-  --ink: #eee8e5;
-  --muted: #b5aba6;
-  --accent: #3dbb78;
-  --accent-ink: #10291b;
+  --ground: #0e0d0b;
+  --panel: #191714;
+  --panel-2: #26231e;
+  --ink: #ecebe7;
+  --muted: #a8a093;
+  --accent: #ff5b1f;
+  --accent-ink: #0e0d0b;
+}
+
+/* The lab chapter takes the opposite palette, like a printed journal page. */
+.flip {
+  --ground: #0e0d0b;
+  --panel: #191714;
+  --panel-2: #26231e;
+  --ink: #ecebe7;
+  --muted: #a8a093;
+  --accent: #ff5b1f;
+  --accent-ink: #0e0d0b;
+}
+.dark .flip {
+  --ground: #ecebe7;
+  --panel: #e0ded8;
+  --panel-2: #d3d0c8;
+  --ink: #14120f;
+  --muted: #5b5348;
+  --accent: #c93c06;
+  --accent-ink: #ffffff;
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-field: var(--field);
-  --color-paper: var(--paper);
+  --color-ground: var(--ground);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
@@ -50,9 +71,9 @@
   --color-primary-foreground: var(--accent-ink);
   --color-muted-foreground: var(--muted);
   --color-foreground: var(--ink);
-  --color-background: var(--bg);
-  --color-card: var(--surface);
-  --color-border: var(--field);
+  --color-background: var(--ground);
+  --color-card: var(--panel);
+  --color-border: var(--panel-2);
   --color-ring: var(--accent);
   --font-display: var(--font-display);
   --font-text: var(--font-text);
@@ -66,29 +87,29 @@
   html {
     overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: 4.5rem;
+    scroll-padding-top: 4rem;
     color-scheme: light;
   }
   html.dark {
     color-scheme: dark;
   }
   body {
-    background: var(--bg);
+    background: var(--ground);
     color: var(--ink);
     font-family: var(--font-text);
     font-size: var(--step-body);
     line-height: 1.5;
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
-    font-variant-numeric: tabular-nums;
   }
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 0.98;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.9;
     text-wrap: balance;
   }
   p {
@@ -96,7 +117,8 @@
   }
   a,
   button,
-  summary {
+  summary,
+  label[for] {
     cursor: pointer;
   }
   :focus-visible {
@@ -115,52 +137,54 @@
 }
 
 @layer components {
-  /* One button shape for the whole page: a square, solid block. */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 3rem;
-    padding: 0 1.25rem;
+    min-height: 3.25rem;
+    padding: 0 1.5rem;
     background: var(--accent);
     color: var(--accent-ink);
     font-weight: 600;
-    font-size: var(--step-body);
     transition:
       transform 160ms var(--ease-out),
-      background-color 160ms var(--ease-out);
+      filter 160ms var(--ease-out);
   }
   .btn:hover {
-    background: color-mix(in oklab, var(--accent) 86%, var(--ink));
+    filter: brightness(1.08);
   }
   .btn:active {
     transform: scale(0.97);
   }
   .btn-quiet {
-    background: var(--field);
+    background: var(--panel-2);
     color: var(--ink);
   }
-  .btn-quiet:hover {
-    background: color-mix(in oklab, var(--field) 80%, var(--ink));
-  }
-
-  /* Text link: underline grows on hover. */
   .link {
     text-decoration: underline;
     text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.2em;
-    transition: text-decoration-color 160ms, color 160ms;
+    text-underline-offset: 0.22em;
+    transition: color 160ms;
   }
   .link:hover {
     color: var(--accent);
   }
-
   .measure {
-    max-width: 46ch;
+    max-width: 58ch;
+  }
+  .frame {
+    padding-inline: var(--gutter);
+    margin-inline: auto;
+    max-width: 1440px;
+  }
+  @media (min-width: 1280px) {
+    .frame {
+      padding-inline: calc(var(--gutter) + 150px);
+    }
   }
 }
 
-/* Range input: a filled track, square thumb. */
+/* Range input: filled track, square thumb. */
 .range {
   -webkit-appearance: none;
   appearance: none;
@@ -169,11 +193,11 @@
 }
 .range::-webkit-slider-runnable-track {
   height: 0.5rem;
-  background: linear-gradient(to right, var(--accent) var(--fill), var(--field) var(--fill)); /* taste-skill-ignore: a two-stop fill, not a gradient */
+  background: linear-gradient(to right, var(--accent) var(--fill), var(--panel-2) var(--fill)); /* taste-skill-ignore: a two-stop fill, not a gradient */
 }
 .range::-moz-range-track {
   height: 0.5rem;
-  background: var(--field);
+  background: var(--panel-2);
 }
 .range::-moz-range-progress {
   height: 0.5rem;
@@ -198,20 +222,45 @@
   transform: scale(1.2);
 }
 
-/* The beUI arc picker set in the page's display face. */
+/* The beUI arc picker set in the display face. */
 [data-slot="arc-picker-option"],
 [data-slot="arc-picker-selection-frame"] {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: var(--step-lead);
-  letter-spacing: -0.02em;
-}
-@media (max-width: 639px) {
-  [data-slot="arc-picker-option"],
-  [data-slot="arc-picker-selection-frame"] {
-    font-size: var(--step-body);
-  }
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 1rem + 1vw, 2rem);
 }
 [data-slot="arc-picker-option"] {
   border-radius: 0;
+}
+
+/* Product flowing through the drawn pipeline. */
+@keyframes flow {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+.flow {
+  animation: flow 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow {
+    animation: none;
+  }
+}
+
+/* The name, fitted to the width of the frame on every screen. */
+.monument {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  font-size: calc((100vw - 2 * var(--gutter)) / 6.5);
+  white-space: nowrap;
+}
+@media (min-width: 1280px) {
+  .monument {
+    font-size: calc((min(100vw, 1440px) - 300px - 2 * var(--gutter)) / 6.5);
+  }
 }
