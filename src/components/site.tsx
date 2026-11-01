@@ -280,7 +280,7 @@ export function Work() {
           <StackCard />
         </Reveal>
         <Reveal className="lg:col-span-6">
-          <Card className="gap-5 p-6 py-6 sm:p-8">
+          <Card className="gap-5 p-4 py-5 sm:p-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="text-[0.875rem] text-muted-foreground">Interactive · From the 2025 paper</p>
