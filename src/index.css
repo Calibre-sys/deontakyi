@@ -3,113 +3,87 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Crude and flare. A near-black ground like crude oil, bone-coloured ink like a core sample,
- * and one gas-flare orange for the things you can press and the line that tracks your progress.
- * The lab chapter flips to bone paper, like a journal page.
+ * Dark-first technical palette. One accent, a cool teal, used for links, actions and data.
+ * Cards are separated from the page by a step in tone and a faint edge.
  */
 :root {
-  --ground: #ecebe7;
-  --panel: #e0ded8;
-  --panel-2: #d3d0c8;
-  --ink: #14120f;
-  --muted: #5b5348;
-  --accent: #c93c06;
-  --accent-ink: #ffffff;
-
-  --font-display: "Big Shoulders Display", Impact, sans-serif;
-  --font-text: "Schibsted Grotesk", system-ui, sans-serif;
-
-  --step-small: clamp(0.8125rem, 0.8rem + 0.08vw, 0.875rem);
-  --step-body: clamp(1.0625rem, 1.02rem + 0.2vw, 1.1875rem);
-  --step-lead: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
-  --step-head: clamp(2.75rem, 1.6rem + 5vw, 6.5rem);
-
-  --gutter: clamp(20px, 4vw, 56px);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --background: #fafaf9;
+  --foreground: #0c0a09;
+  --card: #ffffff;
+  --card-2: #f2f1ef;
+  --muted-foreground: #57534e;
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --primary: #0f766e;
+  --primary-foreground: #ffffff;
+  --accent: #0f766e;
+  --ring: #0f766e;
 }
 
 .dark {
-  --ground: #0e0d0b;
-  --panel: #191714;
-  --panel-2: #26231e;
-  --ink: #ecebe7;
-  --muted: #a8a093;
-  --accent: #ff5b1f;
-  --accent-ink: #0e0d0b;
-}
-
-/* The lab chapter takes the opposite palette, like a printed journal page. */
-.flip {
-  --ground: #0e0d0b;
-  --panel: #191714;
-  --panel-2: #26231e;
-  --ink: #ecebe7;
-  --muted: #a8a093;
-  --accent: #ff5b1f;
-  --accent-ink: #0e0d0b;
-}
-.dark .flip {
-  --ground: #ecebe7;
-  --panel: #e0ded8;
-  --panel-2: #d3d0c8;
-  --ink: #14120f;
-  --muted: #5b5348;
-  --accent: #c93c06;
-  --accent-ink: #ffffff;
+  --background: #09090a;
+  --foreground: #f4f4f5;
+  --card: #121214;
+  --card-2: #18181b;
+  --muted-foreground: #a1a1aa;
+  --border: #232327;
+  --border-strong: #34343a;
+  --primary: #2dd4bf;
+  --primary-foreground: #04201c;
+  --accent: #2dd4bf;
+  --ring: #2dd4bf;
 }
 
 @theme inline {
-  --color-ground: var(--ground);
-  --color-panel: var(--panel);
-  --color-panel-2: var(--panel-2);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-2: var(--card-2);
+  --color-card-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
-  --color-accent-ink: var(--accent-ink);
-  /* Names the beUI components use. */
-  --color-primary: var(--accent);
-  --color-primary-foreground: var(--accent-ink);
-  --color-muted-foreground: var(--muted);
-  --color-foreground: var(--ink);
-  --color-background: var(--ground);
-  --color-card: var(--panel);
-  --color-border: var(--panel-2);
-  --color-ring: var(--accent);
-  --font-display: var(--font-display);
-  --font-text: var(--font-text);
-  --text-small: var(--step-small);
-  --text-body: var(--step-body);
-  --text-lead: var(--step-lead);
-  --text-head: var(--step-head);
+  --color-ring: var(--ring);
+  /* Aliases used by the calculator and fragments. */
+  --color-ink: var(--foreground);
+  --color-muted: var(--muted-foreground);
+  --color-panel: var(--card);
+  --color-panel-2: var(--card-2);
+  --color-ground: var(--background);
+  --color-accent-ink: var(--primary-foreground);
+
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   html {
     overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: 4rem;
+    scroll-padding-top: 5rem;
     color-scheme: light;
   }
   html.dark {
     color-scheme: dark;
   }
   body {
-    background: var(--ground);
-    color: var(--ink);
-    font-family: var(--font-text);
-    font-size: var(--step-body);
-    line-height: 1.5;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" 1;
   }
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    line-height: 0.9;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
   p {
@@ -117,17 +91,16 @@
   }
   a,
   button,
-  summary,
-  label[for] {
+  summary {
     cursor: pointer;
   }
   :focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--ring);
     outline-offset: 3px;
   }
   ::selection {
     background: var(--accent);
-    color: var(--accent-ink);
+    color: var(--primary-foreground);
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -137,130 +110,105 @@
 }
 
 @layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(20px, 4vw, 40px);
+  }
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    min-height: 3.25rem;
-    padding: 0 1.5rem;
-    background: var(--accent);
-    color: var(--accent-ink);
+    height: 2.75rem;
+    padding: 0 1.125rem;
+    border-radius: 0.5rem;
+    background: var(--foreground);
+    color: var(--background);
     font-weight: 600;
+    font-size: 0.9375rem;
     transition:
-      transform 160ms var(--ease-out),
-      filter 160ms var(--ease-out);
+      transform 150ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 150ms;
   }
   .btn:hover {
-    filter: brightness(1.08);
+    opacity: 0.88;
   }
   .btn:active {
     transform: scale(0.97);
   }
-  .btn-quiet {
-    background: var(--panel-2);
-    color: var(--ink);
+  .btn-ghost {
+    background: transparent;
+    color: var(--foreground);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
+  }
+  .btn-ghost:hover {
+    background: var(--card-2);
+    opacity: 1;
   }
   .link {
-    text-decoration: underline;
-    text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.22em;
-    transition: color 160ms;
+    color: var(--accent);
+    text-underline-offset: 0.2em;
   }
   .link:hover {
-    color: var(--accent);
+    text-decoration: underline;
   }
-  .measure {
-    max-width: 58ch;
-  }
-  .frame {
-    padding-inline: var(--gutter);
-    margin-inline: auto;
-    max-width: 1440px;
-  }
-  @media (min-width: 1280px) {
-    .frame {
-      padding-inline: calc(var(--gutter) + 150px);
-    }
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
   }
 }
 
-/* Range input: filled track, square thumb. */
+/* Range input: filled track, round thumb. */
 .range {
   -webkit-appearance: none;
   appearance: none;
-  height: 2.75rem;
+  height: 2.5rem;
   background: transparent;
 }
 .range::-webkit-slider-runnable-track {
-  height: 0.5rem;
-  background: linear-gradient(to right, var(--accent) var(--fill), var(--panel-2) var(--fill)); /* taste-skill-ignore: a two-stop fill, not a gradient */
+  height: 0.375rem;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--accent) var(--fill), var(--border-strong) var(--fill));
 }
 .range::-moz-range-track {
-  height: 0.5rem;
-  background: var(--panel-2);
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--border-strong);
 }
 .range::-moz-range-progress {
-  height: 0.5rem;
+  height: 0.375rem;
+  border-radius: 999px;
   background: var(--accent);
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-top: -0.5rem;
-  background: var(--ink);
-  transition: transform 160ms var(--ease-out);
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: -0.4375rem;
+  border-radius: 999px;
+  background: var(--foreground);
+  transition: transform 150ms;
 }
 .range::-moz-range-thumb {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border: 0;
-  border-radius: 0;
-  background: var(--ink);
+  border-radius: 999px;
+  background: var(--foreground);
 }
 .range:active::-webkit-slider-thumb {
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
-/* The beUI arc picker set in the display face. */
+/* The beUI arc picker in the display face. */
 [data-slot="arc-picker-option"],
 [data-slot="arc-picker-selection-frame"] {
   font-family: var(--font-display);
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: clamp(1.25rem, 1rem + 1vw, 2rem);
-}
-[data-slot="arc-picker-option"] {
-  border-radius: 0;
-}
-
-/* Product flowing through the drawn pipeline. */
-@keyframes flow {
-  to {
-    stroke-dashoffset: -64;
-  }
-}
-.flow {
-  animation: flow 1.6s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .flow {
-    animation: none;
-  }
-}
-
-/* The name, fitted to the width of the frame on every screen. */
-.monument {
-  font-family: var(--font-display);
-  font-weight: 900;
-  text-transform: uppercase;
-  line-height: 0.82;
-  letter-spacing: -0.01em;
-  font-size: calc((100vw - 2 * var(--gutter)) / 6.5);
-  white-space: nowrap;
-}
-@media (min-width: 1280px) {
-  .monument {
-    font-size: calc((min(100vw, 1440px) - 300px - 2 * var(--gutter)) / 6.5);
-  }
+  font-weight: 600;
+  font-size: clamp(1.125rem, 0.95rem + 0.7vw, 1.5rem);
+  letter-spacing: -0.02em;
 }

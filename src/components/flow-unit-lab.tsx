@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { useId, useState } from "react";
-import { Reveal } from "./kit";
 
 /*
  * The one live thing on the page: the flow-zone-indicator arithmetic behind the HFU paper.
@@ -12,11 +11,11 @@ import { Reveal } from "./kit";
  */
 
 const BANDS = [
-  { max: 0.5, name: "tight rock, barely flows" },
-  { max: 1.5, name: "poor to fair rock" },
-  { max: 3.5, name: "good reservoir rock" },
-  { max: 7, name: "very good reservoir rock" },
-  { max: Infinity, name: "excellent, fast-flowing rock" },
+  { max: 0.5, name: "tight, very low flow capacity" },
+  { max: 1.5, name: "poor to fair flow capacity" },
+  { max: 3.5, name: "good flow capacity" },
+  { max: 7, name: "very good flow capacity" },
+  { max: Infinity, name: "excellent flow capacity" },
 ];
 const EDGES = [0.5, 1.5, 3.5, 7];
 
@@ -42,7 +41,7 @@ function bandPolygon(lo: number, hi: number) {
   return pts.map(([x, y]) => `${px(x).toFixed(1)},${py(y).toFixed(1)}`).join(" ");
 }
 
-const TONES = ["var(--panel)", "color-mix(in oklab, var(--accent) 12%, var(--panel))", "color-mix(in oklab, var(--accent) 26%, var(--panel))", "color-mix(in oklab, var(--accent) 42%, var(--panel))", "color-mix(in oklab, var(--accent) 60%, var(--panel))"];
+const TONES = [12, 26, 42, 60, 80].map((pct) => `color-mix(in oklab, var(--accent) ${pct}%, var(--card-2))`);
 
 export function FlowUnitLab() {
   const [porosity, setPorosity] = useState(18); // percent
@@ -59,68 +58,55 @@ export function FlowUnitLab() {
   const bandEdges = [0, ...EDGES, Infinity];
 
   return (
-    <div className="mt-24">
-      <Reveal>
-        <h3 className="text-lead leading-tight">Try the method on a rock sample</h3>
-      </Reveal>
-      <Reveal delay={0.06}>
-        <p className="measure mt-4">
-          The paper groups rock by its flow zone indicator, worked out from porosity and permeability. Move the two values and
-          see which kind of rock you have.
-        </p>
-      </Reveal>
-
-      <Reveal delay={0.1} className="mt-10 grid gap-10 md:grid-cols-[1fr_minmax(0,20rem)] md:items-start">
-        <div className="grid gap-8">
-          <Slider id={phiId} label="Porosity" value={`${porosity}%`} min={4} max={36} step={1} current={porosity} onChange={setPorosity} />
-          <Slider
-            id={kId}
-            label="Permeability"
-            value={`${k < 10 ? k.toFixed(1) : Math.round(k).toLocaleString()} mD`}
-            min={-1}
-            max={3.7}
-            step={0.05}
-            current={logK}
-            onChange={setLogK}
-          />
-          <div aria-live="polite">
-            <p className="font-display text-head leading-none font-extrabold tracking-[-0.03em] tabular-nums">{fzi.toFixed(2)} µm</p>
-            <p className="mt-3 text-lead leading-snug">
-              That is the flow zone indicator. Flow unit {unit + 1} of 5: {BANDS[unit].name}.
-            </p>
-            <p className="mt-2 text-small text-muted">
-              RQI {rqi.toFixed(3)} µm, normalised porosity {phiZ.toFixed(3)}. Band edges are illustrative; the paper finds them
-              from the data.
-            </p>
-          </div>
+    <div className="grid gap-8 md:grid-cols-[1fr_minmax(0,17rem)] md:items-center">
+      <div className="grid gap-5">
+        <Slider id={phiId} label="Porosity" value={`${porosity}%`} min={4} max={36} step={1} current={porosity} onChange={setPorosity} />
+        <Slider
+          id={kId}
+          label="Permeability"
+          value={`${k < 10 ? k.toFixed(1) : Math.round(k).toLocaleString()} mD`}
+          min={-1}
+          max={3.7}
+          step={0.05}
+          current={logK}
+          onChange={setLogK}
+        />
+        <div aria-live="polite" className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <p className="font-display text-[2.5rem] leading-none font-semibold tracking-[-0.03em] tabular-nums">
+            {fzi.toFixed(2)} <span className="text-[1.25rem] text-muted-foreground">µm FZI</span>
+          </p>
+          <p className="text-[0.9375rem]">
+            Flow unit {unit + 1}/5 · <span className="text-muted-foreground">{BANDS[unit].name}</span>
+          </p>
         </div>
+        <p className="text-[0.8125rem] text-muted-foreground">
+          RQI {rqi.toFixed(3)} µm · φz {phiZ.toFixed(3)} · Illustrative band edges; the paper derives them by clustering.
+        </p>
+      </div>
 
-        <figure data-ui className="bg-panel p-4">
-          <svg viewBox={`0 0 ${W} ${H}`} className="block w-full overflow-hidden" role="img" aria-label={`Log-log plot of RQI against normalised porosity. The sample sits in flow unit ${unit + 1}.`}>
-            <defs>
-              <clipPath id="plot">
-                <rect width={W} height={H} />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#plot)">
-              {bandEdges.slice(0, -1).map((lo, i) => (
-                <polygon key={i} points={bandPolygon(lo || 1e-4, bandEdges[i + 1])} fill={TONES[i]} />
-              ))}
-              <motion.circle
-                r={8}
-                fill="var(--ink)"
-                stroke="var(--ground)"
-                strokeWidth={3}
-                animate={{ cx: px(phiZ), cy: py(rqi) }}
-                transition={{ type: "spring", stiffness: 260, damping: 26 }}
-              />
-            </g>
-          </svg>
-          <figcaption className="mt-3 text-small text-muted">
-            Each band is one flow unit. Up and to the left means rock that lets oil through more easily.
-          </figcaption>
-        </figure>
-      </Reveal>
+      <figure className="overflow-hidden rounded-lg">
+        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`Log-log plot of RQI against normalised porosity. The sample sits in flow unit ${unit + 1}.`}>
+          <defs>
+            <clipPath id="plot">
+              <rect width={W} height={H} />
+            </clipPath>
+          </defs>
+          <g clipPath="url(#plot)">
+            {bandEdges.slice(0, -1).map((lo, i) => (
+              <polygon key={i} points={bandPolygon(lo || 1e-4, bandEdges[i + 1])} fill={TONES[i]} />
+            ))}
+            <motion.circle
+              r={7}
+              fill="var(--foreground)"
+              stroke="var(--card)"
+              strokeWidth={3}
+              animate={{ cx: px(phiZ), cy: py(rqi) }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+            />
+          </g>
+        </svg>
+        <figcaption className="mt-2 text-[0.8125rem] text-muted-foreground">log RQI vs log φz, one band per flow unit</figcaption>
+      </figure>
     </div>
   );
 }

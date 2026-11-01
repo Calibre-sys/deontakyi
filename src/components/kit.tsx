@@ -4,18 +4,18 @@ import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/** Rises and fades in once as it enters. Without script the content is simply there. */
+/** Fades and rises in once, the first time it scrolls into view. */
 export function Reveal({
   children,
   delay = 0,
   className,
   as = "div",
-  y = 28,
+  y = 20,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "li" | "p" | "figure";
+  as?: "div" | "li" | "p" | "figure" | "article";
   y?: number;
 }) {
   const reduce = useReducedMotion();
@@ -25,35 +25,35 @@ export function Reveal({
       className={className}
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
-      transition={{ duration: 0.85, ease: EASE, delay }}
+      viewport={{ once: true, margin: "0px 0px -6% 0px" }}
+      transition={{ duration: 0.7, ease: EASE, delay }}
     >
       {children}
     </Tag>
   );
 }
 
-/** One chapter of the story. `id` matches an entry in CHAPTERS so the rail can follow along. */
-export function Chapter({ id, className, children }: { id: string; className?: string; children: ReactNode }) {
+/** A page section with a title row: title on the left, an optional note or link on the right. */
+export function Section({
+  id,
+  title,
+  aside,
+  children,
+  className,
+}: {
+  id: string;
+  title: string;
+  aside?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <section id={id} data-chapter={id} className={cn("relative bg-ground py-28 text-ink sm:py-40", className)}>
-      <div className="frame">{children}</div>
-    </section>
-  );
-}
-
-/** A chapter title: huge condensed capitals, never more than two lines. */
-export function Title({ children, className }: { children: ReactNode; className?: string }) {
-  const reduce = useReducedMotion();
-  return (
-    <motion.h2
-      className={cn("text-head", className)}
-      initial={reduce ? false : { opacity: 0, y: 48 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-      transition={{ duration: 1, ease: EASE }}
-    >
+    <section id={id} className={cn("container-x py-20 sm:py-28", className)}>
+      <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 sm:mb-14">
+        <h2 className="section-title">{title}</h2>
+        {aside && <div className="text-[0.9375rem] text-muted-foreground">{aside}</div>}
+      </Reveal>
       {children}
-    </motion.h2>
+    </section>
   );
 }

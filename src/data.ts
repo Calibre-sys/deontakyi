@@ -1,9 +1,9 @@
-// Everything the page says lives here. Edit this file to update the site.
+// All site content. Edit here to update the page.
 
 export const PROFILE = {
   name: "Deon Takyi-Amponsem",
-  fullName: "Deon Yeboah Takyi-Amponsem",
-  role: "Software & ML Engineer",
+  role: "Machine Learning Engineer",
+  focus: "Physics-informed ML for subsurface systems",
   location: "Accra, Ghana",
   email: "deontakyiamponsem@gmail.com",
   phone: "+233 592 763 423",
@@ -15,29 +15,32 @@ export const PROFILE = {
 };
 
 export const STATS = [
-  { value: "2", label: "published papers" },
-  { value: "7", label: "certifications" },
-  { value: "90%", label: "faster order processing at SOH" },
-  { value: "1st", label: "class, BSc Petroleum Eng." },
+  { value: "2", label: "Publications" },
+  { value: "7", label: "ML certifications" },
+  { value: "90%", label: "Reduction in order processing time" },
+  { value: "1st", label: "Class honours, KNUST" },
 ];
 
-/* ── Research ─────────────────────────────────────────── */
+export const INTERESTS = [
+  "Physics-informed machine learning",
+  "Flow in porous media",
+  "Unsupervised representation learning",
+  "Causal inference on time series",
+  "Subsurface characterization",
+];
+
+/* ── Publications ── */
 
 export type Paper = {
   id: string;
-  /** Short name used as the big index entry. */
-  name: string;
+  year: string;
   title: string;
   venue: string;
-  venueShort: string;
-  publisher: string;
-  date: string;
   detail: string;
   doi: string;
   authors: string[];
   summary: string;
-  highlights: string[];
-  tags: string[];
+  methods: string[];
   cover?: string;
   screenshot: string;
 };
@@ -47,14 +50,11 @@ export const ME_AS_AUTHOR = "Deon Yeboah Takyi-Amponsem";
 export const PAPERS: Paper[] = [
   {
     id: "hfu",
-    name: "Flow units, found automatically",
+    year: "2025",
     title:
       "Automated hydraulic flow unit determination using FZI-Z-score probability, K-means clustering with autoencoders, and machine learning classification: a case study of the Subei Basin, China",
     venue: "Journal of Applied Geophysics",
-    venueShort: "J. Appl. Geophys.",
-    publisher: "Elsevier",
-    date: "September 2025",
-    detail: "Vol. 240 · Article 105778",
+    detail: "Elsevier · Vol. 240 · Art. 105778",
     doi: "10.1016/j.jappgeo.2025.105778",
     authors: [
       "Stephen Adjei",
@@ -66,25 +66,17 @@ export const PAPERS: Paper[] = [
       "Turkson Kwesi Duodu",
     ],
     summary:
-      "The standard way to find hydraulic flow units ranks samples by probability, and it breaks down on large datasets. We replaced it with a pipeline that holds up: an FZI-Z-score probability plot, K-means clustering on autoencoder features, and an ML classifier that predicts flow units for new wells. We tested it on RCAL data from five wells in the Subei Basin.",
-    highlights: [
-      "The FZI-Z-score probability plot gives a statistically sound way to identify flow units",
-      "K-means clustering on autoencoder features automates HFU identification",
-      "An MLP classifier predicts flow units with high accuracy",
-    ],
-    tags: ["Autoencoders", "K-means", "MLP", "Reservoir characterization"],
+      "An automated pipeline for classifying porous rock into hydraulic flow units from core measurements. Autoencoder embeddings feed K-means clustering, a statistically grounded FZI-Z-score probability plot validates the units, and an MLP classifier predicts them for unseen wells. Applied to RCAL data from five wells.",
+    methods: ["Autoencoders", "K-means", "MLP classification", "Flow zone indicator"],
     cover: "/media/jag-cover.jpg",
     screenshot: "/media/paper-flowunit.png",
   },
   {
     id: "injectors",
-    name: "What the water injectors do",
+    year: "2026",
     title: "Analyzing the Effects of Water Injectors on Oil Production Using Causality Models",
     venue: "SPE Africa Technology Conference",
-    venueShort: "SPE ATC 2026",
-    publisher: "Society of Petroleum Engineers · OnePetro",
-    date: "June 2026 · Abidjan, Côte d'Ivoire",
-    detail: "Paper SPE-233427-MS",
+    detail: "Abidjan · Paper SPE-233427-MS",
     doi: "10.2118/233427-MS",
     authors: [
       "Stephen Adjei",
@@ -97,18 +89,13 @@ export const PAPERS: Paper[] = [
       "Kwadwo Fosu Adom",
     ],
     summary:
-      "Tracer tests are expensive. Simulation relies on simplifying assumptions. Interference tests get ambiguous when several injectors are active. We built a three-stage framework instead: Pearson correlation, then interference testing, then multivariate time-series causality (VAR and VECM). It shows which water injectors actually drive production at each producer.",
-    highlights: [
-      "Three stages: correlation, then interference testing, then causality",
-      "VAR and VECM models show which way influence runs between wells",
-      "A cheaper alternative to tracer tests in mature waterfloods",
-    ],
-    tags: ["Causal inference", "VAR / VECM", "Time series", "Waterflooding"],
+      "A three-stage framework for inferring well-to-well connectivity from production data: Pearson correlation, interference testing, then multivariate time-series causality with VAR and VECM models. Identifies which injectors drive each producer without tracer tests.",
+    methods: ["VAR", "VECM", "Granger causality", "Time series"],
     screenshot: "/media/paper-waterinjectors.png",
   },
 ];
 
-/* ── Certifications ───────────────────────────────────── */
+/* ── Certifications ── */
 
 export type Cert = {
   id: string;
@@ -207,13 +194,14 @@ export const CERTS: Cert[] = [
   },
 ];
 
-/* ── Projects ─────────────────────────────────────────── */
+/* ── Projects ── */
 
 export type Project = {
   id: string;
   name: string;
+  kind: string;
   blurb: string;
-  impact?: string;
+  result?: string;
   stack: string[];
   video?: string;
   poster?: string;
@@ -223,222 +211,145 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
+    id: "reschar",
+    name: "RescharAI",
+    kind: "ML software · Subsurface",
+    blurb:
+      "Desktop software for reservoir characterization. Unsupervised models identify hydraulic flow units; supervised regressors with residual correction delineate net pay.",
+    result: "Replaces a manual petrophysics workflow",
+    stack: ["Python", "scikit-learn", "PyTorch"],
+    video: "/media/reschar-demo.mp4",
+    poster: "/media/reschar-poster.jpg",
+  },
+  {
     id: "soh",
     name: "SOH Order Management",
-    blurb:
-      "Generates the documents, sends the emails and tracks every order for a BDC's daily operations. Runs on Google Sheets and Apps Script.",
-    impact: "Processing time cut by more than 90%",
-    stack: ["Apps Script", "Google APIs", "Automation"],
+    kind: "Workflow automation",
+    blurb: "Order management for a bulk distribution company: document generation, email dispatch and order tracking.",
+    result: "Processing time per order cut by more than 90%",
+    stack: ["Apps Script", "Google APIs"],
     video: "/media/soh-demo.mp4",
     poster: "/media/soh-poster.jpg",
     private: true,
   },
   {
-    id: "reschar",
-    name: "RescharAI",
-    blurb:
-      "Reservoir-characterization software. Unsupervised ML finds the hydraulic flow units, and supervised models with residual correctors mark the net pay.",
-    impact: "Replaces manual petrophysics workflows",
-    stack: ["Python", "Unsupervised ML", "Regression"],
-    video: "/media/reschar-demo.mp4",
-    poster: "/media/reschar-poster.jpg",
-  },
-  {
     id: "fortel",
     name: "Fortel",
-    blurb:
-      "A no-code ML web app: upload private data securely and train models without writing a line of code. I designed and built the whole front end.",
-    stack: ["JavaScript", "HTML/CSS", "React", "Node.js"],
+    kind: "No-code ML platform",
+    blurb: "Web app for training models on privately uploaded data without writing code. Co-developed; built the full front end.",
+    stack: ["JavaScript", "React", "Node.js"],
     video: "/media/fortel-demo.mp4",
     poster: "/media/fortel-poster.jpg",
     link: "https://fortel.onrender.com",
   },
   {
     id: "recruit",
-    name: "Recruitment AI Agent",
-    blurb:
-      "Screens and ranks CVs, writes the shortlist and drafts every candidate email. Manual shortlisting is gone.",
-    stack: ["AI agents", "LLMs", "Automation"],
+    name: "Recruitment Agent",
+    kind: "LLM agent",
+    blurb: "Screens and ranks CVs against a role, produces the shortlist and drafts candidate emails.",
+    stack: ["LLMs", "Agents", "Apps Script"],
     private: true,
   },
   {
     id: "manpower",
-    name: "Manpower Outreach Automation",
-    blurb:
-      "Replaced a 900-person phone campaign with personalised emails, one-click replies, automatic logging and 3-day follow-ups. A two-day build that then ran itself.",
-    impact: "455 of 880 contacts converted (52%), with no calls",
+    name: "Outreach Automation",
+    kind: "Workflow automation",
+    blurb: "Personalised email campaign with one-click responses, automatic logging and timed follow-ups, replacing a phone campaign.",
+    result: "455 of 880 contacts converted (52%)",
     stack: ["Apps Script", "Google APIs"],
     private: true,
   },
 ];
 
-export const SKILLS = [
-  "Python",
-  "FastAPI",
-  "PyTorch",
-  "scikit-learn",
-  "JavaScript",
-  "React",
-  "Node.js",
-  "Apps Script",
-  "LangChain",
-  "RAG",
-  "MCP",
-  "Time series",
-  "Deep learning",
-  "VBA / Excel",
-  "Eclipse 100/300",
-  "Prosper",
-  "GAP",
-  "AutoCAD",
-];
-
-/* ── Bookshelf ────────────────────────────────────────── */
-
-export type Book = {
-  id: string;
-  title: string;
-  subtitle?: string;
-  author: string;
-  isbn: string;
-  /** Optional local cover, e.g. "/books/chatter.jpg". Used before the online lookup. */
-  cover?: string;
-  note: string;
-  /** Fallback cover colours when no image loads. */
-  tint: [string, string];
-};
-
-export const SHELVES: { id: string; title: string; caption: string; books: Book[] }[] = [
-  {
-    id: "ml",
-    title: "Machine learning & deep learning",
-    caption: "The books I used to teach myself to build models.",
-    books: [
-      {
-        id: "fastai",
-        title: "Deep Learning for Coders with fastai & PyTorch",
-        subtitle: "AI Applications Without a PhD",
-        author: "Jeremy Howard & Sylvain Gugger",
-        isbn: "9781492045526",
-        note: "Taught me to build and train first and pick up the theory along the way.",
-        tint: ["#1f3b57", "#f6f2f0"],
-      },
-      {
-        id: "tensorflow",
-        title: "Deep Learning with TensorFlow",
-        author: "Giancarlo Zaccone & Md. Rezaul Karim",
-        isbn: "9781786469786",
-        note: "Computation graphs, CNNs and RNNs from the TensorFlow side.",
-        tint: ["#20262e", "#f3c623"],
-      },
-    ],
-  },
-  {
-    id: "beyond",
-    title: "Beyond the code",
-    caption: "Books that changed how I think.",
-    books: [
-      {
-        id: "chatter",
-        title: "Chatter",
-        subtitle: "The Voice in Our Head, Why It Matters, and How to Harness It",
-        author: "Ethan Kross",
-        isbn: "9780525575238",
-        note: "How to step back from your inner critic and work through hard problems calmly.",
-        tint: ["#f3c623", "#1b1b1b"],
-      },
-    ],
-  },
-];
-
-/* ── Journey ──────────────────────────────────────────── */
+/* ── Experience ── */
 
 export const EXPERIENCE = [
   {
-    when: "Nov 2025 to now",
-    org: "SOH Energy",
-    role: "Business Development / Technical Associate",
-    points: [
-      "Built the SOH Order Management system, which cut order processing time by more than 90%",
-      "Built an AI recruitment agent that screens, ranks and emails candidates",
-      "Automated a 900-contact outreach campaign: 52% converted with no phone calls",
-      "Co-built a fuel-station feasibility model covering demand forecasting, costs and profitability",
-    ],
-  },
-  {
-    when: "Sep 2024 to now",
+    when: "2024 – Present",
     org: "AI-DPRS Research Lab, KNUST",
-    role: "Reservoir Characterization Lead (ML Research)",
+    role: "Reservoir Characterization Lead, ML Research",
     points: [
-      "Co-developed an automated HFU identification system, published in the Journal of Applied Geophysics",
-      "Built RescharAI, combining unsupervised and supervised ML for reservoir work",
-      "Worked with GNPC to apply unsupervised ML to real field data",
-      "Built a causal-analysis tool showing how water injectors affect producing wells",
+      "Co-developed an automated hydraulic flow unit method; published in the Journal of Applied Geophysics",
+      "Built RescharAI, combining unsupervised and supervised learning for subsurface characterization",
+      "Applied unsupervised learning to field data in collaboration with GNPC",
+      "Built a causal-analysis tool for injector–producer connectivity",
     ],
   },
   {
-    when: "Sep 2023–Jan 2024",
+    when: "2025 – Present",
+    org: "SOH Energy",
+    role: "Business Development / Technical Associate, National Service",
+    points: [
+      "Built an order management system that cut processing time by more than 90%",
+      "Built an LLM agent for CV screening, ranking and candidate outreach",
+      "Automated an 880-contact outreach campaign: 52% conversion, no phone calls",
+      "Co-built a feasibility model with demand forecasting and profitability analysis",
+    ],
+  },
+  {
+    when: "2023 – 2024",
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
-    points: [
-      "Tracked product to terminals and calibrated flow meters with prover tanks",
-      "Ran checks on pumps, valves, pipelines and storage tanks, and saw first-hand the data problems I now automate",
-    ],
+    points: ["Flow-meter calibration with prover tanks, product tracking, and equipment inspection"],
   },
 ];
 
 export const EDUCATION = [
-  {
-    when: "2021–2025",
-    org: "KNUST",
-    role: "BSc Petroleum Engineering",
-    points: [
-      "First-Class Honours",
-      "College of Engineering Excellence Award (2021/22)",
-      "Treasurer, SPE KNUST Chapter (2024/25); SPE member since 2021",
-    ],
-  },
-  {
-    when: "2018–2021",
-    org: "Mfantsipim School",
-    role: "WASSCE, General Science",
-    points: [],
-  },
+  { when: "2021 – 2025", org: "KNUST", role: "BSc Petroleum Engineering", note: "First-Class Honours · College of Engineering Excellence Award" },
+  { when: "2018 – 2021", org: "Mfantsipim School", role: "WASSCE, General Science", note: "" },
 ];
 
-/* ── Events ───────────────────────────────────────────── */
+export const ACTIVITIES = [
+  { name: "SPE Africa Technology Conference 2026", detail: "Delegate, Abidjan" },
+  { name: "SPE KNUST Chapter", detail: "Treasurer, 2024/25 · Member since 2021" },
+  { name: "SPE Energy4me", detail: "Volunteer, STEM outreach in schools" },
+  { name: "Building Bytes Pitch Program", detail: "Participant, Kumasi" },
+];
 
-export type Moment = { id: string; src: string; title: string; tag: string; w: number; h: number };
+export const MOMENTS = [
+  { src: "/media/atc-2026.jpg", caption: "SPE ATC 2026, Abidjan" },
+  { src: "/media/buildingbytes-1.jpg", caption: "Building Bytes, Kumasi" },
+  { src: "/media/energy4me-1.jpg", caption: "SPE Energy4me outreach" },
+  { src: "/media/buildingbytes-2.jpg", caption: "Building Bytes demo day" },
+];
 
-export const MOMENTS: Moment[] = [
-  { id: "bb1", src: "/media/buildingbytes-1.jpg", title: "Building Bytes Pitch Program, Kumasi", tag: "Pitch", w: 1080, h: 720 },
-  { id: "e4m2", src: "/media/energy4me-2.jpg", title: "SPE Energy4me school outreach", tag: "Volunteer", w: 480, h: 319 },
-  { id: "bb2", src: "/media/buildingbytes-2.jpg", title: "Building Bytes, demo day", tag: "Pitch", w: 1080, h: 720 },
-  { id: "e4m1", src: "/media/energy4me-1.jpg", title: "Energy4me, teaching energy basics", tag: "Volunteer", w: 800, h: 312 },
-  { id: "atc", src: "/media/atc-2026.jpg", title: "Africa Technology Conference 2026, Abidjan", tag: "Delegate", w: 480, h: 640 },
+/* ── Reading ── */
+
+export type Book = {
+  id: string;
+  title: string;
+  author: string;
+  isbn: string;
+  /** Optional local cover, e.g. "/books/chatter.jpg". Used before the online lookup. */
+  cover?: string;
+  tint: [string, string];
+};
+
+export const BOOKS: Book[] = [
+  {
+    id: "fastai",
+    title: "Deep Learning for Coders with fastai & PyTorch",
+    author: "Jeremy Howard, Sylvain Gugger",
+    isbn: "9781492045526",
+    tint: ["#1f3b57", "#f5f5f4"],
+  },
+  {
+    id: "tensorflow",
+    title: "Deep Learning with TensorFlow",
+    author: "Giancarlo Zaccone, Md. Rezaul Karim",
+    isbn: "9781786469786",
+    tint: ["#20262e", "#f3c623"],
+  },
+  {
+    id: "chatter",
+    title: "Chatter",
+    author: "Ethan Kross",
+    isbn: "9780525575238",
+    tint: ["#f3c623", "#1b1b1b"],
+  },
 ];
 
 export const REFERENCES = [
-  { name: "Dr. Stephen Adjei, PhD", role: "Principal Investigator, AI-DPRS · Lecturer, Petroleum Eng., KNUST" },
+  { name: "Dr. Stephen Adjei", role: "Principal Investigator, AI-DPRS · Lecturer, KNUST" },
   { name: "Mr. Felix Andoh", role: "Operator, Tema Tank Farm" },
-];
-
-export const EVENTS = [
-  { name: "Africa Technology Conference 2026", detail: "Delegate, Abidjan, Côte d'Ivoire. Our water-injector paper was presented here." },
-  { name: "Building Bytes Pitch Program", detail: "Pitched and demoed a product in Kumasi." },
-  { name: "SPE Energy4me", detail: "Volunteer, teaching school students how energy is found and produced." },
-  { name: "SPE KNUST Chapter", detail: "Treasurer on the executive, 2024/25. Member since 2021." },
-];
-
-/* ── The story, in chapters. The rail down the side reads these like a well log. ── */
-
-export const CHAPTERS = [
-  { id: "rock", year: "2018", label: "Cape Coast to Kumasi" },
-  { id: "spe", year: "2021", label: "SPE KNUST" },
-  { id: "field", year: "2023", label: "Tema" },
-  { id: "self-taught", year: "2024", label: "Self-taught" },
-  { id: "lab", year: "2024", label: "The lab" },
-  { id: "soh", year: "2025", label: "SOH Energy" },
-  { id: "abidjan", year: "2026", label: "Abidjan" },
-  { id: "contact", year: "Next", label: "Your problem" },
 ];
