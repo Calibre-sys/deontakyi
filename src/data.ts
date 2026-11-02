@@ -227,31 +227,15 @@ export const PROJECTS: Project[] = [
     private: true,
   },
   {
-    id: "fortel",
-    name: "Fortel",
-    kind: "No-code ML platform",
-    blurb: "Web app for training models on privately uploaded data without writing code. Co-developed; built the full front end.",
-    stack: ["JavaScript", "React", "Node.js"],
-    video: "/media/fortel-demo.mp4",
-    poster: "/media/fortel-poster.jpg",
-    link: "https://fortel.onrender.com",
-  },
-  {
-    id: "recruit",
-    name: "Recruitment Agent",
-    kind: "LLM agent",
-    blurb: "Screens and ranks CVs against a role, produces the shortlist and drafts candidate emails.",
-    stack: ["LLMs", "Agents", "Apps Script"],
-    private: true,
-  },
-  {
-    id: "manpower",
-    name: "Outreach Automation",
-    kind: "Workflow automation",
-    blurb: "Personalised email campaign with one-click responses, automatic logging and timed follow-ups, replacing a phone campaign.",
-    result: "455 of 880 contacts converted (52%)",
-    stack: ["Apps Script", "Google APIs"],
-    private: true,
+    id: "fortell",
+    name: "Fortell",
+    kind: "ML and research writing platform",
+    blurb:
+      "Upload a spreadsheet and Fortell cleans it, trains and compares six models, then an agent pipeline turns the results into a cited paper you can export as PDF, Word or LaTeX.",
+    stack: ["Python", "LLM agents", "React", "Node.js"],
+    video: "/media/fortell-demo.mp4",
+    poster: "/media/fortell-poster.jpg",
+    link: "https://www.fortell.site",
   },
 ];
 
@@ -260,6 +244,7 @@ export const PROJECTS: Project[] = [
 export const EXPERIENCE = [
   {
     when: "2024 – Present",
+    logo: "/logos/knust.png",
     org: "AI-DPRS Research Lab, KNUST",
     role: "Reservoir Characterization Lead, ML Research",
     points: [
@@ -271,17 +256,17 @@ export const EXPERIENCE = [
   },
   {
     when: "2025 – Present",
+    logo: "/logos/soh-energy.png",
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
       "Built an order management system that cut processing time by more than 90%",
-      "Built an LLM agent for CV screening, ranking and candidate outreach",
-      "Automated an 880-contact outreach campaign: 52% conversion, no phone calls",
       "Co-built a feasibility model with demand forecasting and profitability analysis",
     ],
   },
   {
     when: "2023 – 2024",
+    logo: undefined as string | undefined,
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
     points: ["Flow-meter calibration with prover tanks, product tracking, and equipment inspection"],
@@ -289,15 +274,15 @@ export const EXPERIENCE = [
 ];
 
 export const EDUCATION = [
-  { when: "2021 – 2025", org: "KNUST", role: "BSc Petroleum Engineering", note: "First-Class Honours · College of Engineering Excellence Award" },
-  { when: "2018 – 2021", org: "Mfantsipim School", role: "WASSCE, General Science", note: "" },
+  { when: "2021 – 2025", logo: "/logos/knust.png", org: "KNUST", role: "BSc Petroleum Engineering", note: "First-Class Honours · College of Engineering Excellence Award" },
+  { when: "2018 – 2021", logo: undefined as string | undefined, org: "Mfantsipim School", role: "WASSCE, General Science", note: "" },
 ];
 
 export const ACTIVITIES = [
-  { name: "SPE Africa Technology Conference 2026", detail: "Delegate, Abidjan" },
-  { name: "SPE KNUST Chapter", detail: "Treasurer, 2024/25 · Member since 2021" },
-  { name: "SPE Energy4me", detail: "Volunteer, STEM outreach in schools" },
-  { name: "Building Bytes Pitch Program", detail: "Participant, Kumasi" },
+  { logo: "/logos/spe.png", name: "SPE Africa Technology Conference 2026", detail: "Delegate, Abidjan" },
+  { logo: "/logos/spe.png", name: "SPE KNUST Chapter", detail: "Treasurer, 2024/25 · Member since 2021" },
+  { logo: "/logos/spe.png", name: "SPE Energy4me", detail: "Volunteer, STEM outreach in schools" },
+  { logo: undefined as string | undefined, name: "Building Bytes Pitch Program", detail: "Participant, Kumasi" },
 ];
 
 export const MOMENTS = [

@@ -25,7 +25,6 @@ import {
 import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
-import { OutreachEmail, Shortlist } from "./fragments";
 import { PhotoStack } from "./photo-stack";
 import { Reveal, Section } from "./kit";
 
@@ -195,7 +194,8 @@ function PaperRow({ paper }: { paper: Paper }) {
             <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="w-full rounded-md" />
           ) : (
             <div className="flex aspect-[3/4] w-full flex-col justify-between rounded-md bg-card-2 p-3">
-              <span className="font-display text-[1.25rem] leading-tight font-semibold">SPE ATC 2026</span>
+              <img src="/logos/spe.png" alt="SPE" className="w-full rounded-sm bg-white p-1.5" />
+              <span className="font-display text-[1.25rem] leading-tight font-semibold">ATC 2026</span>
               <span className="text-[0.75rem] leading-snug text-muted-foreground">Africa Technology Conference, Abidjan</span>
             </div>
           )}
@@ -252,7 +252,7 @@ const STACK: { name: string; icon: Icons.SimpleIcon }[] = [
 export function Work() {
   const byId = (id: string) => PROJECTS.find((p) => p.id === id)!;
   return (
-    <Section id="work" title="Selected work" aside="Private builds are shown as recordings or sample output." className="border-t border-border">
+    <Section id="work" title="Selected work" aside="Private builds are shown as screen recordings." className="border-t border-border">
       <div className="grid gap-4 lg:grid-cols-6">
         <Reveal className="lg:col-span-4">
           <ProjectCard project={byId("reschar")} large />
@@ -278,13 +278,7 @@ export function Work() {
           <ProjectCard project={byId("soh")} />
         </Reveal>
         <Reveal className="lg:col-span-3" delay={0.06}>
-          <ProjectCard project={byId("fortel")} />
-        </Reveal>
-        <Reveal className="lg:col-span-3">
-          <ProjectCard project={byId("recruit")} />
-        </Reveal>
-        <Reveal className="lg:col-span-3" delay={0.06}>
-          <ProjectCard project={byId("manpower")} />
+          <ProjectCard project={byId("fortell")} />
         </Reveal>
       </div>
     </Section>
@@ -317,11 +311,7 @@ function ProjectCard({ project, large }: { project: Project; large?: boolean }) 
               </span>
             </button>
           </>
-        ) : (
-          <div className="flex size-full items-center justify-center p-6 [&>div]:w-full [&>div]:max-w-none [&>div]:text-[0.8125rem]">
-            {project.id === "manpower" ? <OutreachEmail /> : <Shortlist />}
-          </div>
-        )}
+        ) : null}
       </div>
       <div className="flex flex-1 flex-col gap-3 p-6">
         <div className="flex items-baseline justify-between gap-4">
@@ -381,8 +371,13 @@ export function Experience() {
           <Reveal as="li" key={job.org} delay={i * 0.05} className="grid gap-2 md:grid-cols-[12rem_1fr] md:gap-10">
             <p className="text-[0.9375rem] text-muted-foreground">{job.when}</p>
             <div>
-              <h3 className="font-sans text-[1.1875rem] font-semibold tracking-normal">{job.org}</h3>
-              <p className="text-muted-foreground">{job.role}</p>
+              <div className="flex items-center gap-4">
+                <Logo src={job.logo} name={job.org} />
+                <div>
+                  <h3 className="font-sans text-[1.1875rem] font-semibold tracking-normal">{job.org}</h3>
+                  <p className="text-muted-foreground">{job.role}</p>
+                </div>
+              </div>
               <ul className="mt-4 grid max-w-[72ch] gap-2">
                 {job.points.map((point) => (
                   <li key={point} className="flex gap-3 text-[0.9875rem]">
@@ -443,12 +438,15 @@ export function Credentials() {
                 </motion.button>
               </AnimatePresence>
               <div className="mt-5 flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-                <div>
+                <div className="flex items-center gap-4">
+                  <Logo src={cert.issuer === "DataCamp" ? "/logos/datacamp.png" : "/logos/365-data-science.png"} name={cert.issuer} wide={cert.issuer !== "DataCamp"} />
+                  <div>
                   <p className="font-semibold">{cert.title}</p>
                   <p className="text-[0.9375rem] text-muted-foreground">
                     {cert.issuer} · {cert.date}
                     {cert.length ? ` · ${cert.length}` : ""} · ID {cert.credential}
                   </p>
+                  </div>
                 </div>
                 <a href={cert.pdf} download className="link inline-flex items-center gap-1.5 text-[0.9375rem]">
                   <Download className="size-4" /> PDF
@@ -465,13 +463,16 @@ export function Credentials() {
             <h3 className="text-[1.375rem] font-semibold">Education</h3>
             <ul className="grid gap-5">
               {EDUCATION.map((e) => (
-                <li key={e.org}>
-                  <p className="font-semibold">{e.org}</p>
-                  <p className="text-[0.9375rem]">{e.role}</p>
-                  <p className="text-[0.875rem] text-muted-foreground">
-                    {e.when}
-                    {e.note ? ` · ${e.note}` : ""}
-                  </p>
+                <li key={e.org} className="flex gap-4">
+                  <Logo src={e.logo} name={e.org} />
+                  <div>
+                    <p className="font-semibold">{e.org}</p>
+                    <p className="text-[0.9375rem]">{e.role}</p>
+                    <p className="text-[0.875rem] text-muted-foreground">
+                      {e.when}
+                      {e.note ? ` · ${e.note}` : ""}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -482,9 +483,12 @@ export function Credentials() {
             <h3 className="text-[1.375rem] font-semibold">Activities</h3>
             <ul className="grid gap-4">
               {ACTIVITIES.map((a) => (
-                <li key={a.name}>
-                  <p className="font-semibold">{a.name}</p>
-                  <p className="text-[0.875rem] text-muted-foreground">{a.detail}</p>
+                <li key={a.name} className="flex items-center gap-4">
+                  <Logo src={a.logo} name={a.name} />
+                  <div>
+                    <p className="font-semibold">{a.name}</p>
+                    <p className="text-[0.875rem] text-muted-foreground">{a.detail}</p>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -602,5 +606,33 @@ export function Footer() {
       <span>© {new Date().getFullYear()} {PROFILE.name}</span>
       <span>{PROFILE.location}</span>
     </footer>
+  );
+}
+
+/** An organisation's logo on a light tile, or its initials when no logo is available. */
+function Logo({ src, name, wide }: { src?: string; name: string; wide?: boolean }) {
+  const initials = name
+    .replace(/[^A-Za-z ]/g, "")
+    .split(" ")
+    .filter((w) => w && w[0] === w[0].toUpperCase())
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join("");
+  return (
+    <span
+      className={cn(
+        "flex h-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border",
+        wide ? "w-24 bg-white px-2" : "w-11",
+        src ? (src.includes("soh") || src.includes("datacamp") ? "" : "bg-white p-1") : "bg-card-2",
+      )}
+    >
+      {src ? (
+        <img src={src} alt={`${name} logo`} loading="lazy" className="max-h-full max-w-full object-contain" />
+      ) : (
+        <span aria-hidden className="font-display text-[0.9375rem] font-semibold text-muted-foreground">
+          {initials}
+        </span>
+      )}
+    </span>
   );
 }
