@@ -151,7 +151,7 @@ function PaperRow({ paper }: { paper: Paper }) {
   const view = useViewer();
   return (
     <Card className="gap-0 py-0">
-      <div className="grid gap-6 p-6 sm:p-8 md:grid-cols-[4.5rem_1fr_9rem]">
+      <div className="grid gap-6 p-6 sm:p-8 md:grid-cols-[4.5rem_1fr_12rem]">
         <p className="font-display text-[1.375rem] font-semibold tracking-[-0.02em] text-muted-foreground">{paper.year}</p>
         <div className="min-w-0">
           <h3 className="font-sans text-[1.1875rem] leading-snug font-semibold tracking-normal">
@@ -199,9 +199,9 @@ function PaperRow({ paper }: { paper: Paper }) {
               <span className="text-[0.75rem] leading-snug text-muted-foreground">Africa Technology Conference, Abidjan</span>
             </div>
           )}
-          <HangingTools tools={paper.tools} size={32} align="center" className="-mx-2" />
+          <HangingTools tools={paper.tools} size={28} align="center" className="-mx-3" />
         </div>
-        <HangingTools tools={paper.tools} size={32} align="start" rod className="max-w-[16rem] md:hidden" />
+        <HangingTools tools={paper.tools} size={28} align="start" rod className="max-w-[17rem] md:hidden" />
       </div>
     </Card>
   );
@@ -301,7 +301,7 @@ function ProjectCard({ project, wide }: { project: Project; wide?: boolean }) {
       <div className={cn("relative flex flex-1 flex-col gap-3 p-6", wide && "lg:p-8")}>
         {/* The tools hang from the edge of the demo above. */}
         <HangingTools tools={project.tools} size={34} className="absolute top-0 right-3 z-20" />
-        <div style={{ paddingRight: project.tools.length * 46 + 8 }}>
+        <div style={{ paddingRight: project.tools.length * 61 + 8 }}>
           <h3 className="text-[1.375rem] leading-tight font-semibold">{project.name}</h3>
           <p className="mt-1 text-[0.8125rem] text-muted-foreground">{project.kind}</p>
           {project.link && (
@@ -399,7 +399,7 @@ export function Credentials() {
                 </motion.button>
               </AnimatePresence>
               {/* Tools from this course hang from the certificate. */}
-              <div className={cert.tools.length ? "h-[5.25rem]" : "h-5"}>
+              <div className={cert.tools.length ? "h-[7.75rem]" : "h-5"}>
                 <HangingTools key={cert.id} tools={cert.tools} size={32} align="center" />
               </div>
               <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
@@ -491,7 +491,7 @@ export function Reading() {
         {BOOKS.map((book, i) => (
           <Reveal as="li" key={book.id} delay={i * 0.06}>
             <BookCover book={book} className="overflow-hidden rounded-md" />
-            <div className="h-[5.5rem]">
+            <div className="h-[7.5rem]">
               <HangingTools tools={book.tools} size={30} align="center" />
             </div>
             <p className="text-[0.9375rem] leading-snug font-semibold">{book.title}</p>
