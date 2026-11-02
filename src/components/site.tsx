@@ -1,7 +1,6 @@
 import { ArrowUpRight, Check, Copy, Download, FileText, Mail, Play } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
-import * as Icons from "simple-icons";
 import { ArcPicker } from "@/components/motion/arc-picker";
 import { Card } from "@/components/motion/card";
 import { ThemeToggle } from "@/components/motion/theme-toggle";
@@ -26,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
 import { PhotoStack } from "./photo-stack";
+import { HangingTools } from "./tools";
 import { Reveal, Section } from "./kit";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -199,7 +199,9 @@ function PaperRow({ paper }: { paper: Paper }) {
               <span className="text-[0.75rem] leading-snug text-muted-foreground">Africa Technology Conference, Abidjan</span>
             </div>
           )}
+          <HangingTools tools={paper.tools} size={32} align="center" className="-mx-2" />
         </div>
+        <HangingTools tools={paper.tools} size={32} align="start" rod className="max-w-[16rem] md:hidden" />
       </div>
     </Card>
   );
@@ -230,35 +232,13 @@ function CopyCitation({ paper }: { paper: Paper }) {
 
 /* ───────── Work (bento) ───────── */
 
-const STACK: { name: string; icon: Icons.SimpleIcon }[] = [
-  { name: "Python", icon: Icons.siPython },
-  { name: "PyTorch", icon: Icons.siPytorch },
-  { name: "TensorFlow", icon: Icons.siTensorflow },
-  { name: "scikit-learn", icon: Icons.siScikitlearn },
-  { name: "pandas", icon: Icons.siPandas },
-  { name: "NumPy", icon: Icons.siNumpy },
-  { name: "Jupyter", icon: Icons.siJupyter },
-  { name: "FastAPI", icon: Icons.siFastapi },
-  { name: "LangChain", icon: Icons.siLangchain },
-  { name: "JavaScript", icon: Icons.siJavascript },
-  { name: "React", icon: Icons.siReact },
-  { name: "Node.js", icon: Icons.siNodedotjs },
-  { name: "Apps Script", icon: Icons.siGoogleappsscript },
-  { name: "Git", icon: Icons.siGit },
-  { name: "GitHub", icon: Icons.siGithub },
-  { name: "AutoCAD", icon: Icons.siAutocad },
-];
-
 export function Work() {
   const byId = (id: string) => PROJECTS.find((p) => p.id === id)!;
   return (
     <Section id="work" title="Selected work" aside="Private builds are shown as screen recordings." className="border-t border-border">
       <div className="grid gap-4 lg:grid-cols-6">
-        <Reveal className="lg:col-span-4">
-          <ProjectCard project={byId("reschar")} large />
-        </Reveal>
-        <Reveal className="lg:col-span-2" delay={0.06}>
-          <StackCard />
+        <Reveal className="lg:col-span-6">
+          <ProjectCard project={byId("reschar")} wide />
         </Reveal>
         <Reveal className="lg:col-span-6">
           <Card className="gap-5 p-4 py-5 sm:p-8">
@@ -285,7 +265,7 @@ export function Work() {
   );
 }
 
-function ProjectCard({ project, large }: { project: Project; large?: boolean }) {
+function ProjectCard({ project, wide }: { project: Project; wide?: boolean }) {
   const view = useViewer();
   const video = useRef<HTMLVideoElement>(null);
   const reduce = useReducedMotion();
@@ -295,8 +275,13 @@ function ProjectCard({ project, large }: { project: Project; large?: boolean }) 
   const pause = () => video.current?.pause();
 
   return (
-    <Card interactive={Boolean(project.video)} className="h-full gap-0 overflow-hidden py-0" onPointerEnter={play} onPointerLeave={pause}>
-      <div className={cn("relative overflow-hidden bg-card-2", large ? "aspect-[16/9]" : "aspect-[16/10]")}>
+    <Card
+      interactive={Boolean(project.video)}
+      className={cn("h-full gap-0 overflow-hidden py-0", wide && "lg:grid lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]")}
+      onPointerEnter={play}
+      onPointerLeave={pause}
+    >
+      <div className={cn("relative overflow-hidden bg-card-2", wide ? "aspect-[16/9] lg:aspect-auto lg:min-h-[22rem]" : "aspect-[16/10]")}>
         {project.video ? (
           <>
             <video ref={video} src={project.video} poster={project.poster} muted loop playsInline preload="none" className="size-full bg-black object-cover" />
@@ -313,50 +298,25 @@ function ProjectCard({ project, large }: { project: Project; large?: boolean }) 
           </>
         ) : null}
       </div>
-      <div className="flex flex-1 flex-col gap-3 p-6">
-        <div className="flex items-baseline justify-between gap-4">
+      <div className={cn("relative flex flex-1 flex-col gap-3 p-6", wide && "lg:p-8")}>
+        {/* The tools hang from the edge of the demo above. */}
+        <HangingTools tools={project.tools} size={34} className="absolute top-0 right-3 z-20" />
+        <div style={{ paddingRight: project.tools.length * 46 + 8 }}>
           <h3 className="text-[1.375rem] leading-tight font-semibold">{project.name}</h3>
+          <p className="mt-1 text-[0.8125rem] text-muted-foreground">{project.kind}</p>
           {project.link && (
-            <a href={project.link} target="_blank" rel="noopener" className="link relative z-10 inline-flex shrink-0 items-center gap-1 text-[0.875rem]">
-              Live <ArrowUpRight className="size-3.5" />
+            <a href={project.link} target="_blank" rel="noopener" className="link relative z-10 mt-1 inline-flex items-center gap-1 text-[0.875rem]">
+              {project.link.replace(/^https?:\/\/(www\.)?/, "")} <ArrowUpRight className="size-3.5" />
             </a>
           )}
         </div>
-        <p className="-mt-2 text-[0.8125rem] text-muted-foreground">{project.kind}</p>
         <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">{project.blurb}</p>
         {project.result && <p className="text-[0.9375rem] font-medium text-accent">{project.result}</p>}
         <p className="mt-auto pt-2 text-[0.8125rem] text-muted-foreground">
           {project.stack.join(" · ")}
-          {project.private ? " · Private" : ""}
+          {project.private ? " · Private build" : ""}
         </p>
       </div>
-    </Card>
-  );
-}
-
-function StackCard() {
-  return (
-    <Card className="h-full gap-5 p-6 py-6">
-      <div>
-        <h3 className="text-[1.375rem] leading-tight font-semibold">Stack</h3>
-        <p className="mt-1 text-[0.875rem] text-muted-foreground">Also: VBA, Eclipse 100/300, Prosper, GAP</p>
-      </div>
-      <ul className="grid grid-cols-4 gap-2">
-        {STACK.map((tool) => (
-          <li key={tool.name}>
-            <div
-              title={tool.name}
-              className="group flex aspect-square flex-col items-center justify-center gap-1.5 rounded-lg bg-card-2 transition-colors"
-              style={{ ["--brand" as string]: `#${tool.icon.hex}` }}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden className="size-6 fill-foreground transition-[fill,transform] duration-200 group-hover:scale-110 group-hover:fill-[var(--brand)]">
-                <path d={tool.icon.path} />
-              </svg>
-              <span className="max-w-full truncate px-1 text-[0.6875rem] text-muted-foreground">{tool.name}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
     </Card>
   );
 }
@@ -368,7 +328,7 @@ export function Experience() {
     <Section id="experience" title="Experience" className="border-t border-border">
       <ol className="grid gap-10">
         {EXPERIENCE.map((job, i) => (
-          <Reveal as="li" key={job.org} delay={i * 0.05} className="grid gap-2 md:grid-cols-[12rem_1fr] md:gap-10">
+          <Reveal as="li" key={job.org} delay={i * 0.05} className="grid gap-2 md:grid-cols-[12rem_1fr_auto] md:gap-10">
             <p className="text-[0.9375rem] text-muted-foreground">{job.when}</p>
             <div>
               <div className="flex items-center gap-4">
@@ -387,6 +347,7 @@ export function Experience() {
                 ))}
               </ul>
             </div>
+            <HangingTools tools={job.tools} rod size={34} align="center" className="mt-4 w-fit min-w-[8rem] md:mt-1" />
           </Reveal>
         ))}
       </ol>
@@ -437,7 +398,11 @@ export function Credentials() {
                   <img src={cert.preview} alt="" className="block h-auto w-full" />
                 </motion.button>
               </AnimatePresence>
-              <div className="mt-5 flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
+              {/* Tools from this course hang from the certificate. */}
+              <div className={cert.tools.length ? "h-[5.25rem]" : "h-5"}>
+                <HangingTools key={cert.id} tools={cert.tools} size={32} align="center" />
+              </div>
+              <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
                 <div className="flex items-center gap-4">
                   <Logo src={cert.issuer === "DataCamp" ? "/logos/datacamp.png" : "/logos/365-data-science.png"} name={cert.issuer} wide={cert.issuer !== "DataCamp"} />
                   <div>
@@ -525,8 +490,11 @@ export function Reading() {
       <ul className="grid max-w-3xl grid-cols-3 gap-4 sm:gap-8">
         {BOOKS.map((book, i) => (
           <Reveal as="li" key={book.id} delay={i * 0.06}>
-            <BookCover book={book} className="overflow-hidden rounded-md transition-transform duration-300 hover:-translate-y-1" />
-            <p className="mt-3 text-[0.9375rem] leading-snug font-semibold">{book.title}</p>
+            <BookCover book={book} className="overflow-hidden rounded-md" />
+            <div className="h-[5.5rem]">
+              <HangingTools tools={book.tools} size={30} align="center" />
+            </div>
+            <p className="text-[0.9375rem] leading-snug font-semibold">{book.title}</p>
             <p className="text-[0.8125rem] text-muted-foreground">{book.author}</p>
           </Reveal>
         ))}

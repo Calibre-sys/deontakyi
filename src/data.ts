@@ -1,3 +1,5 @@
+import type { ToolKey } from "@/components/tools";
+
 // All site content. Edit here to update the page.
 
 export const PROFILE = {
@@ -35,6 +37,7 @@ export type Paper = {
   authors: string[];
   summary: string;
   methods: string[];
+  tools: ToolKey[];
   cover?: string;
   screenshot: string;
 };
@@ -62,6 +65,7 @@ export const PAPERS: Paper[] = [
     summary:
       "An automated pipeline for classifying porous rock into hydraulic flow units from core measurements. Autoencoder embeddings feed K-means clustering, a statistically grounded FZI-Z-score probability plot validates the units, and an MLP classifier predicts them for unseen wells. Applied to RCAL data from five wells.",
     methods: ["Autoencoders", "K-means", "MLP classification", "Flow zone indicator"],
+    tools: ["python", "sklearn", "pandas", "numpy"],
     cover: "/media/jag-cover.jpg",
     screenshot: "/media/paper-flowunit.png",
   },
@@ -85,6 +89,7 @@ export const PAPERS: Paper[] = [
     summary:
       "A three-stage framework for inferring well-to-well connectivity from production data: Pearson correlation, interference testing, then multivariate time-series causality with VAR and VECM models. Identifies which injectors drive each producer without tracer tests.",
     methods: ["VAR", "VECM", "Granger causality", "Time series"],
+    tools: ["python", "pandas", "numpy", "jupyter"],
     screenshot: "/media/paper-waterinjectors.png",
   },
 ];
@@ -102,6 +107,7 @@ export type Cert = {
   pdf: string;
   preview: string;
   skills: string[];
+  tools: ToolKey[];
 };
 
 export const CERTS: Cert[] = [
@@ -116,6 +122,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-deep-learning-intermediate.pdf",
     preview: "/evidence/previews/cert-deep-learning-intermediate.jpg",
     skills: ["PyTorch", "CNNs", "RNNs", "Training loops"],
+    tools: ["pytorch", "python"],
   },
   {
     id: "dl-intro",
@@ -128,6 +135,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-deep-learning-intro.pdf",
     preview: "/evidence/previews/cert-deep-learning-intro.jpg",
     skills: ["PyTorch", "Neural networks", "Backprop"],
+    tools: ["pytorch", "python"],
   },
   {
     id: "genai",
@@ -140,6 +148,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-genai-business.pdf",
     preview: "/evidence/previews/cert-genai-business.jpg",
     skills: ["LLMs", "AI strategy"],
+    tools: [],
   },
   {
     id: "arima",
@@ -152,6 +161,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-arima.pdf",
     preview: "/evidence/previews/cert-arima.jpg",
     skills: ["Time series", "ARIMA / SARIMA", "statsmodels"],
+    tools: ["python", "pandas"],
   },
   {
     id: "langchain",
@@ -163,6 +173,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-langchain-openai.pdf",
     preview: "/evidence/previews/cert-langchain-openai.jpg",
     skills: ["LangChain", "OpenAI API", "RAG"],
+    tools: ["langchain", "python"],
   },
   {
     id: "ml-az",
@@ -174,6 +185,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-ml-algorithms.pdf",
     preview: "/evidence/previews/cert-ml-algorithms.jpg",
     skills: ["Supervised", "Unsupervised", "scikit-learn"],
+    tools: ["sklearn", "python"],
   },
   {
     id: "intro-ai",
@@ -185,6 +197,7 @@ export const CERTS: Cert[] = [
     pdf: "/evidence/cert-intro-ai.pdf",
     preview: "/evidence/previews/cert-intro-ai.jpg",
     skills: ["AI foundations"],
+    tools: [],
   },
 ];
 
@@ -197,6 +210,7 @@ export type Project = {
   blurb: string;
   result?: string;
   stack: string[];
+  tools: ToolKey[];
   video?: string;
   poster?: string;
   link?: string;
@@ -212,6 +226,7 @@ export const PROJECTS: Project[] = [
       "Desktop software for reservoir characterization. Unsupervised models identify hydraulic flow units; supervised regressors with residual correction delineate net pay.",
     result: "Replaces a manual petrophysics workflow",
     stack: ["Python", "scikit-learn", "PyTorch"],
+    tools: ["python", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
     poster: "/media/reschar-poster.jpg",
   },
@@ -222,6 +237,7 @@ export const PROJECTS: Project[] = [
     blurb: "Order management for a bulk distribution company: document generation, email dispatch and order tracking.",
     result: "Processing time per order cut by more than 90%",
     stack: ["Apps Script", "Google APIs"],
+    tools: ["appsscript", "sheets"],
     video: "/media/soh-demo.mp4",
     poster: "/media/soh-poster.jpg",
     private: true,
@@ -233,6 +249,7 @@ export const PROJECTS: Project[] = [
     blurb:
       "Upload a spreadsheet and Fortell cleans it, trains and compares six models, then an agent pipeline turns the results into a cited paper you can export as PDF, Word or LaTeX.",
     stack: ["Python", "LLM agents", "React", "Node.js"],
+    tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
     poster: "/media/fortell-poster.jpg",
     link: "https://www.fortell.site",
@@ -245,6 +262,7 @@ export const EXPERIENCE = [
   {
     when: "2024 – Present",
     logo: "/logos/knust.png",
+    tools: ["python", "pytorch", "sklearn", "jupyter"] as ToolKey[],
     org: "AI-DPRS Research Lab, KNUST",
     role: "Reservoir Characterization Lead, ML Research",
     points: [
@@ -257,6 +275,7 @@ export const EXPERIENCE = [
   {
     when: "2025 – Present",
     logo: "/logos/soh-energy.png",
+    tools: ["appsscript", "sheets", "javascript"] as ToolKey[],
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
@@ -267,6 +286,7 @@ export const EXPERIENCE = [
   {
     when: "2023 – 2024",
     logo: undefined as string | undefined,
+    tools: [] as ToolKey[],
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
     points: ["Flow-meter calibration with prover tanks, product tracking, and equipment inspection"],
@@ -301,6 +321,7 @@ export type Book = {
   isbn: string;
   /** Optional local cover, e.g. "/books/chatter.jpg". Used before the online lookup. */
   cover?: string;
+  tools: ToolKey[];
   tint: [string, string];
 };
 
@@ -310,6 +331,7 @@ export const BOOKS: Book[] = [
     title: "Deep Learning for Coders with fastai & PyTorch",
     author: "Jeremy Howard, Sylvain Gugger",
     isbn: "9781492045526",
+    tools: ["pytorch", "python"],
     tint: ["#1f3b57", "#f5f5f4"],
   },
   {
@@ -317,6 +339,7 @@ export const BOOKS: Book[] = [
     title: "Deep Learning with TensorFlow",
     author: "Giancarlo Zaccone, Md. Rezaul Karim",
     isbn: "9781786469786",
+    tools: ["tensorflow", "keras"],
     tint: ["#20262e", "#f3c623"],
   },
   {
@@ -324,6 +347,7 @@ export const BOOKS: Book[] = [
     title: "Chatter",
     author: "Ethan Kross",
     isbn: "9780525575238",
+    tools: [],
     tint: ["#f3c623", "#1b1b1b"],
   },
 ];

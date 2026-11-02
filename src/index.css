@@ -223,3 +223,13 @@
     width: 100%;
   }
 }
+
+/* Idle sway for hanging tool charms. */
+@keyframes charm-sway {
+  from {
+    transform: rotate(-3.5deg);
+  }
+  to {
+    transform: rotate(3.5deg);
+  }
+}
