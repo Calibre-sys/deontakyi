@@ -19,7 +19,6 @@ import {
   PROFILE,
   PROJECTS,
   REFERENCES,
-  STATS,
   type Paper,
   type Project,
 } from "@/data";
@@ -27,6 +26,7 @@ import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
 import { OutreachEmail, Shortlist } from "./fragments";
+import { PhotoStack } from "./photo-stack";
 import { Reveal, Section } from "./kit";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -89,25 +89,14 @@ export function Hero() {
   return (
     <section id="top" className="container-x pt-10 pb-16 sm:pt-20 sm:pb-24">
       <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
-        <motion.figure
-          className="relative mx-auto w-full max-w-[22rem] lg:order-2 lg:col-span-5 lg:max-w-none"
-          initial={reduce ? false : { opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <motion.div
+          className="pb-10 lg:order-2 lg:col-span-5"
+          initial={reduce ? false : { opacity: 0, y: 30, rotate: -2 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}
         >
-          <img
-            src={PROFILE.portrait}
-            alt={`Portrait of ${PROFILE.name}`}
-            className="aspect-[4/5] w-full rounded-2xl object-cover"
-            style={{ objectPosition: "50% 20%" }}
-          />
-          <figcaption className="absolute inset-x-3 bottom-3 flex items-center justify-between rounded-xl bg-background/90 px-4 py-3 text-[0.875rem]">
-            <span>
-              <span className="block font-semibold">{PROFILE.name}</span>
-              <span className="block text-muted-foreground">{PROFILE.role} · {PROFILE.location}</span>
-            </span>
-          </figcaption>
-        </motion.figure>
+          <PhotoStack />
+        </motion.div>
 
         <div className="lg:order-1 lg:col-span-7">
           <motion.p {...rise(0)} className="flex items-center gap-2 text-[0.9375rem] text-muted-foreground">
@@ -129,17 +118,9 @@ export function Hero() {
               <FileText className="size-4" /> Read CV
             </button>
           </motion.div>
-          <motion.dl {...rise(4)} className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-4">
-            {STATS.map((s) => (
-              <div key={s.label} className="bg-background p-4 sm:p-5">
-                <dt className="sr-only">{s.label}</dt>
-                <dd>
-                  <span className="block font-display text-[2rem] leading-none font-semibold tracking-[-0.03em]">{s.value}</span>
-                  <span className="mt-2 block text-[0.8125rem] leading-snug text-muted-foreground">{s.label}</span>
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
+          <motion.p {...rise(4)} className="mt-10 text-[0.9375rem] text-muted-foreground">
+            Currently at the AI-DPRS Research Lab, KNUST, and SOH Energy · {PROFILE.location}
+          </motion.p>
         </div>
       </div>
     </section>

@@ -14,12 +14,6 @@ export const PROFILE = {
   portrait: "/portrait-card.jpg",
 };
 
-export const STATS = [
-  { value: "2", label: "Publications" },
-  { value: "7", label: "ML certifications" },
-  { value: "90%", label: "Reduction in order processing time" },
-  { value: "1st", label: "Class honours, KNUST" },
-];
 
 export const INTERESTS = [
   "Physics-informed machine learning",
