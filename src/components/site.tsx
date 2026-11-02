@@ -90,7 +90,7 @@ export function Hero() {
     <section id="top" className="container-x pt-10 pb-16 sm:pt-20 sm:pb-24">
       <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
         <motion.div
-          className="pb-10 lg:order-2 lg:col-span-5"
+          className="lg:order-2 lg:col-span-5"
           initial={reduce ? false : { opacity: 0, y: 30, rotate: -2 }}
           animate={{ opacity: 1, y: 0, rotate: 0 }}
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}

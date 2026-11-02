@@ -1,123 +1,195 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /*
- * A stack of instant-camera prints. The top print slides out and tucks in at the back every few
- * seconds, or on click / tap / Enter. Each print "develops" from washed-out to full colour as it
- * reaches the top.
+ * A stack of prints. The front print steps back into the deck on a timer, or with the controls.
+ * Restrained on purpose: small offsets, one soft shadow, plain captions.
  */
 
-type Print = { src: string; alt: string; caption: string; position: string; tilt: number };
+type Print = { src: string; alt: string; place: string; year: string; position: string };
 
 const PRINTS: Print[] = [
-  { src: "/portrait-card.jpg", alt: "Portrait of Deon Takyi-Amponsem", caption: "Deon · Accra", position: "50% 22%", tilt: -3 },
-  { src: "/media/atc-2026.jpg", alt: "Deon at the SPE Africa Technology Conference, Abidjan", caption: "ATC Abidjan '26", position: "50% 28%", tilt: 4 },
-  { src: "/media/buildingbytes-1.jpg", alt: "Building Bytes Pitch Program, Kumasi", caption: "Building Bytes, Kumasi", position: "55% 40%", tilt: -5 },
-  { src: "/media/energy4me-2.jpg", alt: "SPE Energy4me outreach in a classroom", caption: "Energy4me outreach", position: "60% 40%", tilt: 3 },
-  { src: "/media/buildingbytes-2.jpg", alt: "Building Bytes demo day", caption: "Demo day", position: "50% 45%", tilt: -2 },
+  { src: "/portrait-card.jpg", alt: "Portrait of Deon Takyi-Amponsem", place: "Accra", year: "2025", position: "50% 22%" },
+  { src: "/media/atc-2026.jpg", alt: "At the SPE Africa Technology Conference, Abidjan", place: "SPE ATC, Abidjan", year: "2026", position: "50% 30%" },
+  { src: "/media/buildingbytes-1.jpg", alt: "Building Bytes Pitch Program, Kumasi", place: "Building Bytes, Kumasi", year: "2025", position: "55% 40%" },
+  { src: "/media/energy4me-2.jpg", alt: "SPE Energy4me outreach in a classroom", place: "SPE Energy4me outreach", year: "2024", position: "60% 40%" },
+  { src: "/media/buildingbytes-2.jpg", alt: "Building Bytes demo day", place: "Building Bytes demo day", year: "2025", position: "50% 45%" },
 ];
 
-const VISIBLE = 4;
-const INTERVAL = 4200;
+const INTERVAL = 5000;
+const OUT_MS = 320;
+const IN_MS = 520;
+const DEPTH = 3; // prints visible behind the front one
+const OFFSETS = [
+  { x: 0, y: 0, r: 0 },
+  { x: 10, y: 8, r: 1.6 },
+  { x: -8, y: 14, r: -1.4 },
+  { x: 6, y: 20, r: 0.8 },
+];
 
 export function PhotoStack() {
   const reduce = useReducedMotion();
-  const [order, setOrder] = useState(() => PRINTS.map((_, i) => i));
-  const [leaving, setLeaving] = useState<number | null>(null);
+  const [front, setFront] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [tick, setTick] = useState(0); // restarts the progress bar
+  // The print being carried between the front and the back of the stack.
+  const [moving, setMoving] = useState<{ id: number; dir: 1 | -1; phase: "out" | "in" } | null>(null);
   const busy = useRef(false);
+  const n = PRINTS.length;
 
-  const shuffle = useCallback(() => {
-    if (busy.current) return;
-    busy.current = true;
-    const top = order[0];
-    if (reduce) {
-      setOrder((o) => [...o.slice(1), o[0]]);
-      busy.current = false;
-      return;
-    }
-    setLeaving(top);
-    // Halfway out, the print drops behind the deck; then it slides back in at the bottom.
-    window.setTimeout(() => setOrder((o) => [...o.slice(1), o[0]]), 320);
-    window.setTimeout(() => {
-      setLeaving(null);
-      busy.current = false;
-    }, 700);
-  }, [order, reduce]);
+  const go = useCallback(
+    (target: number) => {
+      const next = ((target % n) + n) % n;
+      if (busy.current || next === front) return;
+      setTick((t) => t + 1);
+      if (reduce) {
+        setFront(next);
+        return;
+      }
+      // Forward by one: the front print slides out and tucks in at the back.
+      // Back by one: the back print slides out and lands on the front.
+      // A jump to any other print just restacks.
+      const forward = next === (front + 1) % n;
+      const backward = next === (front - 1 + n) % n;
+      if (!forward && !backward) {
+        setFront(next);
+        return;
+      }
+      busy.current = true;
+      const id = forward ? front : next;
+      const dir = forward ? 1 : -1;
+      setMoving({ id, dir, phase: "out" });
+      window.setTimeout(() => {
+        setFront(next);
+        setMoving({ id, dir, phase: "in" });
+      }, OUT_MS);
+      window.setTimeout(() => {
+        setMoving(null);
+        busy.current = false;
+      }, OUT_MS + IN_MS);
+    },
+    [front, n, reduce],
+  );
 
   useEffect(() => {
     if (reduce || paused) return;
-    const id = window.setInterval(() => {
-      if (!document.hidden) shuffle();
+    const id = window.setTimeout(() => {
+      if (!document.hidden) go(front + 1);
+      else setTick((t) => t + 1);
     }, INTERVAL);
-    return () => window.clearInterval(id);
-  }, [shuffle, reduce, paused]);
+    return () => window.clearTimeout(id);
+  }, [front, tick, paused, reduce, go]);
 
-  const top = PRINTS[order[0]];
+  const current = PRINTS[front];
 
   return (
     <div
-      className="relative mx-auto aspect-[5/6] w-full max-w-[24rem] select-none"
+      className="mx-auto w-full max-w-[28rem]"
       onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
       onPointerLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
-      <button
-        type="button"
-        onClick={shuffle}
-        aria-label={`Photo: ${top.caption}. Show the next photo`}
-        className="absolute inset-0 z-50 cursor-pointer rounded-sm"
-      />
-      {PRINTS.map((print, id) => {
-        const depth = order.indexOf(id);
-        const isLeaving = leaving === id;
-        const hidden = depth >= VISIBLE && !isLeaving;
-        const pose = isLeaving
-          ? { x: "62%", y: -18, rotate: print.tilt + 14, scale: 1 }
-          : {
-              x: depth * 7 * (depth % 2 ? -1 : 1),
-              y: depth * 6,
-              rotate: depth === 0 ? print.tilt * 0.5 : print.tilt,
-              scale: 1 - depth * 0.025,
-            };
-        return (
-          <motion.figure
-            key={print.src}
-            aria-hidden={depth !== 0}
-            className="absolute inset-x-[6%] top-[3%] origin-bottom bg-[#fbfaf6] p-[5%] pb-[4%] shadow-[0_18px_40px_-14px_rgb(0_0_0/0.55),0_2px_6px_rgb(0_0_0/0.18)]"
-            style={{ zIndex: 40 - depth }}
-            initial={false}
-            animate={{ ...pose, opacity: hidden ? 0 : 1 }}
-            transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 210, damping: 26, mass: 0.9 }}
-          >
-            <div className="relative aspect-square overflow-hidden bg-[#1a1a1a]">
-              <motion.img
-                src={print.src}
-                alt={depth === 0 ? print.alt : ""}
-                draggable={false}
-                loading={id === 0 ? "eager" : "lazy"}
-                className="size-full object-cover"
-                style={{ objectPosition: print.position }}
-                initial={false}
-                animate={{
-                  filter:
-                    depth === 0
-                      ? "sepia(0.18) saturate(0.92) contrast(1.04) brightness(1)"
-                      : "sepia(0.5) saturate(0.4) contrast(0.85) brightness(1.35)",
-                }}
-                transition={{ duration: reduce ? 0 : 1.6, ease: "easeOut" }}
-              />
-              {/* Film sheen and soft vignette. */}
-              <span aria-hidden className="pointer-events-none absolute inset-0 shadow-[inset_0_0_40px_rgb(0_0_0/0.28)]" />
-            </div>
-            <figcaption className="pt-[5%] text-center font-[family-name:var(--font-hand)] font-semibold text-[clamp(1.25rem,1rem+0.8vw,1.6rem)] leading-none text-[#2a2a2a]">
-              {print.caption}
-            </figcaption>
-          </motion.figure>
-        );
-      })}
-      <p className="absolute -bottom-9 inset-x-0 text-center text-[0.8125rem] text-muted-foreground" aria-live="polite">
-        <span className="sr-only">Now showing: {top.caption}. </span>
-        Tap to shuffle
+      <div className="relative aspect-[4/5]">
+        {PRINTS.map((print, i) => {
+          const depth = (i - front + n) % n;
+          const isMoving = moving?.id === i;
+          const o = OFFSETS[Math.min(depth, DEPTH)];
+          const rest = { x: o.x, y: o.y, rotate: o.r, scale: 1 - Math.min(depth, DEPTH) * 0.012, opacity: depth <= DEPTH ? 1 : 0 };
+          // Out: clear of the stack to one side. Forward goes right, back goes left.
+          const out = moving && { x: `${moving.dir * 62}%`, y: -6, rotate: moving.dir * 7, scale: 1, opacity: 1 };
+          let pose: { x: number | string; y: number; rotate: number; scale: number; opacity: number } = rest;
+          let z = 10 - depth;
+          let transition: object = reduce ? { duration: 0 } : { type: "spring", stiffness: 190, damping: 27 };
+          if (isMoving && moving && out) {
+            if (moving.phase === "out") {
+              pose = out;
+              z = moving.dir === 1 ? 20 : 0; // forward: still on top; back: still underneath
+              transition = { duration: OUT_MS / 1000, ease: [0.22, 1, 0.36, 1] };
+            } else {
+              pose = { ...rest, opacity: 1 };
+              z = moving.dir === 1 ? 0 : 20; // swaps sides of the stack while clear of it
+              transition = { type: "spring", stiffness: 210, damping: 28 };
+            }
+          }
+          return (
+            <motion.figure
+              key={print.src}
+              aria-hidden={depth !== 0}
+              className="absolute inset-0 flex flex-col bg-[#f7f6f2] p-[4.5%] pb-0 shadow-[0_24px_48px_-24px_rgb(0_0_0/0.5),0_1px_2px_rgb(0_0_0/0.12)] dark:bg-[#ecebe6]"
+              style={{ zIndex: z }}
+              initial={false}
+              animate={pose}
+              transition={transition}
+            >
+              <div className="relative min-h-0 flex-1 overflow-hidden bg-neutral-300">
+                <img
+                  src={print.src}
+                  alt={depth === 0 ? print.alt : ""}
+                  draggable={false}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className="absolute inset-0 size-full object-cover"
+                  style={{ objectPosition: print.position }}
+                />
+              </div>
+              <figcaption className="flex items-baseline justify-between gap-3 px-[1%] py-[3.5%] font-[family-name:var(--font-hand)] text-[clamp(1.25rem,1rem+0.7vw,1.6rem)] leading-none font-semibold text-neutral-800">
+                <span className="truncate">{print.place}</span>
+                <span className="shrink-0 text-neutral-600">'{print.year.slice(2)}</span>
+              </figcaption>
+            </motion.figure>
+          );
+        })}
+      </div>
+
+      {/* Controls: previous, a progress segment per print, next. */}
+      <div className="mt-9 flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => go(front - 1)}
+          aria-label="Previous photo"
+          className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card-2 hover:text-foreground"
+        >
+          <ChevronLeft className="size-4" />
+        </button>
+        <div className="flex flex-1 gap-1.5" role="group" aria-label="Photos">
+          {PRINTS.map((print, i) => (
+            <button
+              key={print.src}
+              type="button"
+              onClick={() => go(i)}
+              aria-label={`Show photo ${i + 1}: ${print.place}`}
+              aria-current={i === front ? "true" : undefined}
+              className="group relative h-6 flex-1"
+            >
+              <span className="absolute inset-x-0 top-1/2 h-[3px] -translate-y-1/2 overflow-hidden rounded-full bg-border-strong/60 transition-colors group-hover:bg-border-strong">
+                {i < front && <span className="absolute inset-0 bg-foreground/70" />}
+                {i === front && (
+                  <span
+                    key={tick}
+                    className="absolute inset-y-0 left-0 bg-foreground"
+                    style={{
+                      width: reduce ? "100%" : undefined,
+                      animation: reduce ? undefined : `stack-progress ${INTERVAL}ms linear forwards`,
+                      animationPlayState: paused ? "paused" : "running",
+                    }}
+                  />
+                )}
+              </span>
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => go(front + 1)}
+          aria-label="Next photo"
+          className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card-2 hover:text-foreground"
+        >
+          <ChevronRight className="size-4" />
+        </button>
+      </div>
+      <p className="sr-only" aria-live="polite">
+        {current.place}, {current.year}
       </p>
     </div>
   );

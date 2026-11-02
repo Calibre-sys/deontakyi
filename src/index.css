@@ -213,3 +213,13 @@
   font-size: clamp(1.125rem, 0.95rem + 0.7vw, 1.5rem);
   letter-spacing: -0.02em;
 }
+
+/* Photo stack progress segment. */
+@keyframes stack-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
