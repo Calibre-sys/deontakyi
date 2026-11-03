@@ -241,6 +241,9 @@ export function Work() {
           <ProjectCard project={byId("reschar")} wide />
         </Reveal>
         <Reveal className="lg:col-span-6">
+          <ProjectCard project={byId("fortell")} wide />
+        </Reveal>
+        <Reveal className="lg:col-span-6">
           <Card className="gap-5 p-4 py-5 sm:p-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -254,11 +257,8 @@ export function Work() {
             <FlowUnitLab />
           </Card>
         </Reveal>
-        <Reveal className="lg:col-span-3">
-          <ProjectCard project={byId("soh")} />
-        </Reveal>
-        <Reveal className="lg:col-span-3" delay={0.06}>
-          <ProjectCard project={byId("fortell")} />
+        <Reveal className="lg:col-span-6">
+          <ProjectCard project={byId("soh")} wide />
         </Reveal>
       </div>
     </Section>
@@ -577,7 +577,7 @@ export function Footer() {
   );
 }
 
-/** An organisation's logo on a light tile, or its initials when no logo is available. */
+/** An organisation's logo, shown as-is; marks with a baked-in background get a light tile, missing logos fall back to initials. */
 function Logo({ src, name, wide }: { src?: string; name: string; wide?: boolean }) {
   const initials = name
     .replace(/[^A-Za-z ]/g, "")
@@ -586,12 +586,18 @@ function Logo({ src, name, wide }: { src?: string; name: string; wide?: boolean 
     .slice(0, 2)
     .map((w) => w[0])
     .join("");
+  // Transparent marks sit directly on the page; others keep a tile so their own background doesn't look clipped.
+  const bare = src && (src.includes("knust") || src.includes("soh"));
   return (
     <span
       className={cn(
-        "flex h-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border",
-        wide ? "w-24 bg-white px-2" : "w-11",
-        src ? (src.includes("soh") || src.includes("datacamp") ? "" : "bg-white p-1") : "bg-card-2",
+        "flex h-11 shrink-0 items-center justify-center overflow-hidden",
+        wide ? "w-24" : "w-11",
+        bare
+          ? ""
+          : src
+            ? cn("rounded-lg border border-border", src.includes("datacamp") ? "" : "bg-white p-1", wide && "px-2")
+            : "rounded-lg border border-border bg-card-2",
       )}
     >
       {src ? (
