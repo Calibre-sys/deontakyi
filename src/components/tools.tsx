@@ -144,6 +144,23 @@ function register(p: Pendulum) {
 
 /* ── Components ── */
 
+/** Relative luminance (WCAG) of a hex colour. */
+function luminance(hex: string) {
+  const [r, g, b] = [0, 2, 4].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** Ball colour that keeps a brand mark legible in both themes: very dark marks sit on white, very light ones on near-black. */
+function ballFor(hex: string) {
+  const l = luminance(hex);
+  if (l < 0.06) return "#ffffff";
+  if (l > 0.45) return "#16181d";
+  return "var(--card)";
+}
+
 export function HangingTools({
   tools,
   rod = false,
@@ -269,14 +286,14 @@ function Charm({ tool, index, size, group }: { tool: ToolKey; index: number; siz
           onPointerDown={down}
           onPointerUp={up}
           onPointerCancel={up}
-          className="flex cursor-grab touch-none items-center justify-center rounded-full border border-border-strong bg-card shadow-[0_10px_20px_-8px_rgb(0_0_0/0.5)] transition-colors duration-300 select-none active:cursor-grabbing"
-          style={{ width: size, height: size, ["--brand" as string]: `#${icon.hex}` }}
+          className="flex cursor-grab touch-none items-center justify-center rounded-full border border-border-strong shadow-[0_10px_20px_-8px_rgb(0_0_0/0.5)] transition-colors duration-300 select-none active:cursor-grabbing"
+          style={{ width: size, height: size, background: ballFor(icon.hex) }}
         >
           <svg
             viewBox="0 0 24 24"
             aria-hidden
-            className={cn("pointer-events-none transition-[fill] duration-300", hover ? "fill-[var(--brand)]" : "fill-foreground")}
-            style={{ width: size * 0.5, height: size * 0.5 }}
+            className="pointer-events-none"
+            style={{ width: size * 0.5, height: size * 0.5, fill: `#${icon.hex}` }}
           >
             <path d={icon.path} />
           </svg>
