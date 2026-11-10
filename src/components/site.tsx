@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, Copy, Download, FileText, Mail, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Download, FileText, Mail, Play } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { ArcPicker } from "@/components/motion/arc-picker";
@@ -9,7 +9,9 @@ import {
   ACTIVITIES,
   BOOKS,
   CERTS,
+  COLLECTIONS,
   EDUCATION,
+  ENTRIES,
   EXPERIENCE,
   INTERESTS,
   ME_AS_AUTHOR,
@@ -18,6 +20,8 @@ import {
   PROFILE,
   PROJECTS,
   REFERENCES,
+  type CollectionId,
+  type Entry,
   type Paper,
   type Project,
 } from "@/data";
@@ -30,11 +34,11 @@ import { Reveal, Section } from "./kit";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const NAV = [
-  { href: "#publications", label: "Publications" },
-  { href: "#work", label: "Work" },
-  { href: "#experience", label: "Experience" },
-  { href: "#credentials", label: "Credentials" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#publications", label: "Publications" },
+  { href: "/#work", label: "Projects" },
+  { href: "/#experience", label: "Experience" },
+  { href: "/#credentials", label: "Certifications" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 function useCv() {
@@ -56,7 +60,7 @@ export function Header() {
   return (
     <header className={cn("sticky top-0 z-40 bg-background transition-shadow", scrolled && "shadow-[0_1px_0_var(--border)]")}>
       <div className="container-x flex h-16 items-center gap-6">
-        <a href="#top" className="mr-auto font-display text-[1.0625rem] font-semibold tracking-[-0.02em]">
+        <a href="/" className="mr-auto font-display text-[1.0625rem] font-semibold tracking-[-0.02em]">
           Deon Takyi-Amponsem
         </a>
         <nav aria-label="Sections" className="hidden items-center gap-6 text-[0.9375rem] text-muted-foreground md:flex">
@@ -103,22 +107,23 @@ export function Hero() {
             Open to ML engineering and research roles
           </motion.p>
           <motion.h1 {...rise(1)} className="mt-5 text-[clamp(2.6rem,1.6rem+4.4vw,4.75rem)] leading-[0.98] font-semibold">
-            Machine learning for subsurface systems.
+            Hi, I'm Deon.
           </motion.h1>
           <motion.p {...rise(2)} className="mt-6 max-w-[56ch] text-[1.1875rem] leading-relaxed text-muted-foreground">
-            I build physics-informed models for flow in porous media and reservoir characterization, and the software that puts
-            them to use. Published in the <span className="text-foreground">Journal of Applied Geophysics</span>.
+            I'm a <span className="text-foreground">petroleum engineer</span> who builds machine learning tools. Most of my work is AI
+            for the energy sector: models that read rock and well data, and the software that lets engineers use them. My research
+            is published in the <span className="text-foreground">Journal of Applied Geophysics</span>.
           </motion.p>
           <motion.div {...rise(3)} className="mt-8 flex flex-wrap gap-3">
-            <a href="#publications" className="btn">
-              View publications
+            <a href="#work" className="btn">
+              See my projects
             </a>
             <button type="button" onClick={openCv} className="btn btn-ghost">
               <FileText className="size-4" /> Read CV
             </button>
           </motion.div>
           <motion.p {...rise(4)} className="mt-10 text-[0.9375rem] text-muted-foreground">
-            Currently at the AI-DPRS Research Lab, KNUST, and SOH Energy · {PROFILE.location}
+            Right now: ML research at the AI-DPRS Lab, KNUST, and national service at SOH Energy · {PROFILE.location}
           </motion.p>
         </div>
       </div>
@@ -235,7 +240,7 @@ function CopyCitation({ paper }: { paper: Paper }) {
 export function Work() {
   const byId = (id: string) => PROJECTS.find((p) => p.id === id)!;
   return (
-    <Section id="work" title="Selected work" aside="Private builds are shown as screen recordings." className="border-t border-border">
+    <Section id="work" title="Projects" aside="Private builds are shown as screen recordings." className="border-t border-border">
       <div className="grid gap-4 lg:grid-cols-6">
         <Reveal className="lg:col-span-6">
           <ProjectCard project={byId("reschar")} wide />
@@ -247,11 +252,12 @@ export function Work() {
           <Card className="gap-5 p-4 py-5 sm:p-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-[0.875rem] text-muted-foreground">Interactive · From the 2025 paper</p>
+                <p className="text-[0.875rem] text-muted-foreground">Try it · From the 2025 paper</p>
                 <h3 className="mt-1 text-[1.5rem] leading-tight font-semibold">Flow zone indicator</h3>
               </div>
               <p className="max-w-[44ch] text-[0.9375rem] text-muted-foreground">
-                RQI = 0.0314·√(k/φ), φz = φ/(1−φ), FZI = RQI/φz. Set porosity and permeability to classify a sample.
+                Set a rock sample's porosity and permeability to see which flow unit it falls in. Uses RQI = 0.0314·√(k/φ),
+                φz = φ/(1−φ) and FZI = RQI/φz.
               </p>
             </div>
             <FlowUnitLab />
@@ -260,6 +266,17 @@ export function Work() {
         <Reveal className="lg:col-span-6">
           <ProjectCard project={byId("soh")} wide />
         </Reveal>
+      </div>
+
+      <Reveal className="mt-16 mb-6">
+        <h3 className="text-[1.5rem] font-semibold">All projects</h3>
+      </Reveal>
+      <div className="grid gap-4 md:grid-cols-2">
+        {COLLECTIONS.map((c, i) => (
+          <Reveal key={c.id} delay={i * 0.06}>
+            <CollectionCard id={c.id} />
+          </Reveal>
+        ))}
       </div>
     </Section>
   );
@@ -321,6 +338,96 @@ function ProjectCard({ project, wide }: { project: Project; wide?: boolean }) {
   );
 }
 
+/* ───────── Project collections ───────── */
+
+function CollectionCard({ id }: { id: CollectionId }) {
+  const c = COLLECTIONS.find((x) => x.id === id)!;
+  const entries = ENTRIES.filter((e) => e.collection === id);
+  return (
+    <Card interactive className="relative h-full gap-4 p-6 py-6 sm:p-8">
+      <p className="text-[0.875rem] text-muted-foreground">
+        {c.label} · {entries.length} projects
+      </p>
+      <h4 className="font-display text-[1.375rem] leading-tight font-semibold tracking-[-0.02em]">
+        <a href={c.path} className="after:absolute after:inset-0 hover:text-accent">
+          {c.title}
+        </a>
+      </h4>
+      <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">{c.note}</p>
+      <p className="mt-auto flex flex-wrap gap-x-3 gap-y-1 text-[0.875rem]">
+        {entries.slice(0, 4).map((e) => (
+          <span key={e.id}>{e.title}</span>
+        ))}
+      </p>
+      <span className="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-accent">
+        See all <ArrowRight className="size-4" />
+      </span>
+    </Card>
+  );
+}
+
+/** A subpage listing every project in one collection. */
+export function ProjectsPage({ id }: { id: CollectionId }) {
+  const c = COLLECTIONS.find((x) => x.id === id)!;
+  const other = COLLECTIONS.find((x) => x.id !== id)!;
+  const entries = ENTRIES.filter((e) => e.collection === id);
+  return (
+    <>
+      <section className="container-x pt-10 pb-10 sm:pt-16">
+        <a href="/#work" className="link inline-flex items-center gap-1.5 text-[0.9375rem]">
+          <ArrowLeft className="size-4" /> Back home
+        </a>
+        <h1 className="mt-6 text-[clamp(2.2rem,1.5rem+3vw,3.5rem)] leading-[1.02] font-semibold">{c.title}</h1>
+        <p className="mt-5 max-w-[62ch] text-[1.125rem] leading-relaxed text-muted-foreground">{c.intro}</p>
+      </section>
+      <section className="container-x pb-16">
+        <ol className="grid gap-4">
+          {entries.map((e, i) => (
+            <Reveal as="li" key={e.id} delay={i * 0.04}>
+              <EntryRow entry={e} />
+            </Reveal>
+          ))}
+        </ol>
+      </section>
+      <section className="container-x pb-20">
+        <Reveal>
+          <p className="mb-4 text-[0.9375rem] text-muted-foreground">Keep looking</p>
+          <div className="max-w-xl">
+            <CollectionCard id={other.id} />
+          </div>
+        </Reveal>
+      </section>
+    </>
+  );
+}
+
+function EntryRow({ entry }: { entry: Entry }) {
+  return (
+    <Card className="gap-0 py-0">
+      <div className="grid gap-4 p-6 sm:p-8 md:grid-cols-[4.5rem_1fr_auto] md:gap-6">
+        <p className="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-muted-foreground">{entry.year}</p>
+        <div className="min-w-0">
+          <h2 className="font-sans text-[1.25rem] leading-snug font-semibold tracking-normal">{entry.title}</h2>
+          <p className="mt-3 max-w-[70ch] leading-relaxed text-muted-foreground">{entry.summary}</p>
+          <p className="mt-3 text-[0.875rem] text-muted-foreground">
+            <span className="text-foreground">Methods:</span> {entry.methods.join(", ")}
+          </p>
+          {entry.links && (
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[0.9375rem]">
+              {entry.links.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link inline-flex items-center gap-1">
+                  {l.label} <ArrowUpRight className="size-3.5" />
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+        <HangingTools tools={entry.tools} rod size={30} align="center" className="w-fit min-w-[8rem]" />
+      </div>
+    </Card>
+  );
+}
+
 /* ───────── Experience ───────── */
 
 export function Experience() {
@@ -366,7 +473,7 @@ export function Credentials() {
     view({ title: "Certificates", items: CERTS.map((c) => ({ src: c.preview, file: c.pdf, caption: `${c.title} · ${c.issuer} · ${c.date}` })), start: index });
 
   return (
-    <Section id="credentials" title="Credentials" aside="DataCamp × 4 · 365 Data Science × 3" className="border-t border-border">
+    <Section id="credentials" title="Certifications" aside="DataCamp × 4 · 365 Data Science × 3" className="border-t border-border">
       <Reveal>
         <Card className="gap-0 overflow-hidden py-0">
           <div className="grid lg:grid-cols-12">
@@ -486,7 +593,7 @@ export function Credentials() {
 
 export function Reading() {
   return (
-    <Section id="reading" title="Reading" aside="Books behind the work" className="border-t border-border">
+    <Section id="reading" title="Reading" aside="Books that shaped how I work" className="border-t border-border">
       <ul className="grid max-w-3xl grid-cols-3 gap-4 sm:gap-8">
         {BOOKS.map((book, i) => (
           <Reveal as="li" key={book.id} delay={i * 0.06}>
@@ -515,8 +622,8 @@ export function Contact() {
             <div>
               <h2 className="section-title">Get in touch</h2>
               <p className="mt-4 max-w-[48ch] text-[1.0625rem] text-muted-foreground">
-                Open to machine learning engineering and research roles, and to collaboration on ML for subsurface and other
-                physical systems.
+                I'm looking for machine learning engineering and research roles. If you're working on ML for energy or other
+                physical systems, I'd like to hear about it.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={`mailto:${PROFILE.email}`} className="btn">

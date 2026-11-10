@@ -4,8 +4,8 @@ import type { ToolKey } from "@/components/tools";
 
 export const PROFILE = {
   name: "Deon Takyi-Amponsem",
-  role: "Machine Learning Engineer",
-  focus: "Physics-informed ML for subsurface systems",
+  role: "Petroleum engineer who builds machine learning tools",
+  focus: "AI and machine learning for the energy sector",
   location: "Accra, Ghana",
   email: "deontakyiamponsem@gmail.com",
   phone: "+233 592 763 423",
@@ -63,7 +63,7 @@ export const PAPERS: Paper[] = [
       "Turkson Kwesi Duodu",
     ],
     summary:
-      "An automated pipeline for classifying porous rock into hydraulic flow units from core measurements. Autoencoder embeddings feed K-means clustering, a statistically grounded FZI-Z-score probability plot validates the units, and an MLP classifier predicts them for unseen wells. Applied to RCAL data from five wells.",
+      "Sorting rock into flow units (groups of rock that let fluid through in the same way) is usually slow, manual work. We automated it: an autoencoder compresses the core data, K-means groups it, a FZI-Z-score probability plot checks the groups make physical sense, and a neural network classifier labels new wells. Tested on core data from five wells in the Subei Basin.",
     methods: ["Autoencoders", "K-means", "MLP classification", "Flow zone indicator"],
     tools: ["python", "sklearn", "pandas", "numpy"],
     cover: "/media/jag-cover.jpg",
@@ -87,7 +87,7 @@ export const PAPERS: Paper[] = [
       "Kwadwo Fosu Adom",
     ],
     summary:
-      "A three-stage framework for inferring well-to-well connectivity from production data: Pearson correlation, interference testing, then multivariate time-series causality with VAR and VECM models. Identifies which injectors drive each producer without tracer tests.",
+      "When you pump water into a field, which injector is actually pushing oil out of which producer? We answered that using only production history, in three steps: correlation, interference testing, then time-series causality models (VAR and VECM). It shows which injectors matter for each well, without running expensive tracer tests.",
     methods: ["VAR", "VECM", "Granger causality", "Time series"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     screenshot: "/media/paper-waterinjectors.png",
@@ -223,8 +223,8 @@ export const PROJECTS: Project[] = [
     name: "RescharAI",
     kind: "ML software · Subsurface",
     blurb:
-      "Desktop software for reservoir characterization. Unsupervised models identify hydraulic flow units; supervised regressors with residual correction delineate net pay.",
-    result: "Replaces a manual petrophysics workflow",
+      "Desktop software that reads rock and well-log data and shows engineers the flow units and the oil-bearing (net pay) zones. Clustering finds the flow units; regression models with a correction step pick out net pay.",
+    result: "Turns hours of manual petrophysics into a few clicks",
     stack: ["Python", "scikit-learn", "PyTorch"],
     tools: ["python", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
@@ -234,8 +234,8 @@ export const PROJECTS: Project[] = [
     id: "soh",
     name: "SOH Order Management",
     kind: "Workflow automation",
-    blurb: "Order management for a bulk distribution company: document generation, email dispatch and order tracking.",
-    result: "Processing time per order cut by more than 90%",
+    blurb: "An order system for a fuel distribution company. It creates the documents, emails them out and tracks every order, so staff no longer do it by hand.",
+    result: "Each order now takes over 90% less time to process",
     stack: ["Apps Script", "Google APIs"],
     tools: ["appsscript", "sheets"],
     video: "/media/soh-demo.mp4",
@@ -247,7 +247,7 @@ export const PROJECTS: Project[] = [
     name: "Fortell",
     kind: "ML and research writing platform",
     blurb:
-      "Upload a spreadsheet and Fortell cleans it, trains and compares six models, then an agent pipeline turns the results into a cited paper you can export as PDF, Word or LaTeX.",
+      "Upload a spreadsheet and Fortell cleans the data, trains and compares six models, then writes up the results as a research paper with citations. Export it as PDF, Word or LaTeX.",
     stack: ["Python", "LLM agents", "React", "Node.js"],
     tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
@@ -266,10 +266,10 @@ export const EXPERIENCE = [
     org: "AI-DPRS Research Lab, KNUST",
     role: "Reservoir Characterization Lead, ML Research",
     points: [
-      "Co-developed an automated hydraulic flow unit method; published in the Journal of Applied Geophysics",
-      "Built RescharAI, combining unsupervised and supervised learning for subsurface characterization",
-      "Applied unsupervised learning to field data in collaboration with GNPC",
-      "Built a causal-analysis tool for injector–producer connectivity",
+      "Helped build an automated way to find hydraulic flow units, published in the Journal of Applied Geophysics",
+      "Built RescharAI, software that finds flow units and net pay zones from well data",
+      "Worked with GNPC, applying clustering to real field data",
+      "Built a tool that shows which water injectors affect which producing wells",
     ],
   },
   {
@@ -279,8 +279,8 @@ export const EXPERIENCE = [
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
-      "Built an order management system that cut processing time by more than 90%",
-      "Co-built a feasibility model with demand forecasting and profitability analysis",
+      "Built an order system that cut processing time per order by more than 90%",
+      "Helped build a feasibility model that forecasts demand and checks profitability",
     ],
   },
   {
@@ -289,7 +289,7 @@ export const EXPERIENCE = [
     tools: [] as ToolKey[],
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
-    points: ["Flow-meter calibration with prover tanks, product tracking, and equipment inspection"],
+    points: ["Calibrated flow meters with prover tanks, tracked product movement and inspected equipment"],
   },
 ];
 
@@ -355,4 +355,108 @@ export const BOOKS: Book[] = [
 export const REFERENCES = [
   { name: "Dr. Stephen Adjei", role: "Principal Investigator, AI-DPRS · Lecturer, KNUST" },
   { name: "Mr. Felix Andoh", role: "Operator, Tema Tank Farm" },
+];
+
+/* ── Project collections (subpages) ──
+ * Add a notebook project by adding an entry here. `repo` can point at a GitHub folder or notebook.
+ */
+
+export type CollectionId = "energy" | "other";
+
+export const COLLECTIONS: { id: CollectionId; path: string; title: string; label: string; intro: string; note: string }[] = [
+  {
+    id: "energy",
+    path: "/projects/energy",
+    title: "Energy and subsurface projects",
+    label: "Domain projects",
+    intro:
+      "Here I use machine learning, time-series analysis and software to answer petroleum engineering questions: what is in the rock, how wells affect each other, and how to get more out of a field.",
+    note: "Reservoir characterization, production data and field operations",
+  },
+  {
+    id: "other",
+    path: "/projects/other",
+    title: "Other projects",
+    label: "Everything else",
+    intro:
+      "Projects outside oil and gas: research tools, business automation and machine learning experiments I built to learn something new.",
+    note: "Research tools, automation and ML experiments",
+  },
+];
+
+export type Entry = {
+  id: string;
+  collection: CollectionId;
+  title: string;
+  year: string;
+  summary: string;
+  methods: string[];
+  tools: ToolKey[];
+  links?: { label: string; href: string }[];
+};
+
+export const ENTRIES: Entry[] = [
+  {
+    id: "reschar",
+    collection: "energy",
+    title: "RescharAI",
+    year: "2025",
+    summary:
+      "Desktop software for reservoir characterization. Load core and well-log data and it groups the rock into hydraulic flow units, then predicts which intervals are net pay. It wraps a workflow that petrophysicists usually do by hand into one tool.",
+    methods: ["Autoencoders", "K-means", "Regression with residual correction"],
+    tools: ["python", "sklearn", "pytorch"],
+  },
+  {
+    id: "hfu",
+    collection: "energy",
+    title: "Automated hydraulic flow units",
+    year: "2025",
+    summary:
+      "Finds flow units in core data without manual picking. An autoencoder learns a compact view of the data, K-means groups it, a FZI-Z-score probability plot checks the groups, and a classifier labels new wells. Published in the Journal of Applied Geophysics.",
+    methods: ["Autoencoders", "K-means", "MLP classifier", "Flow zone indicator"],
+    tools: ["python", "sklearn", "pandas", "numpy"],
+    links: [{ label: "Paper", href: "https://doi.org/10.1016/j.jappgeo.2025.105778" }],
+  },
+  {
+    id: "injectors",
+    collection: "energy",
+    title: "Which injectors drive which producers",
+    year: "2026",
+    summary:
+      "Uses production history to work out how water injectors and producing wells are connected. Correlation narrows the candidates, then VAR and VECM causality models confirm the links. A cheaper alternative to tracer tests. Presented at SPE ATC 2026.",
+    methods: ["Pearson correlation", "Granger causality", "VAR", "VECM"],
+    tools: ["python", "pandas", "numpy", "jupyter"],
+    links: [{ label: "Paper", href: "https://doi.org/10.2118/233427-MS" }],
+  },
+  {
+    id: "feasibility",
+    collection: "energy",
+    title: "Fuel distribution feasibility model",
+    year: "2025",
+    summary:
+      "A model built at SOH Energy to decide whether a new distribution venture would pay off. It forecasts demand, then runs the costs and revenue to show profitability under different scenarios.",
+    methods: ["Demand forecasting", "Scenario analysis", "Profitability analysis"],
+    tools: ["sheets", "python"],
+  },
+  {
+    id: "fortell",
+    collection: "other",
+    title: "Fortell",
+    year: "2025",
+    summary:
+      "A platform that goes from spreadsheet to research paper. It cleans the data, trains and compares six models, and an agent pipeline writes up the results with citations, ready to export as PDF, Word or LaTeX.",
+    methods: ["AutoML", "LLM agents", "Retrieval and citation"],
+    tools: ["python", "react", "node"],
+    links: [{ label: "fortell.site", href: "https://www.fortell.site" }],
+  },
+  {
+    id: "soh",
+    collection: "other",
+    title: "SOH order management",
+    year: "2025",
+    summary:
+      "An order system for a fuel distribution company. It generates the paperwork, emails it to the right people and tracks each order from request to delivery. Processing time per order dropped by more than 90%. Private build.",
+    methods: ["Workflow automation", "Document generation", "Google APIs"],
+    tools: ["appsscript", "sheets", "javascript"],
+  },
 ];
