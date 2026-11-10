@@ -63,7 +63,7 @@ export const PAPERS: Paper[] = [
       "Turkson Kwesi Duodu",
     ],
     summary:
-      "Sorting rock into flow units (groups of rock that let fluid through in the same way) is usually slow, manual work. We automated it: an autoencoder compresses the core data, K-means groups it, a FZI-Z-score probability plot checks the groups make physical sense, and a neural network classifier labels new wells. Tested on core data from five wells in the Subei Basin.",
+      "we got a model to sort rock into flow units on its own, a job people normally do by hand. tested it on core data from five wells in China's Subei Basin.",
     methods: ["Autoencoders", "K-means", "MLP classification", "Flow zone indicator"],
     tools: ["python", "sklearn", "pandas", "numpy"],
     cover: "/media/jag-cover.jpg",
@@ -87,7 +87,7 @@ export const PAPERS: Paper[] = [
       "Kwadwo Fosu Adom",
     ],
     summary:
-      "When you pump water into a field, which injector is actually pushing oil out of which producer? We answered that using only production history, in three steps: correlation, interference testing, then time-series causality models (VAR and VECM). It shows which injectors matter for each well, without running expensive tracer tests.",
+      "which water injector is actually pushing oil to which well? we worked it out from production data alone, no expensive tracer tests.",
     methods: ["VAR", "VECM", "Granger causality", "Time series"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     screenshot: "/media/paper-waterinjectors.png",
@@ -223,8 +223,8 @@ export const PROJECTS: Project[] = [
     name: "RescharAI",
     kind: "ML software · Subsurface",
     blurb:
-      "Desktop software that reads rock and well-log data and shows engineers the flow units and the oil-bearing (net pay) zones. Clustering finds the flow units; regression models with a correction step pick out net pay.",
-    result: "Turns hours of manual petrophysics into a few clicks",
+      "a desktop app that looks at rock and well-log data and shows you where the good, oil-bearing zones are.",
+    result: "hours of manual work → a few clicks",
     stack: ["Python", "scikit-learn", "PyTorch"],
     tools: ["python", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
@@ -234,8 +234,8 @@ export const PROJECTS: Project[] = [
     id: "soh",
     name: "SOH Order Management",
     kind: "Workflow automation",
-    blurb: "An order system for a fuel distribution company. It creates the documents, emails them out and tracks every order, so staff no longer do it by hand.",
-    result: "Each order now takes over 90% less time to process",
+    blurb: "an order system for a fuel distribution company. it makes the documents, sends the emails and tracks every order.",
+    result: "orders now take 90% less time",
     stack: ["Apps Script", "Google APIs"],
     tools: ["appsscript", "sheets"],
     video: "/media/soh-demo.mp4",
@@ -247,7 +247,7 @@ export const PROJECTS: Project[] = [
     name: "Fortell",
     kind: "ML and research writing platform",
     blurb:
-      "Upload a spreadsheet and Fortell cleans the data, trains and compares six models, then writes up the results as a research paper with citations. Export it as PDF, Word or LaTeX.",
+      "drop in a spreadsheet. it cleans the data, tries six models and writes the results up as a paper, citations and all.",
     stack: ["Python", "LLM agents", "React", "Node.js"],
     tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
@@ -266,10 +266,10 @@ export const EXPERIENCE = [
     org: "AI-DPRS Research Lab, KNUST",
     role: "Reservoir Characterization Lead, ML Research",
     points: [
-      "Helped build an automated way to find hydraulic flow units, published in the Journal of Applied Geophysics",
-      "Built RescharAI, software that finds flow units and net pay zones from well data",
-      "Worked with GNPC, applying clustering to real field data",
-      "Built a tool that shows which water injectors affect which producing wells",
+      "helped automate how we find flow units in rock (got published!)",
+      "built RescharAI",
+      "worked with GNPC on real field data",
+      "built a tool that shows which injectors affect which wells",
     ],
   },
   {
@@ -279,8 +279,8 @@ export const EXPERIENCE = [
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
-      "Built an order system that cut processing time per order by more than 90%",
-      "Helped build a feasibility model that forecasts demand and checks profitability",
+      "built an order system that cut processing time by 90%+",
+      "helped build a feasibility model: demand forecasts and profit numbers",
     ],
   },
   {
@@ -289,7 +289,7 @@ export const EXPERIENCE = [
     tools: [] as ToolKey[],
     org: "Tema Tank Farm & Booster Station",
     role: "Operations Intern",
-    points: ["Calibrated flow meters with prover tanks, tracked product movement and inspected equipment"],
+    points: ["calibrated flow meters, tracked product and inspected equipment"],
   },
 ];
 
@@ -367,20 +367,18 @@ export const COLLECTIONS: { id: CollectionId; path: string; title: string; label
   {
     id: "energy",
     path: "/projects/energy",
-    title: "Energy and subsurface projects",
-    label: "Domain projects",
-    intro:
-      "Here I use machine learning, time-series analysis and software to answer petroleum engineering questions: what is in the rock, how wells affect each other, and how to get more out of a field.",
-    note: "Reservoir characterization, production data and field operations",
+    title: "petroleum projects",
+    label: "oil and gas",
+    intro: "here's where i throw machine learning, time series and code at oil and gas problems.",
+    note: "the oil and gas stuff",
   },
   {
     id: "other",
     path: "/projects/other",
-    title: "Other projects",
-    label: "Everything else",
-    intro:
-      "Projects outside oil and gas: research tools, business automation and machine learning experiments I built to learn something new.",
-    note: "Research tools, automation and ML experiments",
+    title: "other projects",
+    label: "everything else",
+    intro: "everything outside oil and gas. some for work, a lot just because i wanted to learn something.",
+    note: "everything else i've built, for work or for fun",
   },
 ];
 
@@ -402,7 +400,7 @@ export const ENTRIES: Entry[] = [
     title: "RescharAI",
     year: "2025",
     summary:
-      "Desktop software for reservoir characterization. Load core and well-log data and it groups the rock into hydraulic flow units, then predicts which intervals are net pay. It wraps a workflow that petrophysicists usually do by hand into one tool.",
+      "a desktop app for reservoir characterization. load your core and well-log data, and it groups the rock into flow units and points out the oil-bearing (net pay) zones. stuff petrophysicists usually do by hand.",
     methods: ["Autoencoders", "K-means", "Regression with residual correction"],
     tools: ["python", "sklearn", "pytorch"],
   },
@@ -412,7 +410,7 @@ export const ENTRIES: Entry[] = [
     title: "Automated hydraulic flow units",
     year: "2025",
     summary:
-      "Finds flow units in core data without manual picking. An autoencoder learns a compact view of the data, K-means groups it, a FZI-Z-score probability plot checks the groups, and a classifier labels new wells. Published in the Journal of Applied Geophysics.",
+      "finds flow units in core data without anyone picking them by hand. an autoencoder squeezes the data down, K-means groups it, and a classifier labels new wells. published in the Journal of Applied Geophysics.",
     methods: ["Autoencoders", "K-means", "MLP classifier", "Flow zone indicator"],
     tools: ["python", "sklearn", "pandas", "numpy"],
     links: [{ label: "Paper", href: "https://doi.org/10.1016/j.jappgeo.2025.105778" }],
@@ -420,10 +418,10 @@ export const ENTRIES: Entry[] = [
   {
     id: "injectors",
     collection: "energy",
-    title: "Which injectors drive which producers",
+    title: "Which injector helps which well?",
     year: "2026",
     summary:
-      "Uses production history to work out how water injectors and producing wells are connected. Correlation narrows the candidates, then VAR and VECM causality models confirm the links. A cheaper alternative to tracer tests. Presented at SPE ATC 2026.",
+      "uses production history to work out which water injectors are actually helping which wells. way cheaper than tracer tests. presented it at SPE ATC 2026 in Abidjan.",
     methods: ["Pearson correlation", "Granger causality", "VAR", "VECM"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     links: [{ label: "Paper", href: "https://doi.org/10.2118/233427-MS" }],
@@ -434,7 +432,7 @@ export const ENTRIES: Entry[] = [
     title: "Fuel distribution feasibility model",
     year: "2025",
     summary:
-      "A model built at SOH Energy to decide whether a new distribution venture would pay off. It forecasts demand, then runs the costs and revenue to show profitability under different scenarios.",
+      "built at SOH Energy to answer one question: would a new distribution venture make money? it forecasts demand, then runs the costs and revenue.",
     methods: ["Demand forecasting", "Scenario analysis", "Profitability analysis"],
     tools: ["sheets", "python"],
   },
@@ -444,7 +442,7 @@ export const ENTRIES: Entry[] = [
     title: "Fortell",
     year: "2025",
     summary:
-      "A platform that goes from spreadsheet to research paper. It cleans the data, trains and compares six models, and an agent pipeline writes up the results with citations, ready to export as PDF, Word or LaTeX.",
+      "spreadsheet in, research paper out. it cleans your data, tries six models and writes up the results with citations. export to PDF, Word or LaTeX.",
     methods: ["AutoML", "LLM agents", "Retrieval and citation"],
     tools: ["python", "react", "node"],
     links: [{ label: "fortell.site", href: "https://www.fortell.site" }],
@@ -455,7 +453,7 @@ export const ENTRIES: Entry[] = [
     title: "SOH order management",
     year: "2025",
     summary:
-      "An order system for a fuel distribution company. It generates the paperwork, emails it to the right people and tracks each order from request to delivery. Processing time per order dropped by more than 90%. Private build.",
+      "an order system for a fuel distribution company. makes the paperwork, emails the right people and tracks every order. orders now take 90% less time. (private, so no code to show.)",
     methods: ["Workflow automation", "Document generation", "Google APIs"],
     tools: ["appsscript", "sheets", "javascript"],
   },
