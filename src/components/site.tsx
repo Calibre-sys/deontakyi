@@ -34,11 +34,11 @@ import { Reveal, Section } from "./kit";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const NAV = [
-  { href: "/#publications", label: "Publications" },
-  { href: "/#work", label: "Projects" },
-  { href: "/#experience", label: "Experience" },
-  { href: "/#credentials", label: "Certifications" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#publications", label: "papers" },
+  { href: "/#work", label: "projects" },
+  { href: "/#experience", label: "experience" },
+  { href: "/#credentials", label: "certifications" },
+  { href: "/#contact", label: "say hi" },
 ];
 
 function useCv() {
@@ -104,26 +104,26 @@ export function Hero() {
         <div className="lg:order-1 lg:col-span-7">
           <motion.p {...rise(0)} className="flex items-center gap-2 text-[0.9375rem] text-muted-foreground">
             <span className="size-2 rounded-full bg-accent" aria-hidden />
-            Open to ML engineering and research roles
+            open to ML engineering and research roles
           </motion.p>
           <motion.h1 {...rise(1)} className="mt-5 text-[clamp(2.6rem,1.6rem+4.4vw,4.75rem)] leading-[0.98] font-semibold">
-            Hi, I'm Deon.
+            hi, i'm Deon!
           </motion.h1>
-          <motion.p {...rise(2)} className="mt-6 max-w-[56ch] text-[1.1875rem] leading-relaxed text-muted-foreground">
-            I'm a <span className="text-foreground">petroleum engineer</span> who builds machine learning tools. Most of my work is AI
-            for the energy sector: models that read rock and well data, and the software that lets engineers use them. My research
-            is published in the <span className="text-foreground">Journal of Applied Geophysics</span>.
+          <motion.p {...rise(2)} className="mt-6 max-w-[52ch] text-[1.1875rem] leading-relaxed text-muted-foreground">
+            i'm a <span className="text-foreground">petroleum engineer</span>.
+            <br />
+            mostly doing machine learning for oil and gas, and building the apps that go with it.
           </motion.p>
           <motion.div {...rise(3)} className="mt-8 flex flex-wrap gap-3">
             <a href="#work" className="btn">
-              See my projects
+              see my projects
             </a>
             <button type="button" onClick={openCv} className="btn btn-ghost">
-              <FileText className="size-4" /> Read CV
+              <FileText className="size-4" /> my CV
             </button>
           </motion.div>
           <motion.p {...rise(4)} className="mt-10 text-[0.9375rem] text-muted-foreground">
-            Right now: ML research at the AI-DPRS Lab, KNUST, and national service at SOH Energy · {PROFILE.location}
+            right now: research at AI-DPRS lab (KNUST) + national service at SOH Energy · {PROFILE.location}
           </motion.p>
         </div>
       </div>
@@ -137,8 +137,8 @@ export function Publications() {
   return (
     <Section
       id="publications"
-      title="Publications"
-      aside={<span>Interests: {INTERESTS.join(" · ")}</span>}
+      title="papers"
+      aside={<span>stuff i'm curious about: {INTERESTS.join(" · ").toLowerCase()}</span>}
       className="border-t border-border"
     >
       <ol className="grid gap-4">
@@ -240,7 +240,7 @@ function CopyCitation({ paper }: { paper: Paper }) {
 export function Work() {
   const byId = (id: string) => PROJECTS.find((p) => p.id === id)!;
   return (
-    <Section id="work" title="Projects" aside="Private builds are shown as screen recordings." className="border-t border-border">
+    <Section id="work" title="projects" aside="the private ones are shown as screen recordings" className="border-t border-border">
       <div className="grid gap-4 lg:grid-cols-6">
         <Reveal className="lg:col-span-6">
           <ProjectCard project={byId("reschar")} wide />
@@ -252,12 +252,11 @@ export function Work() {
           <Card className="gap-5 p-4 py-5 sm:p-8">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-[0.875rem] text-muted-foreground">Try it · From the 2025 paper</p>
+                <p className="text-[0.875rem] text-muted-foreground">play with it · from the 2025 paper</p>
                 <h3 className="mt-1 text-[1.5rem] leading-tight font-semibold">Flow zone indicator</h3>
               </div>
               <p className="max-w-[44ch] text-[0.9375rem] text-muted-foreground">
-                Set a rock sample's porosity and permeability to see which flow unit it falls in. Uses RQI = 0.0314·√(k/φ),
-                φz = φ/(1−φ) and FZI = RQI/φz.
+                move the sliders and see which flow unit a rock sample lands in. (FZI = RQI/φz, if you're into that.)
               </p>
             </div>
             <FlowUnitLab />
@@ -269,7 +268,7 @@ export function Work() {
       </div>
 
       <Reveal className="mt-16 mb-6">
-        <h3 className="text-[1.5rem] font-semibold">All projects</h3>
+        <h3 className="text-[1.5rem] font-semibold">there's more</h3>
       </Reveal>
       <div className="grid gap-4 md:grid-cols-2">
         {COLLECTIONS.map((c, i) => (
@@ -346,7 +345,7 @@ function CollectionCard({ id }: { id: CollectionId }) {
   return (
     <Card interactive className="relative h-full gap-4 p-6 py-6 sm:p-8">
       <p className="text-[0.875rem] text-muted-foreground">
-        {c.label} · {entries.length} projects
+        {entries.length} projects
       </p>
       <h4 className="font-display text-[1.375rem] leading-tight font-semibold tracking-[-0.02em]">
         <a href={c.path} className="after:absolute after:inset-0 hover:text-accent">
@@ -360,7 +359,7 @@ function CollectionCard({ id }: { id: CollectionId }) {
         ))}
       </p>
       <span className="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-accent">
-        See all <ArrowRight className="size-4" />
+        take a look <ArrowRight className="size-4" />
       </span>
     </Card>
   );
@@ -375,7 +374,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
     <>
       <section className="container-x pt-10 pb-10 sm:pt-16">
         <a href="/#work" className="link inline-flex items-center gap-1.5 text-[0.9375rem]">
-          <ArrowLeft className="size-4" /> Back home
+          <ArrowLeft className="size-4" /> back home
         </a>
         <h1 className="mt-6 text-[clamp(2.2rem,1.5rem+3vw,3.5rem)] leading-[1.02] font-semibold">{c.title}</h1>
         <p className="mt-5 max-w-[62ch] text-[1.125rem] leading-relaxed text-muted-foreground">{c.intro}</p>
@@ -391,7 +390,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
       </section>
       <section className="container-x pb-20">
         <Reveal>
-          <p className="mb-4 text-[0.9375rem] text-muted-foreground">Keep looking</p>
+          <p className="mb-4 text-[0.9375rem] text-muted-foreground">still curious?</p>
           <div className="max-w-xl">
             <CollectionCard id={other.id} />
           </div>
@@ -432,7 +431,7 @@ function EntryRow({ entry }: { entry: Entry }) {
 
 export function Experience() {
   return (
-    <Section id="experience" title="Experience" className="border-t border-border">
+    <Section id="experience" title="experience" className="border-t border-border">
       <ol className="grid gap-10">
         {EXPERIENCE.map((job, i) => (
           <Reveal as="li" key={job.org} delay={i * 0.05} className="grid gap-2 md:grid-cols-[12rem_1fr_auto] md:gap-10">
@@ -473,7 +472,7 @@ export function Credentials() {
     view({ title: "Certificates", items: CERTS.map((c) => ({ src: c.preview, file: c.pdf, caption: `${c.title} · ${c.issuer} · ${c.date}` })), start: index });
 
   return (
-    <Section id="credentials" title="Certifications" aside="DataCamp × 4 · 365 Data Science × 3" className="border-t border-border">
+    <Section id="credentials" title="certifications" aside="DataCamp × 4 · 365 Data Science × 3" className="border-t border-border">
       <Reveal>
         <Card className="gap-0 overflow-hidden py-0">
           <div className="grid lg:grid-cols-12">
@@ -532,7 +531,7 @@ export function Credentials() {
       <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Reveal>
           <Card className="h-full gap-5 p-6 py-6">
-            <h3 className="text-[1.375rem] font-semibold">Education</h3>
+            <h3 className="text-[1.375rem] font-semibold">school</h3>
             <ul className="grid gap-5">
               {EDUCATION.map((e) => (
                 <li key={e.org} className="flex gap-4">
@@ -552,7 +551,7 @@ export function Credentials() {
         </Reveal>
         <Reveal delay={0.05}>
           <Card className="h-full gap-5 p-6 py-6">
-            <h3 className="text-[1.375rem] font-semibold">Activities</h3>
+            <h3 className="text-[1.375rem] font-semibold">outside class</h3>
             <ul className="grid gap-4">
               {ACTIVITIES.map((a) => (
                 <li key={a.name} className="flex items-center gap-4">
@@ -593,7 +592,7 @@ export function Credentials() {
 
 export function Reading() {
   return (
-    <Section id="reading" title="Reading" aside="Books that shaped how I work" className="border-t border-border">
+    <Section id="reading" title="reading" aside="books i keep going back to" className="border-t border-border">
       <ul className="grid max-w-3xl grid-cols-3 gap-4 sm:gap-8">
         {BOOKS.map((book, i) => (
           <Reveal as="li" key={book.id} delay={i * 0.06}>
@@ -620,14 +619,14 @@ export function Contact() {
         <Card className="gap-0 overflow-hidden py-0">
           <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:items-end">
             <div>
-              <h2 className="section-title">Get in touch</h2>
+              <h2 className="section-title">say hi</h2>
               <p className="mt-4 max-w-[48ch] text-[1.0625rem] text-muted-foreground">
-                I'm looking for machine learning engineering and research roles. If you're working on ML for energy or other
-                physical systems, I'd like to hear about it.
+                i'm looking for ML engineering and research roles. working on ML for energy (or anything physical)? i'd love
+                to chat.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a href={`mailto:${PROFILE.email}`} className="btn">
-                  <Mail className="size-4" /> Email
+                  <Mail className="size-4" /> email me
                 </a>
                 <button type="button" onClick={openCv} className="btn btn-ghost">
                   <FileText className="size-4" /> CV
