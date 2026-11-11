@@ -11,7 +11,7 @@ export function App() {
   useEffect(() => {
     document.title = collection
       ? `${collection.title} · Deon Takyi-Amponsem`
-      : "Deon Takyi-Amponsem · Petroleum engineer & ML engineer";
+      : "Deon Takyi-Amponsem · Machine learning engineer";
   }, [collection]);
 
   return (
