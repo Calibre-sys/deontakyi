@@ -1,6 +1,7 @@
 import { MotionConfig } from "motion/react";
 import { useEffect } from "react";
 import { Contact, Credentials, Experience, Footer, Header, Hero, ProjectsPage, Publications, Reading, Work } from "@/components/site";
+import { Murmuration } from "@/components/murmuration";
 import { ViewerProvider } from "@/components/viewer";
 import { COLLECTIONS } from "@/data";
 
@@ -17,6 +18,7 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       <ViewerProvider>
+        <Murmuration />
         <a href="#main" className="sr-only z-50 rounded-md bg-foreground px-4 py-2 text-background focus:not-sr-only focus:fixed focus:top-2 focus:left-2">
           Skip to content
         </a>
