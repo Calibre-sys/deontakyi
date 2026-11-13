@@ -10,23 +10,28 @@ import { useEffect, useRef } from "react";
  *  • Forming shapes: every dot is a damped spring pulled toward its slot, the way a
  *    show drone homes in, slightly underdamped so it swoops in and settles.
  *  • Neural net: once formed, signals travel along the weights, layer to layer (a forward pass).
+ *  • Smiley: it blinks.
  *  • Subsurface: once formed, fluid moves through the rock by Darcy's law,
  *    v = −(k/μ)∇p, with radial inflow to the well (v ∝ k / r). Sands with high
  *    permeability flow, shale barely moves, flow speeds up near the wellbore, and
  *    produced fluid rises up the well while the outer boundary recharges.
+ *  • Galaxy: stars orbit on a flat rotation curve (v ≈ constant, so ω ∝ 1/r, as
+ *    measured in real spirals), so the inner disc turns faster and the arms wind up.
  */
 
-type Shape = "deo" | "neural" | "subsurface";
+type Shape = "neural" | "smiley" | "subsurface" | "galaxy";
 type Phase = { kind: "flock" | Shape; ms: number };
 
 const CYCLE: Phase[] = [
-  { kind: "flock", ms: 3500 },
-  { kind: "deo", ms: 6500 },
-  { kind: "flock", ms: 6500 },
+  { kind: "flock", ms: 2500 },
   { kind: "neural", ms: 7000 },
   { kind: "flock", ms: 6500 },
+  { kind: "smiley", ms: 6500 },
+  { kind: "flock", ms: 6500 },
   { kind: "subsurface", ms: 9000 },
-  { kind: "flock", ms: 3000 },
+  { kind: "flock", ms: 6500 },
+  { kind: "galaxy", ms: 8000 },
+  { kind: "flock", ms: 4000 },
 ];
 
 const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
@@ -35,10 +40,12 @@ const rand = (a = 0, b = 1) => a + Math.random() * (b - a);
 type ShapeData = {
   pts: Float32Array; // x,y per dot
   role: Uint8Array; // 0 static · 1 moving with the shape's physics · 2 rising up the well
-  a: Float32Array; // neural: edge index · subsurface: layer index
-  b: Float32Array; // neural: position along the edge · subsurface: depth fraction within the layer
-  geo?: Neural | Subsurface;
+  a: Float32Array; // neural: edge index · subsurface: layer index · smiley: eye centre y · galaxy: radius
+  b: Float32Array; // neural: position along the edge · subsurface: depth fraction · smiley: offset from eye centre · galaxy: angle
+  geo?: Neural | Subsurface | Smiley | Galaxy;
 };
+type Smiley = { kind: "smiley" };
+type Galaxy = { kind: "galaxy"; cx: number; cy: number; tilt: number; v0: number; rc: number };
 type Neural = { kind: "neural"; edges: [number, number, number, number][] };
 type Subsurface = {
   kind: "subsurface";
@@ -57,32 +64,95 @@ const blank = (n: number): ShapeData => ({
   b: new Float32Array(n),
 });
 
-/** Points that fill the letters "DEO", sampled from an offscreen render. */
-function deoShape(w: number, h: number, n: number): ShapeData {
-  const box = Math.min(w * 0.94, 1500);
-  const c = document.createElement("canvas");
-  const cw = 600;
-  const ch = 260;
-  c.width = cw;
-  c.height = ch;
-  const g = c.getContext("2d", { willReadFrequently: true })!;
-  g.textAlign = "center";
-  g.textBaseline = "middle";
-  g.font = `800 220px "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif`;
-  g.fillText("DEO", cw / 2, ch / 2 + 8);
-  const data = g.getImageData(0, 0, cw, ch).data;
-  const hits: number[] = [];
-  for (let y = 0; y < ch; y += 2) for (let x = 0; x < cw; x += 2) if (data[(y * cw + x) * 4 + 3] > 128) hits.push(x, y);
-
-  const s = box / cw;
-  const ox = w / 2 - box / 2;
-  const oy = h / 2 - (ch * s) / 2;
+/** A smiley face: outline, eyes that blink, and a wide grin. */
+function smileyShape(w: number, h: number, n: number): ShapeData {
+  const R0 = Math.min(h * 0.36, w * 0.42);
+  const cx = w / 2;
+  const cy = h / 2;
   const out = blank(n);
-  const count = hits.length / 2;
+  out.geo = { kind: "smiley" };
+  const eyes = [
+    [cx - R0 * 0.36, cy - R0 * 0.28],
+    [cx + R0 * 0.36, cy - R0 * 0.28],
+  ];
+  const ex = R0 * 0.1;
+  const ey = R0 * 0.17;
   for (let i = 0; i < n; i++) {
-    const k = (Math.random() * count) | 0;
-    out.pts[i * 2] = ox + (hits[k * 2] + rand(-1, 1)) * s;
-    out.pts[i * 2 + 1] = oy + (hits[k * 2 + 1] + rand(-1, 1)) * s;
+    const p = Math.random();
+    let x: number;
+    let y: number;
+    if (p < 0.4) {
+      // outline
+      const ang = rand(0, Math.PI * 2);
+      const r = R0 + rand(-3, 3);
+      x = cx + Math.cos(ang) * r;
+      y = cy + Math.sin(ang) * r;
+    } else if (p < 0.6) {
+      // eyes, filled ellipses
+      const [eX, eY] = eyes[i & 1];
+      const ang = rand(0, Math.PI * 2);
+      const d = Math.sqrt(Math.random());
+      x = eX + Math.cos(ang) * d * ex;
+      const dy = Math.sin(ang) * d * ey;
+      y = eY + dy;
+      out.role[i] = 1;
+      out.a[i] = eY;
+      out.b[i] = dy;
+    } else if (p < 0.92) {
+      // grin: a thick arc, thicker in the middle
+      const t = Math.random();
+      const ang = Math.PI * (0.16 + 0.68 * t);
+      const thick = R0 * 0.07 * Math.sin(Math.PI * t) + 2;
+      const r = R0 * 0.58 + rand(-thick, thick);
+      x = cx + Math.cos(ang) * r;
+      y = cy - R0 * 0.02 + Math.sin(ang) * r;
+    } else {
+      // a few dots dusting the face
+      const ang = rand(0, Math.PI * 2);
+      const r = Math.sqrt(Math.random()) * R0 * 0.95;
+      x = cx + Math.cos(ang) * r;
+      y = cy + Math.sin(ang) * r;
+    }
+    out.pts[i * 2] = x;
+    out.pts[i * 2 + 1] = y;
+  }
+  return out;
+}
+
+/** A two-armed spiral galaxy, seen at a tilt, with a bright bulge. */
+function galaxyShape(w: number, h: number, n: number): ShapeData {
+  const cx = w / 2;
+  const cy = h / 2;
+  const rMax = Math.min(w * 0.46, h * 0.95, 760);
+  const tilt = 0.5;
+  const out = blank(n);
+  const geo: Galaxy = { kind: "galaxy", cx, cy, tilt, v0: 1.3, rc: rMax * 0.06 };
+  out.geo = geo;
+  const pitch = 0.32; // tan of the arm pitch angle
+  const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+  for (let i = 0; i < n; i++) {
+    const p = Math.random();
+    let r: number;
+    let th: number;
+    if (p < 0.2) {
+      // bulge
+      r = Math.abs(gauss()) * rMax * 0.14;
+      th = rand(0, Math.PI * 2);
+    } else if (p < 0.85) {
+      // logarithmic spiral arms
+      r = rMax * (0.08 + 0.92 * Math.pow(Math.random(), 0.85));
+      const arm = (i & 1) * Math.PI;
+      th = arm + Math.log(r / (rMax * 0.08)) / pitch + gauss() * (0.25 + (0.15 * r) / rMax);
+    } else {
+      // the disc between the arms
+      r = rMax * Math.sqrt(Math.random());
+      th = rand(0, Math.PI * 2);
+    }
+    out.role[i] = 1;
+    out.a[i] = r;
+    out.b[i] = th;
+    out.pts[i * 2] = cx + Math.cos(th) * r;
+    out.pts[i * 2 + 1] = cy + Math.sin(th) * r * tilt;
   }
   return out;
 }
@@ -184,9 +254,10 @@ function subsurfaceShape(w: number, h: number, n: number): ShapeData {
 }
 
 const BUILD: Record<Shape, (w: number, h: number, n: number) => ShapeData> = {
-  deo: deoShape,
   neural: neuralShape,
+  smiley: smileyShape,
   subsurface: subsurfaceShape,
+  galaxy: galaxyShape,
 };
 
 // Boids parameters (pixels, per 60 fps frame)
@@ -221,14 +292,15 @@ export function Murmuration() {
     let order = new Int32Array(0);
     const shapes: Partial<Record<Shape, ShapeData>> = {};
 
-    let rgb = "45,212,191";
+    let rgb = "244,244,245";
     let alpha = 0.5;
     const readColor = () => {
       const dark = document.documentElement.classList.contains("dark");
-      const hex = getComputedStyle(document.documentElement).getPropertyValue("--primary").trim() || "#2dd4bf";
+      // monochrome: the dots take the page's text colour
+      const hex = getComputedStyle(document.documentElement).getPropertyValue("--foreground").trim() || "#f4f4f5";
       const m = hex.replace("#", "").match(/.{2}/g);
       if (m && m.length >= 3) rgb = m.slice(0, 3).map((x) => parseInt(x, 16)).join(",");
-      alpha = dark ? 0.55 : 0.42;
+      alpha = dark ? 0.42 : 0.36;
     };
 
     const resize = () => {
@@ -337,16 +409,9 @@ export function Murmuration() {
     };
 
     if (reduce) {
-      snapTo(shapes.deo!);
-      document.fonts?.ready.then(() => {
-        shapes.deo = deoShape(W, H, N);
-        snapTo(shapes.deo);
-      });
+      snapTo(shapes.neural!);
       return cleanup;
     }
-    document.fonts?.ready.then(() => {
-      shapes.deo = deoShape(W, H, N);
-    });
 
     /** One step of Reynolds' boids over a spatial hash. */
     const flock = (dt: number, t: number) => {
@@ -470,9 +535,30 @@ export function Murmuration() {
     };
 
     /** Advance the moving parts of a formed shape: signals along weights, or Darcy flow. */
-    const advect = (s: ShapeData, dt: number) => {
+    const advect = (s: ShapeData, dt: number, t: number) => {
       const g = s.geo;
       if (!g) return;
+      if (g.kind === "smiley") {
+        // blink every ~2.6 s: eyes squash to a line and open again
+        const ph = t % 2600;
+        const open = ph < 200 ? Math.abs(Math.cos((ph / 200) * Math.PI)) * 0.92 + 0.08 : 1;
+        for (let i = 0; i < N; i++) {
+          if (s.role[i] !== 1) continue;
+          s.pts[i * 2 + 1] = s.a[i] + s.b[i] * open;
+        }
+        return;
+      }
+      if (g.kind === "galaxy") {
+        // flat rotation curve: v ≈ v0 outside a small solid-body core, ω = v / r
+        for (let i = 0; i < N; i++) {
+          const r = s.a[i];
+          const th = s.b[i] + (g.v0 / (r + g.rc)) * dt;
+          s.b[i] = th;
+          s.pts[i * 2] = g.cx + Math.cos(th) * r;
+          s.pts[i * 2 + 1] = g.cy + Math.sin(th) * r * g.tilt;
+        }
+        return;
+      }
       if (g.kind === "neural") {
         for (let i = 0; i < N; i++) {
           if (s.role[i] !== 1) continue;
@@ -590,7 +676,7 @@ export function Murmuration() {
       } else {
         const s = shapes[phase.kind]!;
         formed = Math.min(1, into / 2600);
-        if (into > 2600) advect(s, dt);
+        if (into > 2600) advect(s, dt, t);
         form(s, dt, into);
       }
 
