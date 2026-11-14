@@ -233,3 +233,45 @@
     transform: rotate(3.5deg);
   }
 }
+
+/* ── Project showcase ── */
+.pipe-pulse {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  left: calc(1.0625rem - 1px);
+  top: 0;
+  width: 3px;
+  height: 4rem;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+  animation: pipe-down-top 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@media (min-width: 48rem) {
+  .pipe-pulse {
+    left: 0;
+    top: calc(1.0625rem - 1px);
+    width: 6rem;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    animation-name: pipe-across;
+  }
+  @keyframes pipe-across {
+    from { left: -6rem; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    to { left: 100%; opacity: 0; }
+  }
+}
+@media (max-width: 47.999rem) {
+  .pipe-pulse {
+    animation-name: pipe-down-top;
+  }
+  @keyframes pipe-down-top {
+    from { top: -4rem; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    to { top: 100%; opacity: 0; }
+  }
+}
+.filmstrip { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }

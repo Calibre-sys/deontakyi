@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
 import { PhotoStack } from "./photo-stack";
+import { Showcase } from "./showcase";
 import { HangingTools } from "./tools";
 import { Reveal, Section } from "./kit";
 
@@ -368,7 +369,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
       <section className="container-x pb-16">
         <ol className="grid gap-4">
           {entries.map((e, i) => (
-            <Reveal as="li" key={e.id} delay={i * 0.04}>
+            <Reveal as="li" key={e.id} delay={i * 0.04} className="min-w-0">
               <EntryRow entry={e} />
             </Reveal>
           ))}
@@ -387,7 +388,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
 
 function EntryRow({ entry }: { entry: Entry }) {
   return (
-    <Card className="gap-0 py-0">
+    <Card className="min-w-0 gap-0 py-0">
       <div className="grid gap-4 p-6 sm:p-8 md:grid-cols-[4.5rem_1fr_auto] md:gap-6">
         <p className="font-display text-[1.25rem] font-semibold tracking-[-0.02em] text-muted-foreground">{entry.year}</p>
         <div className="min-w-0">
@@ -408,6 +409,7 @@ function EntryRow({ entry }: { entry: Entry }) {
         </div>
         <HangingTools tools={entry.tools} rod size={30} align="center" className="w-fit min-w-[8rem]" />
       </div>
+      {entry.showcase && <Showcase title={entry.title} data={entry.showcase} />}
     </Card>
   );
 }
