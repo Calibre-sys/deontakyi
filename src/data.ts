@@ -294,6 +294,7 @@ export const EDUCATION = [
 
 export const ACTIVITIES = [
   { logo: "/logos/spe.png", name: "SPE Africa Technology Conference 2026", detail: "Delegate, Abidjan" },
+  { logo: "/logos/spe.png", name: "SPE DSEATS Africa Datathon 2025", detail: "Team DBTel, well classification with ML" },
   { logo: "/logos/spe.png", name: "SPE KNUST Chapter", detail: "Treasurer, 2024/25 · Member since 2021" },
   { logo: "/logos/spe.png", name: "SPE Energy4me", detail: "Volunteer, STEM outreach in schools" },
   { logo: undefined as string | undefined, name: "Building Bytes Pitch Program", detail: "Participant, Kumasi" },
@@ -384,7 +385,8 @@ export type Entry = {
   summary: string;
   methods: string[];
   tools: ToolKey[];
-  links?: { label: string; href: string }[];
+  /** Set `download` for files in /public/work (notebooks, slides) so they save instead of opening. */
+  links?: { label: string; href: string; download?: boolean }[];
 };
 
 export const ENTRIES: Entry[] = [
@@ -419,6 +421,31 @@ export const ENTRIES: Entry[] = [
     methods: ["Pearson correlation", "Granger causality", "VAR", "VECM"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     links: [{ label: "Paper", href: "https://doi.org/10.2118/233427-MS" }],
+  },
+  {
+    id: "dseats",
+    collection: "energy",
+    title: "SPE DSEATS Africa Datathon 2025",
+    year: "2025",
+    summary:
+      "team DBTel. 20 wells, five years of daily production and pressure data, seven labels per well: reservoir, reservoir type, lift method, stability, GOR, water cut trend and productivity. cleaned the data, worked out the engineering rules, then trained XGBoost, random forest and K-means to classify every well and estimate oil produced per reservoir.",
+    methods: ["Multi-task classification", "XGBoost", "Random forest", "K-means", "Data cleaning", "Production analysis"],
+    tools: ["python", "pandas", "sklearn", "jupyter"],
+    links: [
+      { label: "Notebook", href: "/work/dseats-datathon-2025.ipynb", download: true },
+      { label: "Slides", href: "/work/dseats-datathon-2025-slides.pptx", download: true },
+    ],
+  },
+  {
+    id: "arima",
+    collection: "energy",
+    title: "Oil production forecasting with ARIMA",
+    year: "2025",
+    summary:
+      "six years of monthly field oil production. ADF tests and differencing to make it stationary, ACF/PACF and auto-ARIMA to choose the orders, then ARIMA and seasonal SARIMA forecasts checked on a held-out year. in-sample MAPE of 9%.",
+    methods: ["ARIMA", "SARIMA", "Stationarity testing", "Auto-ARIMA", "Time series"],
+    tools: ["python", "pandas", "numpy", "jupyter"],
+    links: [{ label: "Notebook", href: "/work/arima-oil-forecast.ipynb", download: true }],
   },
   {
     id: "feasibility",

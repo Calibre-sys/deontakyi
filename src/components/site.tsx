@@ -399,7 +399,7 @@ function EntryRow({ entry }: { entry: Entry }) {
           {entry.links && (
             <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[0.9375rem]">
               {entry.links.map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link inline-flex items-center gap-1">
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" download={l.download || undefined} className="link inline-flex items-center gap-1">
                   {l.label} <ArrowUpRight className="size-3.5" />
                 </a>
               ))}
