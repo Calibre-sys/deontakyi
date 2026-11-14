@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
 import { PhotoStack } from "./photo-stack";
-import { Showcase } from "./showcase";
+import { ProjectVisual } from "./visuals";
 import { HangingTools } from "./tools";
 import { Reveal, Section } from "./kit";
 
@@ -406,10 +406,14 @@ function EntryRow({ entry }: { entry: Entry }) {
               ))}
             </div>
           )}
+          {entry.visual && (
+            <div className="mt-7 max-w-[40rem]">
+              <ProjectVisual kind={entry.visual} />
+            </div>
+          )}
         </div>
         <HangingTools tools={entry.tools} rod size={30} align="center" className="w-fit min-w-[8rem]" />
       </div>
-      {entry.showcase && <Showcase title={entry.title} data={entry.showcase} />}
     </Card>
   );
 }

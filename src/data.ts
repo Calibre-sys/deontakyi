@@ -1,4 +1,5 @@
 import type { ToolKey } from "@/components/tools";
+import type { VisualKind } from "@/components/visuals";
 
 // All site content. Edit here to update the page.
 
@@ -377,14 +378,6 @@ export const COLLECTIONS: { id: CollectionId; path: string; title: string; label
   },
 ];
 
-export type Showcase = {
-  /** Big numbers. The first number in each value counts up on scroll. */
-  stats: { value: string; label: string }[];
-  pipeline: { label: string; detail: string }[];
-  /** Charts pulled from the notebook, in /public/work/figs. */
-  figures: { src: string; caption: string }[];
-};
-
 export type Entry = {
   id: string;
   collection: CollectionId;
@@ -395,7 +388,8 @@ export type Entry = {
   tools: ToolKey[];
   /** Set `download` for files in /public/work (notebooks, slides) so they save instead of opening. */
   links?: { label: string; href: string; download?: boolean }[];
-  showcase?: Showcase;
+  /** One small interactive visual under the text. */
+  visual?: VisualKind;
 };
 
 export const ENTRIES: Entry[] = [
@@ -437,75 +431,25 @@ export const ENTRIES: Entry[] = [
     title: "SPE DSEATS Africa Datathon 2025",
     year: "2025",
     summary:
-      "team DBTel. 20 wells, five years of daily production and pressure data, seven labels to predict for every well. a transformer encoder reads each well's full history and turns it into one 512-number embedding. those embeddings, plus 32 engineering features, go into XGBoost with K-means and a random forest.",
-    methods: ["Transformer encoder", "Self-attention", "Embeddings", "XGBoost", "K-means", "Random forest", "Multi-task classification"],
-    tools: ["python", "tensorflow", "keras", "sklearn", "pandas"],
+      "team DBTel. a transformer reads each well's five-year history, then XGBoost and a random forest label all 20 wells: reservoir, lift method, stability and four more.",
+    methods: ["Transformer encoder", "XGBoost", "K-means", "Random forest"],
+    tools: ["python", "tensorflow", "sklearn", "pandas"],
     links: [
       { label: "Notebook", href: "/work/dseats-datathon-2025.ipynb", download: true },
       { label: "Slides", href: "/work/dseats-datathon-2025-slides.pptx", download: true },
     ],
-    showcase: {
-      stats: [
-        { value: "16.4M", label: "parameters in the transformer encoder" },
-        { value: "512", label: "numbers in each well's embedding" },
-        { value: "7", label: "labels predicted per well" },
-        { value: "85%", label: "of XGBoost importance came from the embeddings" },
-      ],
-      pipeline: [
-        { label: "Clean", detail: "7,955 daily rows: fixed bad temperatures, >24 h on-stream, broken cumulatives" },
-        { label: "Engineer", detail: "BHP, GOR, water cut and PI rules give 32 features per well" },
-        { label: "Encode", detail: "6-block transformer, 8 heads, [CLS] token, masked to 818 days" },
-        { label: "Fuse", detail: "512-d embedding + 32 domain features = 544 per well" },
-        { label: "Classify", detail: "XGBoost + K-means and a random forest, one head per label" },
-      ],
-      figures: [
-        { src: "/work/figs/dseats-poster.webp", caption: "SPE DSEATS Africa Datathon, second edition" },
-        { src: "/work/figs/dseats-bhp.webp", caption: "bottom-hole pressure vs. reservoir pressures: matching each well to its reservoir" },
-        { src: "/work/figs/dseats-bhp-decline.webp", caption: "a steady BHP decline: a naturally flowing well" },
-        { src: "/work/figs/dseats-distributions.webp", caption: "distributions of every raw measurement before cleaning" },
-        { src: "/work/figs/dseats-cumulative.webp", caption: "cumulative oil, gas and water, used to spot broken counters" },
-        { src: "/work/figs/dseats-correlation.webp", caption: "Spearman correlation between the per-well features" },
-        { src: "/work/figs/dseats-labels.webp", caption: "the seven labels, encoded for every well" },
-        { src: "/work/figs/dseats-confusion.webp", caption: "XGBoost confusion matrices, one per label" },
-        { src: "/work/figs/dseats-importance.webp", caption: "feature importance: neural embeddings 85.4%, domain features 14.6%" },
-      ],
-    },
+    visual: "wells",
   },
   {
     id: "arima",
     collection: "energy",
     title: "Oil production forecasting with ARIMA",
     year: "2025",
-    summary:
-      "six years of monthly field oil production. tested for stationarity, differenced it, read the ACF and PACF, let auto-ARIMA search the orders, then forecast with ARIMA and seasonal SARIMA and checked them on a held-out year.",
-    methods: ["ARIMA", "SARIMA", "ADF test", "ACF / PACF", "Auto-ARIMA", "Seasonal decomposition"],
+    summary: "six years of monthly field production, made stationary, fit with ARIMA and SARIMA, and forecast a year ahead.",
+    methods: ["ARIMA", "SARIMA", "ADF test", "Auto-ARIMA"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     links: [{ label: "Notebook", href: "/work/arima-oil-forecast.ipynb", download: true }],
-    showcase: {
-      stats: [
-        { value: "72", label: "months of production, 2018 to 2023" },
-        { value: "1", label: "difference to make it stationary" },
-        { value: "9.3%", label: "in-sample MAPE, ARIMA(1,1,0)" },
-        { value: "12", label: "months held out to test SARIMA" },
-      ],
-      pipeline: [
-        { label: "Test", detail: "ADF p = 0.82: the raw series isn't stationary" },
-        { label: "Difference", detail: "one difference, ADF p < 10⁻²⁴" },
-        { label: "Identify", detail: "ACF / PACF and auto-ARIMA pick the orders by AIC" },
-        { label: "Fit", detail: "ARIMA(1,1,0), then SARIMA with a 12-month season" },
-        { label: "Forecast", detail: "undifference back to barrels, with confidence bands" },
-      ],
-      figures: [
-        { src: "/work/figs/arima-series.webp", caption: "monthly oil production: a clear decline" },
-        { src: "/work/figs/arima-stationary.webp", caption: "after one difference: stationary" },
-        { src: "/work/figs/arima-acf.webp", caption: "autocorrelation of the differenced series" },
-        { src: "/work/figs/arima-decomp.webp", caption: "trend, seasonal and residual parts" },
-        { src: "/work/figs/arima-onestep.webp", caption: "one-step-ahead predictions with a 95% band" },
-        { src: "/work/figs/arima-diagnostics.webp", caption: "residual diagnostics: roughly normal, no leftover autocorrelation" },
-        { src: "/work/figs/arima-forecast.webp", caption: "forecast back in barrels per month" },
-        { src: "/work/figs/arima-sarima.webp", caption: "SARIMA forecast vs. the held-out year" },
-      ],
-    },
+    visual: "forecast",
   },
   {
     id: "feasibility",
@@ -516,6 +460,21 @@ export const ENTRIES: Entry[] = [
       "demand forecasting behind a go/no-go call on a new distribution venture at SOH Energy.",
     methods: ["Demand forecasting", "Scenario analysis", "Profitability analysis"],
     tools: ["sheets", "python"],
+  },
+  {
+    id: "fastai",
+    collection: "other",
+    title: "Deep learning with fastai",
+    year: "2026",
+    summary:
+      "working through the fastai course: image, text and tabular models, my own crocodile vs alligator vs agama classifier, then a digit classifier built from scratch with plain PyTorch.",
+    methods: ["Transfer learning", "ResNet", "U-Net", "AWD-LSTM", "SGD from scratch"],
+    tools: ["python", "pytorch", "jupyter"],
+    links: [
+      { label: "Kaggle", href: "https://www.kaggle.com/code/hunterxwolf/deep-learning" },
+      { label: "Notebook", href: "/work/fastai-deep-learning.ipynb", download: true },
+    ],
+    visual: "digits",
   },
   {
     id: "fortell",
