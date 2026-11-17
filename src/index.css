@@ -214,16 +214,6 @@
   letter-spacing: -0.02em;
 }
 
-/* Photo stack progress segment. */
-@keyframes stack-progress {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 100%;
-  }
-}
-
 /* Idle sway for hanging tool charms. */
 @keyframes charm-sway {
   from {
