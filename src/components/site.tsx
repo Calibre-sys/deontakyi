@@ -1,8 +1,9 @@
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Download, FileText, Mail, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Download, FileText, Mail, Phone, Play } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArcPicker } from "@/components/motion/arc-picker";
 import { Card } from "@/components/motion/card";
+import { CardFolder } from "@/components/motion/card-folder";
 import { ThemeToggle } from "@/components/motion/theme-toggle";
 import { useViewer } from "@/components/viewer";
 import {
@@ -627,31 +628,12 @@ export function Contact() {
                 </button>
               </div>
             </div>
-            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 text-[0.9375rem]">
-              <Row label="Email">
-                <a href={`mailto:${PROFILE.email}`} className="link break-all">
-                  {PROFILE.email}
-                </a>
-              </Row>
-              <Row label="Phone">
-                <a href={PROFILE.phoneHref} className="link">
-                  {PROFILE.phone}
-                </a>
-              </Row>
-              <Row label="GitHub">
-                <a href={PROFILE.github} target="_blank" rel="noopener" className="link">
-                  Calibre-sys
-                </a>
-              </Row>
-              <Row label="LinkedIn">
-                <a href={PROFILE.linkedin} target="_blank" rel="noopener" className="link">
-                  Deon Takyi-Amponsem
-                </a>
-              </Row>
-              <Row label="References">
-                <span className="text-muted-foreground">{REFERENCES.map((r) => r.name).join(", ")} · on request</span>
-              </Row>
-            </dl>
+            <div className="flex min-w-0 flex-col items-center gap-3 lg:items-end">
+              <ContactCard />
+              <p className="text-[0.8125rem] text-muted-foreground">
+                tap the card for my details · references on request
+              </p>
+            </div>
           </div>
         </Card>
       </Reveal>
@@ -659,11 +641,91 @@ export function Contact() {
   );
 }
 
-function Row({ label, children }: { label: string; children: ReactNode }) {
+const CONTOURS = Array.from({ length: 16 }, (_, i) => 70 + i * 26);
+const at = PROFILE.email.indexOf("@");
+const MASKED_EMAIL = PROFILE.email[0] + "•".repeat(at - 1) + PROFILE.email.slice(at);
+// Keep the country code and last three digits, mask the rest digit for digit.
+const MASKED_PHONE = PROFILE.phone.replace(/\d/g, (d, i) => (i < 4 || i >= PROFILE.phone.length - 3 ? d : "•"));
+
+/** The contact card: name peeks out of the purse, details are on the card once it's opened. */
+function ContactCard() {
   return (
-    <div className={label === "References" ? "col-span-2" : undefined}>
-      <dt className="text-[0.8125rem] text-muted-foreground">{label}</dt>
-      <dd className="mt-0.5">{children}</dd>
+    <CardFolder
+      title={`contact card for ${PROFILE.name}`}
+      className="w-[26rem]"
+      fields={[{ label: "Phone", value: PROFILE.phone, masked: MASKED_PHONE }]}
+      secret={{ label: "Email", value: PROFILE.email, masked: MASKED_EMAIL }}
+      card={<ContactArtwork />}
+      details={<ContactDetails />}
+    />
+  );
+}
+
+function ContactArtwork() {
+  return (
+    <span className="relative block size-full overflow-hidden bg-[linear-gradient(135deg,#1f3b38_0%,#122422_48%,#0a1312_100%)] text-white">
+      <svg aria-hidden viewBox="0 0 640 404" className="absolute inset-0 size-full">
+        {CONTOURS.map((r, i) => (
+          <circle key={r} cx="660" cy="-30" r={r} fill="none" stroke="currentColor" strokeOpacity={0.22 - i * 0.011} strokeWidth="1.5" />
+        ))}
+      </svg>
+      <span className="absolute inset-0 bg-[radial-gradient(circle_at_12%_6%,rgb(45_212_191/0.16),transparent_40%)]" />
+      <span className="absolute top-[8%] left-[6%] flex flex-col gap-1">
+        <span className="font-display text-[1.0625rem] leading-tight font-semibold tracking-[-0.02em]">{PROFILE.name}</span>
+        <span className="text-[10px] font-medium tracking-[0.2em] text-white/55 uppercase">{PROFILE.role}</span>
+      </span>
+      <span className="absolute top-[8%] right-[6%] hidden items-center gap-1.5 font-display sm:flex text-sm font-semibold text-white/80">
+        DTA <span className="block size-2 rotate-45 rounded-[2px] bg-[#2dd4bf]" />
+      </span>
+    </span>
+  );
+}
+
+function ContactDetails() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(PROFILE.email);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard blocked; the mailto link still works */
+    }
+  };
+  const link =
+    "truncate rounded-sm text-white/90 underline-offset-2 outline-none hover:text-[#5eead4] hover:underline focus-visible:ring-2 focus-visible:ring-[#2dd4bf]";
+  return (
+    <div className="absolute inset-x-[6%] bottom-[7%] flex flex-col gap-1.5 text-[0.6875rem] text-white sm:gap-2 sm:text-[0.8125rem]">
+      <span className="flex min-w-0 items-center gap-2">
+        <Mail aria-hidden className="size-3.5 shrink-0 text-white/45" />
+        <a href={`mailto:${PROFILE.email}`} className={link}>
+          {PROFILE.email}
+        </a>
+        <button
+          type="button"
+          onClick={copy}
+          aria-label={copied ? "Email copied" : "Copy email"}
+          className="-my-1 grid size-6 shrink-0 cursor-pointer place-items-center rounded-full text-white/55 outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-[#2dd4bf]"
+        >
+          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+        </button>
+      </span>
+      <span className="flex min-w-0 items-center gap-2">
+        <Phone aria-hidden className="size-3.5 shrink-0 text-white/45" />
+        <a href={PROFILE.phoneHref} className={link}>
+          {PROFILE.phone}
+        </a>
+      </span>
+      <span className="flex min-w-0 items-center gap-4 pl-[1.375rem]">
+        {[
+          { href: PROFILE.github, text: "GitHub" },
+          { href: PROFILE.linkedin, text: "LinkedIn" },
+        ].map((l) => (
+          <a key={l.text} href={l.href} target="_blank" rel="noopener" className={cn(link, "inline-flex items-center gap-0.5")}>
+            {l.text} <ArrowUpRight aria-hidden className="size-3 text-white/45" />
+          </a>
+        ))}
+      </span>
     </div>
   );
 }
