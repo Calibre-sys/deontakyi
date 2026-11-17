@@ -5,8 +5,8 @@ import type { VisualKind } from "@/components/visuals";
 
 export const PROFILE = {
   name: "Deon Takyi-Amponsem",
-  role: "Builder · applied ML for physical systems",
-  focus: "Machine learning applied to subsurface systems: rocks, wells and reservoirs",
+  role: "Petroleum engineer",
+  focus: "Machine learning on rocks, wells and reservoirs",
   location: "Accra, Ghana",
   email: "deontakyiamponsem@gmail.com",
   phone: "+233 592 763 423",
@@ -46,7 +46,7 @@ export const PAPERS: Paper[] = [
     title:
       "Automated hydraulic flow unit determination using FZI-Z-score probability, K-means clustering with autoencoders, and machine learning classification: a case study of the Subei Basin, China",
     venue: "Journal of Applied Geophysics",
-    detail: "Elsevier · Vol. 240 · Art. 105778",
+    detail: "Elsevier, Vol. 240, Art. 105778",
     doi: "10.1016/j.jappgeo.2025.105778",
     authors: [
       "Stephen Adjei",
@@ -58,7 +58,7 @@ export const PAPERS: Paper[] = [
       "Turkson Kwesi Duodu",
     ],
     summary:
-      "an autoencoder + K-means pipeline that discovers rock types with no labels, then a neural net that predicts them in wells it has never seen. replaces a manual workflow; tested on five wells in China's Subei Basin.",
+      "An autoencoder + K-means pipeline that discovers rock types with no labels, then a neural net that predicts them in wells it has never seen. Replaces a manual workflow; tested on five wells in China's Subei Basin.",
     methods: ["Autoencoders", "K-means", "MLP classification", "Flow zone indicator"],
     tools: ["python", "sklearn", "pandas", "numpy"],
     cover: "/media/jag-cover.jpg",
@@ -69,7 +69,7 @@ export const PAPERS: Paper[] = [
     year: "2026",
     title: "Analyzing the Effects of Water Injectors on Oil Production Using Causality Models",
     venue: "SPE Africa Technology Conference",
-    detail: "Abidjan · Paper SPE-233427-MS",
+    detail: "Abidjan, Paper SPE-233427-MS",
     doi: "10.2118/233427-MS",
     authors: [
       "Stephen Adjei",
@@ -82,7 +82,7 @@ export const PAPERS: Paper[] = [
       "Kwadwo Fosu Adom",
     ],
     summary:
-      "causal inference on multivariate time series (VAR, VECM) to find which wells drive which, from production history alone. no physical tests needed.",
+      "Causal inference on multivariate time series (VAR, VECM) to find which wells drive which, from production history alone. No physical tests needed.",
     methods: ["VAR", "VECM", "Granger causality", "Time series"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     screenshot: "/media/paper-waterinjectors.png",
@@ -198,10 +198,8 @@ export const CERTS: Cert[] = [
 
 /* ── Projects (case studies on the home page) ── */
 
-/** What the work did, measured. Either a number or a before → after. */
-export type Outcome =
-  | { kind: "number"; value: string; label: string }
-  | { kind: "shift"; before: string; after: string };
+/** A measured result, shown only where there is a real number. */
+export type Outcome = { value: string; label: string };
 
 export type Project = {
   id: string;
@@ -211,15 +209,13 @@ export type Project = {
   /** One line that says what it is. */
   tagline: string;
   built: string;
-  outcome: Outcome;
-  /** Smaller supporting facts shown under the outcome. */
-  facts: string[];
+  outcome?: Outcome;
   tools: ToolKey[];
   /** Media: a screen recording, or one of the drawn visuals. */
   video?: string;
   poster?: string;
   visual?: "outreach" | "recruiter";
-  /** Address shown in the window frame around the media. */
+  /** Title shown in the window frame around the media. */
   address: string;
   links?: { label: string; href: string }[];
   private?: boolean;
@@ -231,28 +227,25 @@ export const PROJECTS: Project[] = [
     name: "RescharAI",
     kind: "reservoir characterization software",
     year: "2025",
-    tagline: "flow units and net pay, without the manual work.",
-    built: "a desktop app. clustering finds the flow units, regression with residual correction finds net pay. no code needed.",
-    outcome: { kind: "shift", before: "manual workflow, well by well", after: "a few clicks" },
-    facts: ["used on field data with GNPC"],
+    tagline: "Reservoir characterization software.",
+    built: "A desktop app. Clustering finds the flow units, regression with residual correction finds net pay, and engineers use it without writing code. Applied to field data with GNPC.",
     tools: ["python", "fastapi", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
     poster: "/media/reschar-poster.jpg",
-    address: "rescharai · desktop",
-    links: [{ label: "try the demo", href: "/rescharai-demo/" }],
+    address: "RescharAI",
+    links: [{ label: "Try the demo", href: "/rescharai-demo/" }],
   },
   {
     id: "outreach",
     name: "Manpower outreach automation",
     kind: "workflow automation",
     year: "2025",
-    tagline: "emails instead of 900 phone calls.",
-    built: "Apps Script emails with one-click replies, logged to a sheet, with a follow-up after three days.",
-    outcome: { kind: "number", value: "455 / 880", label: "converted, zero calls" },
-    facts: ["built in two days"],
+    tagline: "Replaced a phone campaign with email.",
+    built: "Apps Script emails with one-click replies, every answer logged to a sheet, and a follow-up after three days. Built in two days.",
+    outcome: { value: "455 of 880", label: "Said yes, without a single phone call" },
     tools: ["appsscript", "sheets", "javascript"],
     visual: "outreach",
-    address: "apps script · outreach.gs",
+    address: "outreach.gs",
     private: true,
   },
   {
@@ -260,14 +253,13 @@ export const PROJECTS: Project[] = [
     name: "SOH Order Management",
     kind: "operations software",
     year: "2025",
-    tagline: "orders, documents and emails in one system.",
-    built: "makes the documents, sends the emails and tracks each order.",
-    outcome: { kind: "number", value: "90%+", label: "less time per order" },
-    facts: [],
+    tagline: "Order management for SOH Energy.",
+    built: "It makes the documents, sends the emails and tracks every order for a fuel distributor.",
+    outcome: { value: "90%+", label: "Less time spent on each order" },
     tools: ["appsscript", "sheets", "javascript"],
     video: "/media/soh-demo.mp4",
     poster: "/media/soh-poster.jpg",
-    address: "soh · order tracker",
+    address: "SOH Orders",
     private: true,
   },
   {
@@ -275,10 +267,8 @@ export const PROJECTS: Project[] = [
     name: "Fortell",
     kind: "no-code ML web app",
     year: "2025",
-    tagline: "upload a spreadsheet, get a paper.",
-    built: "cleans the data, trains six models, and LLM agents write it up with citations. exports PDF, Word or LaTeX.",
-    outcome: { kind: "number", value: "6 models", label: "per upload" },
-    facts: [],
+    tagline: "Upload a spreadsheet, get a paper.",
+    built: "It cleans the data, trains and compares several models, then LLM agents write the results up with citations. Exports to PDF, Word or LaTeX.",
     tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
     poster: "/media/fortell-poster.jpg",
@@ -290,13 +280,11 @@ export const PROJECTS: Project[] = [
     name: "AI recruitment agent",
     kind: "LLM agent",
     year: "2025",
-    tagline: "screens and ranks CVs.",
-    built: "scores each CV against the role, ranks the candidates and drafts the emails.",
-    outcome: { kind: "shift", before: "manual shortlisting", after: "automatic" },
-    facts: [],
+    tagline: "Screens and ranks CVs.",
+    built: "An agent that reads each CV against the role, scores and ranks the candidates, and drafts the emails to send.",
     tools: ["python", "appsscript", "sheets"],
     visual: "recruiter",
-    address: "agent · screening",
+    address: "Shortlist",
     private: true,
   },
 ];
@@ -309,12 +297,12 @@ export const EXPERIENCE = [
     logo: "/logos/knust.png",
     tools: ["python", "pytorch", "sklearn", "jupyter"] as ToolKey[],
     org: "AI-DPRS Research Lab, KNUST",
-    role: "Reservoir Characterization Lead · ML research",
+    role: "Reservoir Characterization Lead (ML research)",
     points: [
-      "co-built an autoencoder + clustering system for hydraulic flow units, published in the Journal of Applied Geophysics",
-      "built RescharAI: unsupervised flow units and supervised net pay in one desktop app",
-      "applied unsupervised learning to real field data with GNPC",
-      "built a causal analysis tool that shows production engineers how water injectors affect producers",
+      "Co-built an autoencoder + clustering system for hydraulic flow units, published in the Journal of Applied Geophysics",
+      "Built RescharAI: unsupervised flow units and supervised net pay in one desktop app",
+      "Applied unsupervised learning to real field data with GNPC",
+      "Built a causal analysis tool that shows production engineers how water injectors affect producers",
     ],
   },
   {
@@ -324,10 +312,10 @@ export const EXPERIENCE = [
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
-      "built the order management system that cut processing time by 90%+",
-      "replaced a 900-contact phone campaign with an email automation: 455 of 880 converted, zero calls",
-      "built an AI agent that screens and ranks CVs and writes the candidate emails",
-      "co-built the demand forecast and feasibility model for an urban fuel station",
+      "Built the order management system that cut processing time by 90%+",
+      "Replaced a 900-contact phone campaign with an email automation: 455 of 880 converted, zero calls",
+      "Built an AI agent that screens and ranks CVs and writes the candidate emails",
+      "Co-built the demand forecast and feasibility model for an urban fuel station",
     ],
   },
   {
@@ -335,9 +323,9 @@ export const EXPERIENCE = [
     logo: undefined as string | undefined,
     tools: [] as ToolKey[],
     org: "Tema Tank Farm & Booster Station",
-    role: "Operations Intern · Chase Logistics",
+    role: "Operations Intern, Chase Logistics",
     points: [
-      "tracked product to terminals, calibrated flow meters against prover tanks, and checked pumps, valves, pipelines and tanks",
+      "Tracked product to terminals, calibrated flow meters against prover tanks, and checked pumps, valves, pipelines and tanks",
     ],
   },
 ];
@@ -350,7 +338,7 @@ export const EDUCATION = [
 export const ACTIVITIES = [
   { logo: "/logos/spe.png", name: "SPE Africa Technology Conference 2026", detail: "Delegate, Abidjan" },
   { logo: "/logos/spe.png", name: "SPE DSEATS Africa Datathon 2025", detail: "Team DBTel, well classification with ML" },
-  { logo: "/logos/spe.png", name: "SPE KNUST Chapter", detail: "Treasurer, 2024/25 · Member since 2021" },
+  { logo: "/logos/spe.png", name: "SPE KNUST Chapter", detail: "Treasurer 2024/25, member since 2021" },
   { logo: "/logos/spe.png", name: "SPE Energy4me", detail: "Volunteer, STEM outreach in schools" },
   { logo: undefined as string | undefined, name: "Building Bytes Pitch Program", detail: "Participant, Kumasi" },
 ];
@@ -405,7 +393,7 @@ export const BOOKS: Book[] = [
 ];
 
 export const REFERENCES = [
-  { name: "Dr. Stephen Adjei", role: "Principal Investigator, AI-DPRS · Lecturer, KNUST" },
+  { name: "Dr. Stephen Adjei", role: "Principal Investigator, AI-DPRS, and Lecturer, KNUST" },
   { name: "Mr. Felix Andoh", role: "Operator, Tema Tank Farm" },
 ];
 
@@ -420,17 +408,17 @@ export const COLLECTIONS: { id: CollectionId; path: string; title: string; label
     id: "energy",
     path: "/projects/energy",
     title: "ML for the subsurface",
-    label: "energy",
-    intro: "machine learning on rock, well and production data.",
-    note: "rocks, wells and fields",
+    label: "Energy",
+    intro: "Machine learning on rock, well and production data.",
+    note: "Rocks, wells and fields",
   },
   {
     id: "other",
     path: "/projects/other",
-    title: "other projects",
-    label: "other",
-    intro: "LLM agents, automation and whatever i'm learning right now.",
-    note: "agents, automation and experiments",
+    title: "Other projects",
+    label: "Other",
+    intro: "LLM agents, automation and whatever I'm learning right now.",
+    note: "Agents, automation and experiments",
   },
 ];
 
@@ -455,7 +443,7 @@ export const ENTRIES: Entry[] = [
     title: "RescharAI",
     year: "2025",
     summary:
-      "unsupervised models group the rock into flow units; supervised regressors with residual correction pick out the pay zones. shipped as a desktop app, so engineers get the models without the code.",
+      "Unsupervised models group the rock into flow units; supervised regressors with residual correction pick out the pay zones. Shipped as a desktop app, so engineers get the models without the code.",
     methods: ["Autoencoders", "K-means", "Regression with residual correction"],
     tools: ["python", "sklearn", "pytorch"],
     links: [{ label: "Interactive demo", href: "/rescharai-demo/" }],
@@ -466,7 +454,7 @@ export const ENTRIES: Entry[] = [
     title: "Automated hydraulic flow units",
     year: "2025",
     summary:
-      "an autoencoder learns a compact representation of core data, K-means finds the clusters with no labels, and an MLP predicts them for new wells. published in the Journal of Applied Geophysics.",
+      "An autoencoder learns a compact representation of core data, K-means finds the clusters with no labels, and an MLP predicts them for new wells. Published in the Journal of Applied Geophysics.",
     methods: ["Autoencoders", "K-means", "MLP classifier", "Flow zone indicator"],
     tools: ["python", "sklearn", "pandas", "numpy"],
     links: [{ label: "Paper", href: "https://doi.org/10.1016/j.jappgeo.2025.105778" }],
@@ -477,7 +465,7 @@ export const ENTRIES: Entry[] = [
     title: "Causal inference on well data",
     year: "2026",
     summary:
-      "Granger causality, VAR and VECM models on production time series to find which wells drive which. no physical tests needed. presented at SPE ATC 2026.",
+      "Granger causality, VAR and VECM models on production time series to find which wells drive which. No physical tests needed. Presented at SPE ATC 2026.",
     methods: ["Pearson correlation", "Granger causality", "VAR", "VECM"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     links: [{ label: "Paper", href: "https://doi.org/10.2118/233427-MS" }],
@@ -488,7 +476,7 @@ export const ENTRIES: Entry[] = [
     title: "SPE DSEATS Africa Datathon 2025",
     year: "2025",
     summary:
-      "team DBTel. a transformer reads each well's five-year history, then XGBoost and a random forest label all 20 wells: reservoir, lift method, stability and four more.",
+      "Team DBTel. A transformer reads each well's five-year history, then XGBoost and a random forest label all 20 wells: reservoir, lift method, stability and four more.",
     methods: ["Transformer encoder", "XGBoost", "K-means", "Random forest"],
     tools: ["python", "tensorflow", "sklearn", "pandas"],
     links: [
@@ -502,7 +490,7 @@ export const ENTRIES: Entry[] = [
     collection: "energy",
     title: "Oil production forecasting with ARIMA",
     year: "2025",
-    summary: "six years of monthly field production, made stationary, fit with ARIMA and SARIMA, and forecast a year ahead.",
+    summary: "Six years of monthly field production, made stationary, fit with ARIMA and SARIMA, and forecast a year ahead.",
     methods: ["ARIMA", "SARIMA", "ADF test", "Auto-ARIMA"],
     tools: ["python", "pandas", "numpy", "jupyter"],
     links: [{ label: "Notebook", href: "/work/arima-oil-forecast.ipynb", download: true }],
@@ -514,7 +502,7 @@ export const ENTRIES: Entry[] = [
     title: "Demand forecasting",
     year: "2025",
     summary:
-      "demand forecasting behind a go/no-go call on a new distribution venture at SOH Energy.",
+      "Demand forecasting behind a go/no-go call on a new distribution venture at SOH Energy.",
     methods: ["Demand forecasting", "Scenario analysis", "Profitability analysis"],
     tools: ["sheets", "python"],
   },
@@ -524,7 +512,7 @@ export const ENTRIES: Entry[] = [
     title: "Deep learning with fastai",
     year: "2026",
     summary:
-      "working through the fastai course: image, text and tabular models, my own crocodile vs alligator vs agama classifier, then a digit classifier built from scratch with plain PyTorch.",
+      "Working through the fastai course: image, text and tabular models, my own crocodile vs alligator vs agama classifier, then a digit classifier built from scratch with plain PyTorch.",
     methods: ["Transfer learning", "ResNet", "U-Net", "AWD-LSTM", "SGD from scratch"],
     tools: ["python", "pytorch", "jupyter"],
     links: [
@@ -539,7 +527,7 @@ export const ENTRIES: Entry[] = [
     title: "Fortell",
     year: "2025",
     summary:
-      "spreadsheet in, paper out. cleans the data, trains and compares six models, then LLM agents write the results up with real citations. exports to PDF, Word or LaTeX.",
+      "Spreadsheet in, paper out. Cleans the data, trains and compares six models, then LLM agents write the results up with real citations. Exports to PDF, Word or LaTeX.",
     methods: ["AutoML", "LLM agents", "Retrieval and citation"],
     tools: ["python", "react", "node"],
     links: [{ label: "fortell.site", href: "https://www.fortell.site" }],
@@ -550,7 +538,7 @@ export const ENTRIES: Entry[] = [
     title: "SOH order management",
     year: "2025",
     summary:
-      "end-to-end order automation for a fuel distributor: documents, emails and tracking. 90% less time per order.",
+      "End-to-end order automation for a fuel distributor: documents, emails and tracking. 90% less time per order.",
     methods: ["Workflow automation", "Document generation", "Google APIs"],
     tools: ["appsscript", "sheets", "javascript"],
   },

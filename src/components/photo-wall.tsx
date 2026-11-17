@@ -2,7 +2,7 @@ import { InfiniteMasonry } from "@/components/motion/infinite-masonry";
 import { useViewer } from "@/components/viewer";
 import { MOMENTS } from "@/data";
 
-/* ───────── Photo wall: room to breathe, captions under each print ───────── */
+/* ───────── Photo wall: masonry of event photos with captions ───────── */
 
 export function PhotoWall() {
   const view = useViewer();
@@ -18,7 +18,7 @@ export function PhotoWall() {
       gap={18}
       estimateSize={(m) => (m.h / m.w) * 340 + 56}
       ariaLabel="Photos from events and outreach"
-      className="h-[min(46rem,85vh)] rounded-[1.5rem] border-border bg-card p-4 sm:p-5"
+      className="h-[min(46rem,85vh)] rounded-none border-0 bg-transparent p-0"
       renderItem={(m, i) => (
         <figure className="group">
           <button

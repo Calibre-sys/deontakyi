@@ -65,7 +65,7 @@ function Forecast() {
             "hover the line"
           ) : (
             <>
-              {label(hover)} · <span className={hover > split ? "text-accent" : "text-foreground"}>{all[hover].toLocaleString()}</span>
+              {label(hover)}: <span className={hover > split ? "text-accent" : "text-foreground"}>{all[hover].toLocaleString()}</span>
               {hover > split && " forecast"}
             </>
           )}

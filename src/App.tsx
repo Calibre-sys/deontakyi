@@ -14,8 +14,8 @@ export function App() {
 
   useEffect(() => {
     document.title = collection
-      ? `${collection.title} · Deon Takyi-Amponsem`
-      : "Deon Takyi-Amponsem · Builder, applied ML for physical systems";
+      ? `${collection.title}, Deon Takyi-Amponsem`
+      : "Deon Takyi-Amponsem";
   }, [collection]);
 
   // The text on screen decodes once, as the boot screen leaves.

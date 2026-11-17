@@ -73,14 +73,14 @@ export function PageLoader({ onDone }: { onDone: () => void }) {
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.7, ease: [0.77, 0, 0.175, 1] }}
         >
-          <Loader variant="dither" size={56} speed={1.1} className="text-accent" label="Loading the portfolio" />
+          <Loader variant="dither" size={48} speed={1.1} className="text-foreground" label="Loading" />
           <div className="flex w-56 flex-col gap-3">
-            <div className="flex items-baseline justify-between font-mono text-[0.6875rem] tracking-[0.18em] text-muted-foreground uppercase">
+            <div className="flex items-baseline justify-between text-[0.8125rem] text-muted-foreground">
               <span>Deon Takyi-Amponsem</span>
-              <span className="tabular-nums text-foreground">{String(pct).padStart(3, "0")}</span>
+              <span className="tabular-nums text-foreground">{pct}%</span>
             </div>
             <div className="h-px w-full overflow-hidden bg-border">
-              <div className="h-full bg-accent transition-[width] duration-150" style={{ width: `${pct}%` }} />
+              <div className="h-full bg-foreground transition-[width] duration-150" style={{ width: `${pct}%` }} />
             </div>
           </div>
         </motion.div>

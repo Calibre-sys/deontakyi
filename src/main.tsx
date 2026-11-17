@@ -1,8 +1,6 @@
-import "@fontsource/bricolage-grotesque/600";
-import "@fontsource/bricolage-grotesque/700";
-import "@fontsource/hanken-grotesk/400";
-import "@fontsource/hanken-grotesk/500";
-import "@fontsource/hanken-grotesk/600";
+import "@fontsource/geist/400";
+import "@fontsource/geist/500";
+import "@fontsource/geist/600";
 import "@fontsource/caveat/600";
 import "@fontsource/geist-mono/400";
 import "@fontsource/geist-mono/500";
