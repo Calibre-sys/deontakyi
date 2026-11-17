@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
 import { LiveDemo } from "./live-demo";
-import { MemoryDeck } from "./memory-deck";
+import { PhotoStack } from "./photo-stack";
 import { ProjectVisual } from "./visuals";
 import { HangingTools } from "./tools";
 import { Reveal, Section } from "./kit";
@@ -101,7 +101,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0, rotate: 0 }}
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}
         >
-          <MemoryDeck />
+          <PhotoStack />
         </motion.div>
 
         <div className="lg:order-1 lg:col-span-7">
