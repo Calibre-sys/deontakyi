@@ -26,7 +26,6 @@ import {
 import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { CaseVideo, OutreachReplay, RecruiterFlow, WindowFrame } from "./case-visuals";
-import { FlowUnitLab } from "./flow-unit-lab";
 import { LiveDemo } from "./live-demo";
 import { Murmuration } from "./murmuration";
 import { PhotoStack } from "./photo-stack";
@@ -243,12 +242,6 @@ export function Publications() {
         {PAPERS.map((paper, i) => (
           <Reveal as="li" key={paper.id} delay={i * 0.06}>
             <PaperCase paper={paper} />
-            {paper.id === "hfu" && (
-              <div className="surface mt-6 p-4 py-5 sm:p-8">
-                <h3 className="mb-6 text-[1.25rem] leading-tight">Flow zone indicator</h3>
-                <FlowUnitLab />
-              </div>
-            )}
           </Reveal>
         ))}
       </ol>
