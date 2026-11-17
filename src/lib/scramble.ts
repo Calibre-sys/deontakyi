@@ -1,10 +1,9 @@
 /*
  * Text scramble, applied to every piece of text on the page.
  *
- * Each text node decodes once, the first time it scrolls into view: a band of random glyphs
- * sweeps left to right and leaves the real text behind it. Links and buttons scramble again
- * on hover. Glyphs keep the case of the character they stand in for, so line lengths barely
- * move while it runs.
+ * When the page loads, the text on screen decodes once: a band of random glyphs sweeps left
+ * to right and leaves the real text behind it. Glyphs keep the case of the character they
+ * stand in for, so line lengths barely move while it runs.
  *
  * It writes straight to the DOM text nodes, so React never re-renders for it. If React
  * changes a node mid-animation, the animation stops and leaves React's text alone.
@@ -21,8 +20,6 @@ const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "TEXTAREA", "INPUT", "
 type Run = { original: string; written: string; raf: number };
 
 const runs = new WeakMap<Text, Run>();
-const seen = new WeakSet<Text>();
-const pending = new WeakMap<Element, Text[]>();
 
 const pick = (set: string) => set[(Math.random() * set.length) | 0];
 
@@ -55,7 +52,7 @@ export function scrambleNode(node: Text, { duration }: { duration?: number } = {
   const len = original.length;
   // Short labels decode whole; long paragraphs get a narrower band that sweeps faster per character.
   const band = len <= 32 ? len : Math.min(18, Math.max(8, len * 0.08));
-  const ms = duration ?? Math.min(1100, 280 + len * (len <= 32 ? 18 : 4.5));
+  const ms = duration ?? Math.min(800, 260 + len * (len <= 32 ? 14 : 3.5));
   const start = performance.now();
   const run: Run = { original, written: node.nodeValue ?? "", raf: 0 };
   runs.set(node, run);
@@ -103,83 +100,22 @@ function textNodes(root: Node) {
   return out;
 }
 
-/** Starts the page-wide scramble. Returns a cleanup function. */
+/**
+ * Plays the decode once, on load, for the text that is on screen when the page opens.
+ * Nothing scrambles on scroll or hover afterwards. Returns a cleanup function.
+ */
 export function startScramble(root: HTMLElement = document.body) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
 
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        const el = entry.target;
-        io.unobserve(el);
-        const list = pending.get(el);
-        pending.delete(el);
-        list?.forEach((n, i) => {
-          if (n.isConnected) window.setTimeout(() => scrambleNode(n), Math.min(i * 30, 240));
-        });
-      }
-    },
-    { rootMargin: "0px 0px -8% 0px" },
-  );
-
-  const register = (from: Node) => {
-    for (const node of textNodes(from)) {
-      if (seen.has(node)) continue;
-      seen.add(node);
-      const parent = node.parentElement;
-      if (!parent) continue;
-      const list = pending.get(parent);
-      if (list) list.push(node);
-      else {
-        pending.set(parent, [node]);
-        io.observe(parent);
-      }
-    }
-  };
-
-  register(root);
-
-  // New content (route changes, tabs, swapped panels) joins in as it mounts.
-  let queued: Node[] = [];
-  let scheduled = 0;
-  const mo = new MutationObserver((records) => {
-    for (const r of records) r.addedNodes.forEach((n) => queued.push(n));
-    if (!scheduled)
-      scheduled = requestAnimationFrame(() => {
-        scheduled = 0;
-        const batch = queued;
-        queued = [];
-        batch.forEach((n) => n.isConnected && register(n));
-      });
+  const timers: number[] = [];
+  const vh = window.innerHeight;
+  const nodes = textNodes(root).filter((n) => {
+    const rect = n.parentElement?.getBoundingClientRect();
+    return rect && rect.bottom > 0 && rect.top < vh && rect.width > 0;
   });
-  mo.observe(root, { childList: true, subtree: true });
+  nodes.forEach((n, i) => {
+    timers.push(window.setTimeout(() => n.isConnected && scrambleNode(n), Math.min(i * 25, 300)));
+  });
 
-  // Links and buttons scramble again on hover (short labels only, so paragraphs never flicker).
-  let last: Element | null = null;
-  const onOver = (e: PointerEvent) => {
-    if (e.pointerType !== "mouse") return;
-    const target = (e.target as Element | null)?.closest?.("a, button, [data-scramble-hover]");
-    if (!target || target === last) return;
-    last = target;
-    if (target.closest("[data-no-scramble]")) return;
-    const nodes = textNodes(target);
-    const total = nodes.reduce((s, n) => s + (n.nodeValue ?? "").length, 0);
-    if (total === 0 || total > 48) return;
-    nodes.forEach((n) => scrambleNode(n, { duration: 360 }));
-  };
-  const onOut = (e: PointerEvent) => {
-    const to = (e.relatedTarget as Element | null)?.closest?.("a, button, [data-scramble-hover]");
-    if (to !== last) last = null;
-  };
-  root.addEventListener("pointerover", onOver);
-  root.addEventListener("pointerout", onOut);
-
-  return () => {
-    io.disconnect();
-    mo.disconnect();
-    if (scheduled) cancelAnimationFrame(scheduled);
-    root.removeEventListener("pointerover", onOver);
-    root.removeEventListener("pointerout", onOut);
-  };
+  return () => timers.forEach(window.clearTimeout);
 }

@@ -18,7 +18,7 @@ export function App() {
       : "Deon Takyi-Amponsem · Builder, applied ML for physical systems";
   }, [collection]);
 
-  // Every piece of text decodes as it scrolls in, once the boot screen has gone.
+  // The text on screen decodes once, as the boot screen leaves.
   useEffect(() => {
     if (!booted) return;
     return startScramble(document.body);
