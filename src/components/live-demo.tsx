@@ -1,6 +1,6 @@
 import { ArrowUpRight, MousePointer2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Card } from "@/components/motion/card";
+import { Loader } from "@/components/motion/loader";
 
 const DEMO_URL = "/rescharai-demo/";
 /** The app is laid out for a desktop window; render it at this size and scale it down. */
@@ -15,6 +15,7 @@ export function LiveDemo() {
   const [width, setWidth] = useState(0);
   // The frame ignores the pointer until clicked, so scrolling the page never gets caught in it.
   const [active, setActive] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const el = box.current;
@@ -28,13 +29,13 @@ export function LiveDemo() {
   const embed = width >= MIN_EMBED_WIDTH;
 
   return (
-    <Card className="gap-5 p-4 py-5 sm:p-8">
+    <div className="surface flex flex-col gap-5 p-4 py-5 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[0.875rem] text-muted-foreground">try it · the real app on three sample wells</p>
-          <h3 className="mt-1 text-[1.5rem] leading-tight font-semibold">Try RescharAI</h3>
+          <p className="kicker">live · the real app on three sample wells</p>
+          <h3 className="mt-2 text-[1.5rem] leading-tight font-semibold">Try RescharAI right here</h3>
         </div>
-        <a href={DEMO_URL} target="_blank" rel="noopener" className="link inline-flex items-center gap-1 text-[0.9375rem] font-medium">
+        <a href={DEMO_URL} target="_blank" rel="noopener" className="btn btn-ghost h-10 text-[0.875rem]">
           open full screen <ArrowUpRight className="size-4" />
         </a>
       </div>
@@ -51,9 +52,16 @@ export function LiveDemo() {
               src={DEMO_URL}
               title="RescharAI interactive demo"
               loading="lazy"
+              onLoad={() => setLoaded(true)}
               className="absolute top-0 left-0 origin-top-left border-0"
               style={{ width: FRAME_W, height: FRAME_H, transform: `scale(${scale})`, pointerEvents: active ? "auto" : "none" }}
             />
+            {!loaded && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card-2 text-accent">
+                <Loader variant="dither" size={36} label="Loading the RescharAI demo" />
+                <span className="kicker">booting rescharai</span>
+              </div>
+            )}
             {!active && (
               <button
                 type="button"
@@ -80,6 +88,6 @@ export function LiveDemo() {
       <p className="text-[0.8125rem] text-muted-foreground">
         every step is pre-computed on anonymized wells. exports and uploads are off in the demo.
       </p>
-    </Card>
+    </div>
   );
 }

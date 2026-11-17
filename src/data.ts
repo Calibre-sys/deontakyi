@@ -5,8 +5,8 @@ import type { VisualKind } from "@/components/visuals";
 
 export const PROFILE = {
   name: "Deon Takyi-Amponsem",
-  role: "Machine learning engineer",
-  focus: "Deep learning, unsupervised learning and causal time series",
+  role: "Builder · applied ML for physical systems",
+  focus: "Machine learning applied to subsurface systems: rocks, wells and reservoirs",
   location: "Accra, Ghana",
   email: "deontakyiamponsem@gmail.com",
   phone: "+233 592 763 423",
@@ -18,7 +18,7 @@ export const PROFILE = {
 };
 
 
-export const INTERESTS = ["physics-informed ML", "representation learning", "causal time series"];
+export const INTERESTS = ["subsurface systems", "physics-informed ML", "causal time series"];
 
 /* ── Publications ── */
 
@@ -196,21 +196,33 @@ export const CERTS: Cert[] = [
   },
 ];
 
-/* ── Projects ── */
+/* ── Projects (case studies on the home page) ── */
+
+/** What the work did, measured. Either a number or a before → after. */
+export type Outcome =
+  | { kind: "number"; value: string; label: string }
+  | { kind: "shift"; before: string; after: string };
 
 export type Project = {
   id: string;
   name: string;
   kind: string;
-  blurb: string;
-  result?: string;
-  stack: string[];
+  year: string;
+  /** One line that says what it is. */
+  tagline: string;
+  problem: string;
+  built: string;
+  outcome: Outcome;
+  /** Smaller supporting facts shown under the outcome. */
+  facts: string[];
   tools: ToolKey[];
+  /** Media: a screen recording, or one of the drawn visuals. */
   video?: string;
   poster?: string;
-  link?: string;
-  /** Text for the link; defaults to the URL without its protocol. */
-  linkLabel?: string;
+  visual?: "outreach" | "recruiter";
+  /** Address shown in the window frame around the media. */
+  address: string;
+  links?: { label: string; href: string }[];
   private?: boolean;
 };
 
@@ -218,40 +230,88 @@ export const PROJECTS: Project[] = [
   {
     id: "reschar",
     name: "RescharAI",
-    kind: "unsupervised + supervised ML · desktop app",
-    blurb:
-      "clustering finds the rock types, regression models with residual correction find the pay zones. all wrapped in a desktop app engineers can use without writing code.",
-    result: "hours of manual work → a few clicks",
-    stack: ["Python", "scikit-learn", "PyTorch"],
-    tools: ["python", "sklearn", "pytorch"],
+    kind: "reservoir characterization software",
+    year: "2025",
+    tagline: "rock typing and net pay, without the manual petrophysics.",
+    problem:
+      "finding flow units and pay zones in a reservoir is a slow, manual petrophysical workflow, repeated well by well.",
+    built:
+      "a desktop app on FastAPI. unsupervised learning groups the rock into hydraulic flow units; supervised regressors with residual correctors pick out net pay. engineers use it without writing code.",
+    outcome: { kind: "shift", before: "hours of manual workflow per well", after: "a few clicks, no code" },
+    facts: ["used on real field data with GNPC", "built on the method published in J. Applied Geophysics"],
+    tools: ["python", "fastapi", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
     poster: "/media/reschar-poster.jpg",
-    link: "/rescharai-demo/",
-    linkLabel: "interactive demo",
+    address: "rescharai · desktop",
+    links: [{ label: "try the demo", href: "/rescharai-demo/" }],
+  },
+  {
+    id: "outreach",
+    name: "Manpower outreach automation",
+    kind: "workflow automation",
+    year: "2025",
+    tagline: "a 900-contact phone campaign, replaced by emails that ran themselves.",
+    problem:
+      "SOH Energy needed to reach about 900 people in its manpower database. the plan was to phone every one of them, a job that would take months.",
+    built:
+      "a Google Apps Script workflow: custom emails with one-click replies, every answer logged to the sheet, follow-ups after three days, and a thank-you on confirmation.",
+    outcome: { kind: "number", value: "455 / 880", label: "contacts converted, with zero phone calls" },
+    facts: ["52% response rate", "months of calling → a two-day build"],
+    tools: ["appsscript", "sheets", "javascript"],
+    visual: "outreach",
+    address: "apps script · outreach.gs",
+    private: true,
   },
   {
     id: "soh",
     name: "SOH Order Management",
-    kind: "automation",
-    blurb: "an order system for a fuel distribution company. it makes the documents, sends the emails and tracks every order.",
-    result: "orders now take 90% less time",
-    stack: ["Apps Script", "Google APIs"],
-    tools: ["appsscript", "sheets"],
+    kind: "operations software",
+    year: "2025",
+    tagline: "orders, documents and emails for a fuel distributor, end to end.",
+    problem:
+      "every order at a bulk fuel distributor meant hand-made documents, hand-sent emails and a spreadsheet to keep track of it all.",
+    built:
+      "an order system on Google's APIs that generates the documents, dispatches the emails and tracks every order from request to delivery.",
+    outcome: { kind: "number", value: "90%+", label: "less time to process an order" },
+    facts: ["in daily use at SOH Energy", "documents, emails and tracking in one place"],
+    tools: ["appsscript", "sheets", "javascript"],
     video: "/media/soh-demo.mp4",
     poster: "/media/soh-poster.jpg",
+    address: "soh · order tracker",
     private: true,
   },
   {
     id: "fortell",
     name: "Fortell",
-    kind: "AutoML + LLM agents",
-    blurb:
-      "spreadsheet in, paper out. it cleans the data, trains and compares six models, then a team of LLM agents writes up the results with real citations.",
-    stack: ["Python", "LLM agents", "React", "Node.js"],
+    kind: "no-code ML web app",
+    year: "2025",
+    tagline: "spreadsheet in, research paper out.",
+    problem: "training and writing up a model takes code, time and a lot of formatting most people don't have.",
+    built:
+      "a full-stack app that cleans the data, trains and compares six models, then a team of LLM agents writes the results up with real citations. exports to PDF, Word or LaTeX.",
+    outcome: { kind: "number", value: "6 models", label: "trained and compared on every upload" },
+    facts: ["agents write it up with real citations", "PDF · Word · LaTeX export"],
     tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
     poster: "/media/fortell-poster.jpg",
-    link: "https://www.fortell.site",
+    address: "fortell.site",
+    links: [{ label: "fortell.site", href: "https://www.fortell.site" }],
+  },
+  {
+    id: "recruiter",
+    name: "AI recruitment agent",
+    kind: "LLM agent",
+    year: "2025",
+    tagline: "CVs in, a ranked shortlist and the emails out.",
+    problem: "shortlisting candidates meant reading every CV by hand, then writing to each one.",
+    built:
+      "an AI agent that reads each CV against the role, scores and ranks the candidates, and drafts the emails to send, end to end.",
+    outcome: { kind: "shift", before: "manual shortlisting", after: "screened, ranked and emailed automatically" },
+    facts: ["built for hiring at SOH Energy"],
+    tools: ["python", "appsscript", "sheets"],
+    visual: "recruiter",
+    address: "agent · screening",
+    private: true,
   },
 ];
 
@@ -259,41 +319,46 @@ export const PROJECTS: Project[] = [
 
 export const EXPERIENCE = [
   {
-    when: "2024 – Present",
+    when: "Sep 2024 – Present",
     logo: "/logos/knust.png",
     tools: ["python", "pytorch", "sklearn", "jupyter"] as ToolKey[],
     org: "AI-DPRS Research Lab, KNUST",
-    role: "ML Research · Reservoir Characterization Lead",
+    role: "Reservoir Characterization Lead · ML research",
     points: [
-      "co-built an autoencoder + clustering pipeline for rock typing, published in the Journal of Applied Geophysics",
-      "built RescharAI: unsupervised and supervised ML in one desktop app",
-      "ran unsupervised models on real field data with GNPC",
-      "built a causal time-series tool for well connectivity",
+      "co-built an autoencoder + clustering system for hydraulic flow units, published in the Journal of Applied Geophysics",
+      "built RescharAI: unsupervised flow units and supervised net pay in one desktop app",
+      "applied unsupervised learning to real field data with GNPC",
+      "built a causal analysis tool that shows production engineers how water injectors affect producers",
     ],
   },
   {
-    when: "2025 – Present",
+    when: "Nov 2025 – Present",
     logo: "/logos/soh-energy.png",
     tools: ["appsscript", "sheets", "javascript"] as ToolKey[],
     org: "SOH Energy",
     role: "Business Development / Technical Associate, National Service",
     points: [
-      "built an order system that cut processing time by 90%+",
-      "built demand forecasts for a feasibility model",
+      "built the order management system that cut processing time by 90%+",
+      "replaced a 900-contact phone campaign with an email automation: 455 of 880 converted, zero calls",
+      "built an AI agent that screens and ranks CVs and writes the candidate emails",
+      "co-built the demand forecast and feasibility model for an urban fuel station",
     ],
   },
   {
-    when: "2023 – 2024",
+    when: "Sep 2023 – Jan 2024",
     logo: undefined as string | undefined,
     tools: [] as ToolKey[],
     org: "Tema Tank Farm & Booster Station",
-    role: "Operations Intern",
-    points: ["calibrated flow meters, tracked product and inspected equipment"],
+    role: "Operations Intern · Chase Logistics",
+    points: [
+      "tracked product to terminals, calibrated flow meters against prover tanks, and checked pumps, valves, pipelines and tanks",
+      "first-hand look at the operational data problems i now automate",
+    ],
   },
 ];
 
 export const EDUCATION = [
-  { when: "2021 – 2025", logo: "/logos/knust.png", org: "KNUST", role: "BSc Petroleum Engineering", note: "First-Class Honours · College of Engineering Excellence Award" },
+  { when: "2021 – 2025", logo: "/logos/knust.png", org: "KNUST", role: "BSc Petroleum Engineering", note: "College of Engineering Excellence Award, 2021/22" },
   { when: "2018 – 2021", logo: undefined as string | undefined, org: "Mfantsipim School", role: "WASSCE, General Science", note: "" },
 ];
 
@@ -306,10 +371,12 @@ export const ACTIVITIES = [
 ];
 
 export const MOMENTS = [
-  { src: "/media/atc-2026.jpg", caption: "SPE ATC 2026, Abidjan" },
-  { src: "/media/buildingbytes-1.jpg", caption: "Building Bytes, Kumasi" },
-  { src: "/media/energy4me-1.jpg", caption: "SPE Energy4me outreach" },
-  { src: "/media/buildingbytes-2.jpg", caption: "Building Bytes demo day" },
+  { src: "/media/atc-2026.jpg", caption: "delegate at SPE ATC 2026", place: "Abidjan", w: 480, h: 640 },
+  { src: "/media/buildingbytes-1.jpg", caption: "pitching at Building Bytes", place: "Kumasi", w: 1080, h: 720 },
+  { src: "/media/energy4me-1.jpg", caption: "SPE Energy4me outreach", place: "Kumasi", w: 800, h: 312 },
+  { src: "/portrait-card.jpg", caption: "between builds", place: "Accra", w: 900, h: 1200 },
+  { src: "/media/buildingbytes-2.jpg", caption: "Building Bytes demo day", place: "Kumasi", w: 1080, h: 720 },
+  { src: "/media/energy4me-2.jpg", caption: "teaching energy in schools", place: "Energy4me", w: 480, h: 319 },
 ];
 
 /* ── Reading ── */
@@ -367,10 +434,10 @@ export const COLLECTIONS: { id: CollectionId; path: string; title: string; label
   {
     id: "energy",
     path: "/projects/energy",
-    title: "ML for energy",
+    title: "ML for the subsurface",
     label: "energy",
-    intro: "deep learning, unsupervised learning and causal time series on rock, well and production data.",
-    note: "models for rocks, wells and fields",
+    intro: "machine learning on physical systems: rock, well and production data, from flow units to causal links between wells.",
+    note: "rocks, wells and fields",
   },
   {
     id: "other",

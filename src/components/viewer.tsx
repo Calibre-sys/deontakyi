@@ -84,14 +84,14 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
               <header className="flex items-center gap-3 px-4 py-3 sm:px-5">
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold">{request.title}</p>
-                  {item.caption && <p className="truncate text-small text-muted">{item.caption}</p>}
+                  {item.caption && <p className="truncate text-small text-muted-foreground">{item.caption}</p>}
                 </div>
                 {count > 1 && (
                   <div className="flex items-center gap-1">
                     <IconButton label="Previous" onClick={() => step(-1)}>
                       <ChevronLeft className="size-4" />
                     </IconButton>
-                    <span className="w-14 text-center text-small tabular-nums text-muted">
+                    <span className="w-14 text-center text-small tabular-nums text-muted-foreground">
                       {index + 1} / {count}
                     </span>
                     <IconButton label="Next" onClick={() => step(1)}>
@@ -105,7 +105,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
                     target="_blank"
                     rel="noopener"
                     aria-label="Open in new tab"
-                    className="hidden size-9 items-center justify-center text-muted transition-colors hover:bg-panel-2 hover:text-ink sm:flex"
+                    className="hidden size-9 items-center justify-center text-muted-foreground transition-colors hover:bg-panel-2 hover:text-ink sm:flex"
                   >
                     <ExternalLink className="size-4" />
                   </a>
@@ -178,7 +178,7 @@ function IconButton({
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="flex size-10 items-center justify-center text-muted transition-colors hover:bg-panel-2 hover:text-ink"
+      className="flex size-10 items-center justify-center text-muted-foreground transition-colors hover:bg-panel-2 hover:text-ink"
     >
       {children}
     </button>
