@@ -311,7 +311,7 @@ function ProjectCard({ project, wide }: { project: Project; wide?: boolean }) {
           <p className="mt-1 text-[0.8125rem] text-muted-foreground">{project.kind}</p>
           {project.link && (
             <a href={project.link} target="_blank" rel="noopener" className="link relative z-10 mt-1 inline-flex items-center gap-1 text-[0.875rem]">
-              {project.link.replace(/^https?:\/\/(www\.)?/, "")} <ArrowUpRight className="size-3.5" />
+              {project.linkLabel ?? project.link.replace(/^https?:\/\/(www\.)?/, "")} <ArrowUpRight className="size-3.5" />
             </a>
           )}
         </div>

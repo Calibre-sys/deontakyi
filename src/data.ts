@@ -209,6 +209,8 @@ export type Project = {
   video?: string;
   poster?: string;
   link?: string;
+  /** Text for the link; defaults to the URL without its protocol. */
+  linkLabel?: string;
   private?: boolean;
 };
 
@@ -224,6 +226,8 @@ export const PROJECTS: Project[] = [
     tools: ["python", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
     poster: "/media/reschar-poster.jpg",
+    link: "/rescharai-demo/",
+    linkLabel: "interactive demo",
   },
   {
     id: "soh",
@@ -402,6 +406,7 @@ export const ENTRIES: Entry[] = [
       "unsupervised models group the rock into flow units; supervised regressors with residual correction pick out the pay zones. shipped as a desktop app, so engineers get the models without the code.",
     methods: ["Autoencoders", "K-means", "Regression with residual correction"],
     tools: ["python", "sklearn", "pytorch"],
+    links: [{ label: "Interactive demo", href: "/rescharai-demo/" }],
   },
   {
     id: "hfu",
