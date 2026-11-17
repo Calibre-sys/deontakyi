@@ -56,11 +56,8 @@ export function Section({
   return (
     <section id={id} className={cn("container-x py-24 sm:py-32", className)}>
       <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 sm:mb-16">
-        <div>
-          {index && <p className="kicker mb-4">{index} — {title}</p>}
-          <h2 className="section-title">{title}</h2>
-        </div>
-        {aside && <div className="kicker max-w-[32ch] sm:text-right">{aside}</div>}
+        <h2 className="section-title">{title}</h2>
+        {aside && <div className="text-[0.9375rem] text-muted-foreground">{aside}</div>}
       </Reveal>
       {children}
     </section>

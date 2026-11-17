@@ -173,8 +173,7 @@ export function OutreachReplay() {
     <div className="flex flex-col justify-between gap-4 bg-card p-5 sm:aspect-[16/10] sm:p-7">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="kicker">manpower database · 880 contacts</p>
-          <p className="mt-1 text-[0.875rem] text-muted-foreground">each dot is one person; teal means they said yes. totals are real, timing is a replay.</p>
+          <p className="kicker">880 contacts</p>
         </div>
         <button
           type="button"
@@ -281,7 +280,7 @@ export function RecruiterFlow() {
             {i < 3 && <Mail className="size-3.5 text-accent" aria-label="email drafted" />}
           </motion.div>
         ))}
-        <p className="mt-1 text-[0.6875rem] text-muted-foreground">illustration · candidate data stays private</p>
+        <p className="mt-1 text-[0.6875rem] text-muted-foreground">illustration</p>
       </div>
     </div>
   );

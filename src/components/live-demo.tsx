@@ -32,8 +32,7 @@ export function LiveDemo() {
     <div className="surface flex flex-col gap-5 p-4 py-5 sm:p-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="kicker">live · the real app on three sample wells</p>
-          <h3 className="mt-2 text-[1.5rem] leading-tight font-semibold">Try RescharAI right here</h3>
+          <h3 className="text-[1.5rem] leading-tight font-semibold">Try RescharAI</h3>
         </div>
         <a href={DEMO_URL} target="_blank" rel="noopener" className="btn btn-ghost h-10 text-[0.875rem]">
           open full screen <ArrowUpRight className="size-4" />
@@ -59,7 +58,7 @@ export function LiveDemo() {
             {!loaded && (
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-card-2 text-accent">
                 <Loader variant="dither" size={36} label="Loading the RescharAI demo" />
-                <span className="kicker">booting rescharai</span>
+                
               </div>
             )}
             {!active && (
@@ -86,7 +85,7 @@ export function LiveDemo() {
       </div>
 
       <p className="text-[0.8125rem] text-muted-foreground">
-        every step is pre-computed on anonymized wells. exports and uploads are off in the demo.
+        sample wells. uploads and exports are off.
       </p>
     </div>
   );

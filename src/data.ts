@@ -210,7 +210,6 @@ export type Project = {
   year: string;
   /** One line that says what it is. */
   tagline: string;
-  problem: string;
   built: string;
   outcome: Outcome;
   /** Smaller supporting facts shown under the outcome. */
@@ -232,13 +231,10 @@ export const PROJECTS: Project[] = [
     name: "RescharAI",
     kind: "reservoir characterization software",
     year: "2025",
-    tagline: "rock typing and net pay, without the manual petrophysics.",
-    problem:
-      "finding flow units and pay zones in a reservoir is a slow, manual petrophysical workflow, repeated well by well.",
-    built:
-      "a desktop app on FastAPI. unsupervised learning groups the rock into hydraulic flow units; supervised regressors with residual correctors pick out net pay. engineers use it without writing code.",
-    outcome: { kind: "shift", before: "hours of manual workflow per well", after: "a few clicks, no code" },
-    facts: ["used on real field data with GNPC", "built on the method published in J. Applied Geophysics"],
+    tagline: "flow units and net pay, without the manual work.",
+    built: "a desktop app. clustering finds the flow units, regression with residual correction finds net pay. no code needed.",
+    outcome: { kind: "shift", before: "manual workflow, well by well", after: "a few clicks" },
+    facts: ["used on field data with GNPC"],
     tools: ["python", "fastapi", "sklearn", "pytorch"],
     video: "/media/reschar-demo.mp4",
     poster: "/media/reschar-poster.jpg",
@@ -250,13 +246,10 @@ export const PROJECTS: Project[] = [
     name: "Manpower outreach automation",
     kind: "workflow automation",
     year: "2025",
-    tagline: "a 900-contact phone campaign, replaced by emails that ran themselves.",
-    problem:
-      "SOH Energy needed to reach about 900 people in its manpower database. the plan was to phone every one of them, a job that would take months.",
-    built:
-      "a Google Apps Script workflow: custom emails with one-click replies, every answer logged to the sheet, follow-ups after three days, and a thank-you on confirmation.",
-    outcome: { kind: "number", value: "455 / 880", label: "contacts converted, with zero phone calls" },
-    facts: ["52% response rate", "months of calling → a two-day build"],
+    tagline: "emails instead of 900 phone calls.",
+    built: "Apps Script emails with one-click replies, logged to a sheet, with a follow-up after three days.",
+    outcome: { kind: "number", value: "455 / 880", label: "converted, zero calls" },
+    facts: ["built in two days"],
     tools: ["appsscript", "sheets", "javascript"],
     visual: "outreach",
     address: "apps script · outreach.gs",
@@ -267,13 +260,10 @@ export const PROJECTS: Project[] = [
     name: "SOH Order Management",
     kind: "operations software",
     year: "2025",
-    tagline: "orders, documents and emails for a fuel distributor, end to end.",
-    problem:
-      "every order at a bulk fuel distributor meant hand-made documents, hand-sent emails and a spreadsheet to keep track of it all.",
-    built:
-      "an order system on Google's APIs that generates the documents, dispatches the emails and tracks every order from request to delivery.",
-    outcome: { kind: "number", value: "90%+", label: "less time to process an order" },
-    facts: ["in daily use at SOH Energy", "documents, emails and tracking in one place"],
+    tagline: "orders, documents and emails in one system.",
+    built: "makes the documents, sends the emails and tracks each order.",
+    outcome: { kind: "number", value: "90%+", label: "less time per order" },
+    facts: [],
     tools: ["appsscript", "sheets", "javascript"],
     video: "/media/soh-demo.mp4",
     poster: "/media/soh-poster.jpg",
@@ -285,12 +275,10 @@ export const PROJECTS: Project[] = [
     name: "Fortell",
     kind: "no-code ML web app",
     year: "2025",
-    tagline: "spreadsheet in, research paper out.",
-    problem: "training and writing up a model takes code, time and a lot of formatting most people don't have.",
-    built:
-      "a full-stack app that cleans the data, trains and compares six models, then a team of LLM agents writes the results up with real citations. exports to PDF, Word or LaTeX.",
-    outcome: { kind: "number", value: "6 models", label: "trained and compared on every upload" },
-    facts: ["agents write it up with real citations", "PDF · Word · LaTeX export"],
+    tagline: "upload a spreadsheet, get a paper.",
+    built: "cleans the data, trains six models, and LLM agents write it up with citations. exports PDF, Word or LaTeX.",
+    outcome: { kind: "number", value: "6 models", label: "per upload" },
+    facts: [],
     tools: ["python", "react", "node"],
     video: "/media/fortell-demo.mp4",
     poster: "/media/fortell-poster.jpg",
@@ -302,12 +290,10 @@ export const PROJECTS: Project[] = [
     name: "AI recruitment agent",
     kind: "LLM agent",
     year: "2025",
-    tagline: "CVs in, a ranked shortlist and the emails out.",
-    problem: "shortlisting candidates meant reading every CV by hand, then writing to each one.",
-    built:
-      "an AI agent that reads each CV against the role, scores and ranks the candidates, and drafts the emails to send, end to end.",
-    outcome: { kind: "shift", before: "manual shortlisting", after: "screened, ranked and emailed automatically" },
-    facts: ["built for hiring at SOH Energy"],
+    tagline: "screens and ranks CVs.",
+    built: "scores each CV against the role, ranks the candidates and drafts the emails.",
+    outcome: { kind: "shift", before: "manual shortlisting", after: "automatic" },
+    facts: [],
     tools: ["python", "appsscript", "sheets"],
     visual: "recruiter",
     address: "agent · screening",
@@ -352,7 +338,6 @@ export const EXPERIENCE = [
     role: "Operations Intern · Chase Logistics",
     points: [
       "tracked product to terminals, calibrated flow meters against prover tanks, and checked pumps, valves, pipelines and tanks",
-      "first-hand look at the operational data problems i now automate",
     ],
   },
 ];
@@ -371,12 +356,12 @@ export const ACTIVITIES = [
 ];
 
 export const MOMENTS = [
-  { src: "/media/atc-2026.jpg", caption: "delegate at SPE ATC 2026", place: "Abidjan", w: 480, h: 640 },
-  { src: "/media/buildingbytes-1.jpg", caption: "pitching at Building Bytes", place: "Kumasi", w: 1080, h: 720 },
-  { src: "/media/energy4me-1.jpg", caption: "SPE Energy4me outreach", place: "Kumasi", w: 800, h: 312 },
-  { src: "/portrait-card.jpg", caption: "between builds", place: "Accra", w: 900, h: 1200 },
-  { src: "/media/buildingbytes-2.jpg", caption: "Building Bytes demo day", place: "Kumasi", w: 1080, h: 720 },
-  { src: "/media/energy4me-2.jpg", caption: "teaching energy in schools", place: "Energy4me", w: 480, h: 319 },
+  { src: "/media/atc-2026.jpg", caption: "SPE ATC 2026, Abidjan", place: "", w: 480, h: 640 },
+  { src: "/media/buildingbytes-1.jpg", caption: "Building Bytes, Kumasi", place: "", w: 1080, h: 720 },
+  { src: "/media/energy4me-1.jpg", caption: "SPE Energy4me", place: "", w: 800, h: 312 },
+  { src: "/portrait-card.jpg", caption: "Accra", place: "", w: 900, h: 1200 },
+  { src: "/media/buildingbytes-2.jpg", caption: "Building Bytes demo day", place: "", w: 1080, h: 720 },
+  { src: "/media/energy4me-2.jpg", caption: "Energy4me school visit", place: "", w: 480, h: 319 },
 ];
 
 /* ── Reading ── */
@@ -436,7 +421,7 @@ export const COLLECTIONS: { id: CollectionId; path: string; title: string; label
     path: "/projects/energy",
     title: "ML for the subsurface",
     label: "energy",
-    intro: "machine learning on physical systems: rock, well and production data, from flow units to causal links between wells.",
+    intro: "machine learning on rock, well and production data.",
     note: "rocks, wells and fields",
   },
   {

@@ -10,13 +10,13 @@ import { MOMENTS } from "@/data";
 type ReelItem = { src: string; title: string; note: string; href: string; position?: string };
 
 const REEL: ReelItem[] = [
-  { src: "/media/reschar-poster.jpg", title: "RescharAI", note: "desktop app · 2025", href: "#case-reschar" },
-  { src: "/media/jag-cover.jpg", title: "J. Applied Geophysics", note: "paper · 2025", href: "#research", position: "50% 20%" },
-  { src: "/media/soh-poster.jpg", title: "SOH Order Management", note: "operations software", href: "#case-soh" },
-  { src: "/media/paper-waterinjectors.png", title: "SPE ATC 2026", note: "paper · causal models", href: "#research", position: "20% 30%" },
-  { src: "/media/fortell-poster.jpg", title: "Fortell", note: "no-code ML web app", href: "#case-fortell" },
-  { src: "/media/paper-flowunit.png", title: "Hydraulic flow units", note: "autoencoders + K-means", href: "#research", position: "18% 40%" },
-  { src: "/media/atc-2026.jpg", title: "Abidjan", note: "presenting at ATC 2026", href: "#moments", position: "50% 30%" },
+  { src: "/media/reschar-poster.jpg", title: "RescharAI", note: "2025", href: "#case-reschar" },
+  { src: "/media/jag-cover.jpg", title: "J. Applied Geophysics", note: "2025", href: "#research", position: "50% 20%" },
+  { src: "/media/soh-poster.jpg", title: "SOH Order Management", note: "2025", href: "#case-soh" },
+  { src: "/media/paper-waterinjectors.png", title: "SPE ATC 2026", note: "2026", href: "#research", position: "20% 30%" },
+  { src: "/media/fortell-poster.jpg", title: "Fortell", note: "2025", href: "#case-fortell" },
+  { src: "/media/paper-flowunit.png", title: "Hydraulic flow units", note: "2025", href: "#research", position: "18% 40%" },
+  { src: "/media/atc-2026.jpg", title: "Abidjan", note: "2026", href: "#moments", position: "50% 30%" },
 ];
 
 export function WorkReel() {
@@ -43,9 +43,8 @@ export function WorkReel() {
           <span className="font-semibold">{current.title}</span> <span className="text-muted-foreground">· {current.note}</span>
         </p>
         <div className="flex items-center gap-4">
-          <span className="kicker hidden sm:inline">drag · scroll · arrow keys</span>
           <a href={current.href} className="link inline-flex items-center gap-1 text-[0.9375rem] font-medium">
-            go to it <ArrowDownRight className="size-4" />
+            view <ArrowDownRight className="size-4" />
           </a>
         </div>
       </div>
@@ -86,7 +85,7 @@ export function PhotoWall() {
         <figure className="group">
           <button
             type="button"
-            onClick={() => view({ title: "In the room", items: MOMENTS.map((x) => ({ src: x.src, caption: `${x.caption} · ${x.place}` })), start: i, download: false })}
+            onClick={() => view({ title: "Photos", items: MOMENTS.map((x) => ({ src: x.src, caption: x.caption })), start: i, download: false })}
             className="block w-full overflow-hidden rounded-xl bg-card-2"
             aria-label={`Open photo: ${m.caption}`}
           >
@@ -99,10 +98,7 @@ export function PhotoWall() {
               style={{ aspectRatio: `${m.w} / ${m.h}` }}
             />
           </button>
-          <figcaption className="flex items-baseline justify-between gap-3 px-1 pt-2.5">
-            <span className="text-[0.875rem] font-medium">{m.caption}</span>
-            <span className="kicker shrink-0">{m.place}</span>
-          </figcaption>
+          <figcaption className="px-1 pt-2.5 text-[0.875rem] text-muted-foreground">{m.caption}</figcaption>
         </figure>
       )}
     />

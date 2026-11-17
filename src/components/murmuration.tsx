@@ -305,8 +305,10 @@ export function Murmuration() {
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = window.innerWidth;
-      H = window.innerHeight;
+      // Fills its parent (the hero), not the window.
+      const box = canvas.parentElement!.getBoundingClientRect();
+      W = Math.max(1, Math.round(box.width));
+      H = Math.max(1, Math.round(box.height));
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
       canvas.style.width = `${W}px`;
@@ -357,13 +359,24 @@ export function Murmuration() {
     let mx = -1e4;
     let my = -1e4;
     const onMove = (e: PointerEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
+      const r = canvas.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
     };
+    // Only animate while the hero is on screen.
+    let visible = true;
+    const io = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting));
+    io.observe(canvas);
+    const ro = new ResizeObserver(onResizeLater);
+    ro.observe(canvas.parentElement!);
     const onLeave = () => {
       mx = my = -1e4;
     };
     let resizeTimer = 0;
+    function onResizeLater() {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 150);
+    }
     const onResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(resize, 150);
@@ -375,6 +388,8 @@ export function Murmuration() {
     document.addEventListener("pointerleave", onLeave);
     const cleanup = () => {
       clearTimeout(resizeTimer);
+      io.disconnect();
+      ro.disconnect();
       themeObs.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onMove);
@@ -656,6 +671,11 @@ export function Murmuration() {
     let last = start;
 
     const frame = (now: number) => {
+      if (!visible) {
+        last = now;
+        raf = requestAnimationFrame(frame);
+        return;
+      }
       const dt = Math.min(2.5, (now - last) / 16.67);
       last = now;
       const t = now - start;
@@ -691,5 +711,5 @@ export function Murmuration() {
     };
   }, []);
 
-  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 -z-10" />;
+  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute inset-0" />;
 }
