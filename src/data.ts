@@ -12,7 +12,7 @@ export const PROFILE = {
   phone: "+233 592 763 423",
   phoneHref: "tel:+233592763423",
   github: "https://github.com/Calibre-sys",
-  linkedin: "https://www.linkedin.com/",
+  linkedin: "https://www.linkedin.com/in/deon-takyi-amponsem",
   cv: "/Deon-Takyi-Amponsem-CV.pdf",
   portrait: "/portrait-card.jpg",
 };
