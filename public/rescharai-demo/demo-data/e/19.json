@@ -1,1 +1,1 @@
-{"status":200,"data":{"status":"success","active_well_id":"6420f11f-cf87-4d3a-9830-80b2108a282b","well_name":"Demo Well B"}}
+{"status":200,"data":{"state":"active","licensed":true,"reason":"active","offline":false,"email":"demo@rescharai.app","name":"Demo visitor","features":[],"expires_at":null,"valid_until":null}}

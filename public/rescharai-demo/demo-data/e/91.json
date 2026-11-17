@@ -1,1 +1,1 @@
-{"status":404,"data":{"detail":"No alignment results found"}}
+{"status":400,"data":{"detail":"No propagated data"}}

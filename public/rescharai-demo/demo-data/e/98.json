@@ -1,1 +1,0 @@
-{"status":422,"data":{"detail":{"message":"Volumetrics needs at least one well with net pay, porosity and water saturation.","warnings":["Demo Well B: no water saturation over net pay; excluded from volumetrics.","Demo Well C: no net pay thickness - run Net Pay Delineation; excluded from volumetrics.","Demo Well A: no water saturation over net pay; excluded from volumetrics."]}}}

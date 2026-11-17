@@ -28,6 +28,7 @@ import {
 import { cn } from "@/lib/utils";
 import { BookCover } from "./book-cover";
 import { FlowUnitLab } from "./flow-unit-lab";
+import { LiveDemo } from "./live-demo";
 import { PhotoStack } from "./photo-stack";
 import { ProjectVisual } from "./visuals";
 import { HangingTools } from "./tools";
@@ -244,6 +245,9 @@ export function Work() {
         </Reveal>
         <Reveal className="lg:col-span-6">
           <ProjectCard project={byId("reschar")} wide />
+        </Reveal>
+        <Reveal className="lg:col-span-6">
+          <LiveDemo />
         </Reveal>
         <Reveal className="lg:col-span-6">
           <ProjectCard project={byId("fortell")} wide />
