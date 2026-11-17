@@ -33,7 +33,7 @@ import { Murmuration } from "./murmuration";
 import { PhotoStack } from "./photo-stack";
 import { HangingTools, TOOLS } from "./tools";
 import { ProjectVisual } from "./visuals";
-import { PhotoWall, WorkReel } from "./work-reel";
+import { PhotoWall } from "./photo-wall";
 import { Reveal, Section } from "./kit";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -111,13 +111,6 @@ export function Header() {
 
 /* ───────── Hero ───────── */
 
-const RECEIPTS = [
-  { value: "90%+", label: "less time per order", href: "#case-soh", thumb: "/media/soh-poster.jpg" },
-  { value: "455/880", label: "converted, zero calls", href: "#case-outreach", thumb: null },
-  { value: "2", label: "peer-reviewed papers", href: "#research", thumb: "/media/jag-cover.jpg" },
-  { value: "live", label: "RescharAI demo", href: "#demo", thumb: "/media/reschar-poster.jpg" },
-];
-
 export function Hero() {
   const reduce = useReducedMotion();
   const openCv = useCv();
@@ -166,37 +159,8 @@ export function Hero() {
             <PhotoStack />
           </motion.div>
         </div>
-
-        {/* Receipts: what the work did, each one linking to the work itself. */}
-        <motion.div {...rise(5)} className="mt-16 sm:mt-20">
-          <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            {RECEIPTS.map((r) => (
-              <li key={r.label}>
-                <a href={r.href} className="surface group flex h-full items-center gap-4 p-3.5 pr-4 transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-border-strong sm:p-4">
-                  <span className="hidden size-14 shrink-0 overflow-hidden rounded-lg border border-border bg-card-2 sm:block">
-                    {r.thumb ? <img src={r.thumb} alt="" loading="lazy" className="size-full object-cover" /> : <DotThumb />}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-display text-[1.625rem] leading-none font-semibold tracking-[-0.03em] text-foreground group-hover:text-accent">{r.value}</span>
-                    <span className="mt-1.5 block text-[0.8125rem] leading-snug text-muted-foreground">{r.label}</span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </motion.div>
       </div>
     </section>
-  );
-}
-
-function DotThumb() {
-  return (
-    <svg viewBox="0 0 56 56" className="size-full" aria-hidden>
-      {Array.from({ length: 49 }, (_, i) => (
-        <circle key={i} cx={6 + (i % 7) * 7.3} cy={6 + Math.floor(i / 7) * 7.3} r={2.2} fill={(i * 37) % 100 < 52 ? "var(--accent)" : "var(--border-strong)"} />
-      ))}
-    </svg>
   );
 }
 
@@ -207,10 +171,6 @@ export function Work() {
   const rest = PROJECTS.filter((p) => p.id !== "reschar");
   return (
     <Section id="work" title="work" className="border-t border-border">
-      <Reveal className="mb-20 sm:mb-28">
-        <WorkReel />
-      </Reveal>
-
       <div className="grid gap-24 sm:gap-32">
         <div className="grid gap-10">
           <Case project={byId("reschar")} n={1} />
