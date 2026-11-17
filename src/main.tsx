@@ -4,6 +4,8 @@ import "@fontsource/hanken-grotesk/400";
 import "@fontsource/hanken-grotesk/500";
 import "@fontsource/hanken-grotesk/600";
 import "@fontsource/caveat/600";
+import "@fontsource/geist-mono/400";
+import "@fontsource/geist-mono/500";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";

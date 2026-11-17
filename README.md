@@ -1,6 +1,6 @@
 # deontakyi — portfolio
 
-Personal site of Deon Takyi-Amponsem. Built with Vite, React, Tailwind CSS v4 and Motion, with components adapted from [beUI](https://beui.dev) (MIT): Arc Picker, Card, Card Folder, Digit Swap, Theme Toggle and Action Swap. Tools hang off the work they were used for (`src/components/tools.tsx`). Page sections live in `src/components/site.tsx`.
+Personal site of Deon Takyi-Amponsem. Built with Vite, React, Tailwind CSS v4 and Motion, with components adapted from [beUI](https://beui.dev) (MIT): Arc Picker, Card, Card Folder, Cylinder Carousel, Digit Swap, Infinite Masonry, Loader, Theme Toggle and Action Swap. Text scrambles in as it scrolls into view (`src/lib/scramble.ts`). Tools hang off the work they were used for (`src/components/tools.tsx`). Page sections live in `src/components/site.tsx`.
 
 ```bash
 npm install

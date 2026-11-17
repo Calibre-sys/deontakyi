@@ -11,17 +11,20 @@ export function Reveal({
   className,
   as = "div",
   y = 20,
+  id,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
   as?: "div" | "li" | "p" | "figure" | "article";
   y?: number;
+  id?: string;
 }) {
   const reduce = useReducedMotion();
   const Tag = motion[as];
   return (
     <Tag
+      id={id}
       className={className}
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -36,22 +39,28 @@ export function Reveal({
 /** A page section with a title row: title on the left, an optional note or link on the right. */
 export function Section({
   id,
+  index,
   title,
   aside,
   children,
   className,
 }: {
   id: string;
+  /** Section number shown above the title, e.g. "01". */
+  index?: string;
   title: string;
   aside?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <section id={id} className={cn("container-x py-20 sm:py-28", className)}>
-      <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 sm:mb-14">
-        <h2 className="section-title">{title}</h2>
-        {aside && <div className="text-[0.9375rem] text-muted-foreground">{aside}</div>}
+    <section id={id} className={cn("container-x py-24 sm:py-32", className)}>
+      <Reveal className="mb-12 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 sm:mb-16">
+        <div>
+          {index && <p className="kicker mb-4">{index} — {title}</p>}
+          <h2 className="section-title">{title}</h2>
+        </div>
+        {aside && <div className="kicker max-w-[32ch] sm:text-right">{aside}</div>}
       </Reveal>
       {children}
     </section>
