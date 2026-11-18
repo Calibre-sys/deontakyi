@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 export function WindowFrame({ title, children, className }: { title?: string; children: ReactNode; className?: string }) {
   return (
     <figure className={cn("min-w-0", className)}>
-      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-frame">{children}</div>
-      {title && <figcaption className="mt-3 text-[0.8125rem] text-muted-foreground">{title}</figcaption>}
+      <div className="relative overflow-hidden bg-card outline-1 -outline-offset-1 outline-rule-2">{children}</div>
+      {title && <figcaption className="mt-3 text-[0.875rem] font-medium text-muted-foreground">{title}</figcaption>}
     </figure>
   );
 }

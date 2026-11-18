@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Download, FileText, Mail, MapPin, Phone } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Fragment, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { Fragment, useState } from "react";
 import { siGithub } from "simple-icons";
 import { ArcPicker } from "@/components/motion/arc-picker";
 import { CardFolder } from "@/components/motion/card-folder";
@@ -33,6 +33,7 @@ import { HangingTools } from "./tools";
 import { ProjectVisual } from "./visuals";
 import { PhotoWall } from "./photo-wall";
 import { Reveal, Section } from "./kit";
+import { WorkMap } from "./work-map";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const NAV = [
@@ -42,6 +43,9 @@ const NAV = [
   { href: "/#credentials", label: "Certifications" },
   { href: "/#contact", label: "Contact" },
 ];
+
+/** Twelve columns inside the container, one gap. */
+const GRID = "grid gap-x-[var(--gap-columns)] lg:grid-cols-12";
 
 function useCv() {
   const view = useViewer();
@@ -56,34 +60,26 @@ export function GithubMark({ className }: { className?: string }) {
   );
 }
 
-/* ───────── Header ───────── */
+/* ───────── Header: a slab ───────── */
 
 export function Header() {
   const openCv = useCv();
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 8);
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
-  }, []);
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-300",
-        scrolled ? "border-border bg-background" : "border-transparent bg-transparent",
-      )}
-    >
-      <div className="container-x flex h-16 items-center gap-4">
-        <a href="/" className="mr-auto flex items-center gap-2.5">
-          <span className="flex size-7 items-center justify-center rounded-md bg-foreground text-[0.6875rem] font-semibold text-background" data-no-scramble>
+    <header className="sticky top-0 z-40 border-b-2 border-rule-2 bg-card-2">
+      <div className="container-x flex h-[var(--nav-h)] items-center gap-3">
+        <a href="/" className="mr-auto flex items-center gap-3">
+          <span className="flex size-8 items-center justify-center bg-foreground font-display text-[0.75rem] font-semibold text-background" data-no-scramble>
             DT
           </span>
-          <span className="hidden text-[0.9375rem] font-semibold tracking-[-0.02em] sm:inline">Deon Takyi-Amponsem</span>
+          <span className="hidden font-display text-[1.0625rem] font-semibold tracking-[-0.02em] text-foreground sm:inline">Deon Takyi-Amponsem</span>
         </a>
-        <nav aria-label="Sections" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Sections" className="mr-3 hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
-            <a key={item.href} href={item.href} className="rounded-md px-3 py-1.5 text-[0.875rem] text-muted-foreground transition-colors hover:text-foreground">
+            <a
+              key={item.href}
+              href={item.href}
+              className="px-3 py-2 text-[1rem] font-medium text-muted-foreground underline-offset-[0.3em] transition-colors hover:text-foreground hover:underline hover:decoration-accent"
+            >
               {item.label}
             </a>
           ))}
@@ -93,12 +89,12 @@ export function Header() {
           target="_blank"
           rel="noopener"
           aria-label="GitHub"
-          className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-card-2 hover:text-foreground"
+          className="flex size-11 items-center justify-center text-muted-foreground transition-colors hover:bg-card-3 hover:text-foreground"
         >
           <GithubMark className="size-[1.125rem]" />
         </a>
-        <ThemeToggle variant="circle-blur" start="top-right" className="size-9 rounded-lg text-muted-foreground hover:bg-card-2 hover:text-foreground" iconClassName="size-4" />
-        <button type="button" onClick={openCv} className="btn h-9 px-3.5 text-[0.875rem]">
+        <ThemeToggle variant="circle-blur" start="top-right" className="size-11 rounded-none text-muted-foreground hover:bg-card-3 hover:text-foreground" iconClassName="size-4" />
+        <button type="button" onClick={openCv} className="btn btn-ghost px-4">
           CV
         </button>
       </div>
@@ -106,31 +102,28 @@ export function Header() {
   );
 }
 
-/* ───────── Hero ───────── */
-
+/* ───────── Hero: the field above, the name resting at its base ───────── */
 
 export function Hero() {
-  const reduce = useReducedMotion();
   const openCv = useCv();
-  const rise = (i: number) =>
-    reduce ? {} : { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.9, ease: EASE, delay: 0.05 + i * 0.08 } };
-
   return (
-    <section id="top" className="relative">
-      <Murmuration />
-      <div className="container-x relative pt-12 pb-16 sm:pt-20 sm:pb-20">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7">
-            <motion.h1 {...rise(0)} className="text-[clamp(2.75rem,1.6rem+4.4vw,4.75rem)] leading-[0.98]">
-              Hi, I’m Deon.
-              <span className="mt-4 block max-w-[20ch] text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] leading-[1.15] tracking-[-0.03em] text-muted-foreground">
-                I build software for subsurface data.
-              </span>
-            </motion.h1>
-            <motion.p {...rise(1)} className="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-muted-foreground">
+    <section id="top" className="relative flex min-h-[calc(100svh-var(--nav-h))] flex-col">
+      <div className="relative min-h-[15rem] flex-1 overflow-hidden" aria-hidden>
+        <Murmuration />
+      </div>
+      <div className="container-x pb-12 lg:pb-14">
+        <div className={cn(GRID, "gap-y-8 border-t-2 border-rule-2 pt-7 lg:items-end")}>
+          <h1 className="max-w-none text-display leading-[0.9] tracking-[-0.04em] lg:col-span-8">
+            Hi, I’m Deon.
+            <span className="mt-4 block max-w-[19ch] text-display-s leading-[1.02] tracking-[-0.03em] text-ink-2">
+              I build software for subsurface data.
+            </span>
+          </h1>
+          <div className="lg:col-span-4">
+            <p className="max-w-[38ch] text-lead leading-[1.45] text-ink-2">
               Petroleum engineer in {PROFILE.location}, and a self-taught developer. I use machine learning on rocks, wells and reservoirs, and turn it into tools people use.
-            </motion.p>
-            <motion.div {...rise(2)} className="mt-8 flex flex-wrap gap-3">
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
               <a href="#work" className="btn">
                 See the work
               </a>
@@ -140,155 +133,245 @@ export function Hero() {
               <button type="button" onClick={openCv} className="btn btn-ghost">
                 <FileText className="size-4" /> CV
               </button>
-            </motion.div>
+            </div>
           </div>
-          <motion.div
-            className="lg:col-span-5"
-            initial={reduce ? false : { opacity: 0, y: 30, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-          >
-            <PhotoStack />
-          </motion.div>
         </div>
-
       </div>
     </section>
   );
 }
 
-/* ───────── Work: case studies ───────── */
+/* ───────── Where: the prints, the school, the work outside class ───────── */
 
-export function Work() {
-  const byId = (id: string) => PROJECTS.find((p) => p.id === id)!;
-  const rest = PROJECTS.filter((p) => p.id !== "reschar");
+export function About() {
   return (
-    <Section id="work" title="Work" className="border-t border-border">
-      <div className="grid gap-20 sm:gap-28">
-        <div className="grid gap-10">
-          <Case project={byId("reschar")} />
-          <Reveal id="demo">
-            <LiveDemo />
-          </Reveal>
+    <section id="about" className="py-[calc(var(--section-gap-l)/2)]">
+      <div className={cn("container-x", GRID, "gap-y-16 lg:items-center")}>
+        <div className="mx-auto w-full max-w-[30rem] lg:col-span-5 lg:max-w-none">
+          <PhotoStack />
         </div>
-        {rest.map((p, i) => (
-          <Case key={p.id} project={p} flip={i % 2 === 0} />
-        ))}
+        <div className="min-w-0 lg:col-span-6 lg:col-start-7">
+          <h2 className="section-title">{PROFILE.location}</h2>
+          <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <div>
+              <h3 className="border-b-2 border-rule-2 pb-3 text-[1.125rem]">School</h3>
+              <ul className="divide-y divide-border">
+                {EDUCATION.map((e) => (
+                  <li key={e.org} className="flex gap-4 py-4">
+                    <Logo src={e.logo} name={e.org} />
+                    <div className="min-w-0">
+                      <p className="font-medium text-foreground">{e.org}</p>
+                      <p className="text-[0.9375rem]">{e.role}</p>
+                      <p className="text-[0.875rem] text-muted-foreground">
+                        {e.when}
+                        {e.note ? `. ${e.note}` : ""}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="border-b-2 border-rule-2 pb-3 text-[1.125rem]">Outside class</h3>
+              <ul className="divide-y divide-border">
+                {ACTIVITIES.map((a) => (
+                  <li key={a.name} className="flex items-center gap-4 py-3">
+                    <Logo src={a.logo} name={a.name} />
+                    <div className="min-w-0">
+                      <p className="font-medium leading-snug text-foreground">{a.name}</p>
+                      <p className="text-[0.875rem] text-muted-foreground">{a.detail}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
+    </section>
+  );
+}
 
-      <Reveal className="mt-24">
-        <CollectionLinks />
-      </Reveal>
+/* ───────── The map: rocks and wells in, tools out ───────── */
+
+export function MapSection() {
+  return (
+    <Section id="map" title="Rocks and wells in, tools out." className="pt-[calc(var(--section-gap-s)/2)]">
+      <WorkMap />
     </Section>
   );
 }
 
-function Case({ project, flip }: { project: Project; flip?: boolean }) {
+/* ───────── Work ───────── */
+
+export function Work() {
+  const lead = PROJECTS.find((p) => p.id === "reschar")!;
+  const rest = PROJECTS.filter((p) => p.id !== "reschar");
   return (
-    <article id={`case-${project.id}`} className="grid scroll-mt-24 items-center gap-10 lg:grid-cols-12 lg:gap-14">
-      <Reveal className={cn("lg:col-span-7", flip && "lg:order-2")}>
-        <WindowFrame title={project.address !== project.name ? project.address : undefined}>
-          {project.video ? (
-            <CaseVideo src={project.video} poster={project.poster} title={project.name} />
-          ) : project.visual === "outreach" ? (
-            <OutreachReplay />
-          ) : (
-            <RecruiterFlow />
-          )}
-        </WindowFrame>
+    <Section id="work" title="Work">
+      <LeadCase project={lead} />
+      <Reveal id="demo" className="mt-20">
+        <LiveDemo />
       </Reveal>
+      <div className="mt-28 grid gap-x-[var(--gap-columns)] gap-y-24 md:grid-cols-2">
+        {rest.map((p) => (
+          <Case key={p.id} project={p} />
+        ))}
+      </div>
+      <CollectionLinks />
+    </Section>
+  );
+}
 
-      <Reveal delay={0.08} className={cn("lg:col-span-5", flip && "lg:order-1")}>
-        <h3 className="text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-[1.05]">{project.name}</h3>
-        <p className="mt-2 text-[1.0625rem] text-muted-foreground">{project.tagline}</p>
-        <p className="kicker mt-3">
-          <time>{project.year}</time>
-          {project.private && <span className="ml-3">Private</span>}
-        </p>
+function CaseVisual({ project }: { project: Project }) {
+  return (
+    <WindowFrame title={project.address !== project.name ? project.address : undefined}>
+      {project.video ? (
+        <CaseVideo src={project.video} poster={project.poster} title={project.name} />
+      ) : project.visual === "outreach" ? (
+        <OutreachReplay />
+      ) : (
+        <RecruiterFlow />
+      )}
+    </WindowFrame>
+  );
+}
 
-        {project.outcome && (
-          <div className="mt-8">
-            <p className="text-[clamp(2.5rem,2rem+2vw,3.5rem)] leading-none font-semibold tracking-[-0.05em]">{project.outcome.value}</p>
-            <p className="mt-2 text-[0.9375rem] text-muted-foreground">{project.outcome.label}</p>
-          </div>
-        )}
+function CaseMeta({ project }: { project: Project }) {
+  return (
+    <p className="kicker mt-3">
+      <time className="num">{project.year}</time>
+      {project.private && <span className="ml-3">Private</span>}
+    </p>
+  );
+}
 
-        <p className="mt-6 max-w-[52ch] text-[1rem] leading-relaxed">{project.built}</p>
+function CaseLinks({ project }: { project: Project }) {
+  if (!project.links) return null;
+  return (
+    <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[1rem]">
+      {project.links.map((l) => (
+        <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link inline-flex items-center gap-1 font-medium">
+          {l.label} <ArrowUpRight className="size-4" />
+        </a>
+      ))}
+    </div>
+  );
+}
 
-        {project.links && (
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
-            {project.links.map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noopener" className="link inline-flex items-center gap-1">
-                {l.label} <ArrowUpRight className="size-4" />
-              </a>
-            ))}
-          </div>
-        )}
+function Outcome({ project }: { project: Project }) {
+  if (!project.outcome) return null;
+  return (
+    <div className="mt-7 border-t border-border pt-5">
+      <p className="num text-[clamp(2.5rem,1.8rem+2.4vw,3.75rem)] leading-none font-medium tracking-[-0.04em] text-foreground">{project.outcome.value}</p>
+      <p className="mt-2 text-[0.9375rem] font-medium text-muted-foreground">{project.outcome.label}</p>
+    </div>
+  );
+}
+
+/** The lead case: the product on seven columns, the facts on four. */
+function LeadCase({ project }: { project: Project }) {
+  return (
+    <article id={`case-${project.id}`} className={cn(GRID, "scroll-mt-24 gap-y-10 lg:items-center")}>
+      <div className="min-w-0 lg:col-span-7">
+        <CaseVisual project={project} />
+      </div>
+      <div className="min-w-0 lg:col-span-4 lg:col-start-9">
+        <h3 className="text-display-s leading-[1] tracking-[-0.03em]">{project.name}</h3>
+        <p className="mt-3 text-lead text-ink-2">{project.tagline}</p>
+        <CaseMeta project={project} />
+        <p className="mt-6 max-w-[52ch]">{project.built}</p>
+        <CaseLinks project={project} />
         <HangingTools tools={project.tools} rod size={32} align="start" className="mt-6 w-fit min-w-[10rem]" />
-      </Reveal>
+      </div>
     </article>
   );
 }
 
-/* ───────── Research ───────── */
-
-export function Publications() {
+/** A case in the two-across grid: the product above, the facts beneath. */
+function Case({ project }: { project: Project }) {
   return (
-    <Section id="research" title="Research" className="border-t border-border">
-      <ol className="grid gap-6">
-        {PAPERS.map((paper, i) => (
-          <Reveal as="li" key={paper.id} delay={i * 0.06}>
-            <PaperCase paper={paper} />
-          </Reveal>
-        ))}
-      </ol>
-    </Section>
+    <article id={`case-${project.id}`} className="flex min-w-0 scroll-mt-24 flex-col">
+      <CaseVisual project={project} />
+      <div className="mt-8">
+        <h3 className="text-title tracking-[-0.02em] sm:text-[1.875rem]">{project.name}</h3>
+        <p className="mt-2 text-[1.125rem] text-ink-2">{project.tagline}</p>
+        <CaseMeta project={project} />
+        <Outcome project={project} />
+        <p className="mt-6 max-w-[56ch]">{project.built}</p>
+        <CaseLinks project={project} />
+        <HangingTools tools={project.tools} rod size={32} align="start" className="mt-6 w-fit min-w-[10rem]" />
+      </div>
+    </article>
   );
 }
 
-function PaperCase({ paper }: { paper: Paper }) {
+/* ───────── Research: the one ink band ───────── */
+
+export function Publications() {
+  return (
+    <section id="research" className="band-ink py-[var(--section-gap-s)]">
+      <div className="container-x">
+        <div className={cn(GRID, "mb-4 gap-y-4 border-t-2 border-band-line pt-6")}>
+          <h2 className="section-title lg:col-span-6">Research</h2>
+        </div>
+        <ol>
+          {PAPERS.map((paper) => (
+            <li key={paper.id} id={`paper-${paper.id}`} className="scroll-mt-24 border-b border-band-line last:border-b-0">
+              <PaperRow paper={paper} />
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function PaperRow({ paper }: { paper: Paper }) {
   const view = useViewer();
   return (
-    <article className="surface grid gap-8 overflow-hidden p-5 sm:p-8 lg:grid-cols-12 lg:gap-10">
-      <div className="lg:col-span-5">
-        <button
-          type="button"
-          onClick={() => view({ title: paper.title, items: [{ src: paper.screenshot, caption: `${paper.venue}, ${paper.detail}` }] })}
-          className="block w-full overflow-hidden rounded-lg text-left transition-opacity duration-300 hover:opacity-90"
-          aria-label={`Open the publisher page for ${paper.title}`}
-        >
-          <span className="relative block aspect-[16/10]">
-            <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top" />
-            {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] rounded-sm shadow-lg ring-1 ring-black/10" />}
-          </span>
-        </button>
-        <HangingTools tools={paper.tools} size={30} align="start" rod className="mt-2 max-w-[17rem]" />
+    <article className={cn(GRID, "gap-y-8 py-12")}>
+      <div className="lg:col-span-3">
+        <p className="num text-[1.5rem] leading-none font-medium tracking-[-0.03em] text-band-text">{paper.year}</p>
+        <p className="mt-3 text-[1rem] font-medium text-band-text">{paper.venue}</p>
+        <p className="mt-1 text-[0.875rem] text-band-text-2">{paper.detail}</p>
       </div>
-      <div className="min-w-0 lg:col-span-7">
-        <h3 className="font-sans text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.375rem]">
-          <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener" className="hover:underline hover:decoration-border-strong hover:underline-offset-4">
+      <div className="min-w-0 lg:col-span-5">
+        <h3 className="text-[1.375rem] leading-[1.3] tracking-[-0.015em] sm:text-[1.5rem]">
+          <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener" className="decoration-accent underline-offset-4 hover:underline">
             {paper.title}
           </a>
         </h3>
-        <p className="mt-2 text-[0.9375rem]">
-          {paper.venue}, <time>{paper.year}</time>
-        </p>
-        <p className="mt-3 text-[0.875rem] leading-relaxed text-muted-foreground">
+        <p className="mt-4 text-[0.9375rem] leading-relaxed">
           {paper.authors.map((a, j) => (
             <Fragment key={a}>
-              <span className={a === ME_AS_AUTHOR ? "font-medium text-foreground" : undefined}>{a}</span>
+              <span className={a === ME_AS_AUTHOR ? "font-semibold text-band-text" : undefined}>{a}</span>
               {j < paper.authors.length - 1 ? ", " : ""}
             </Fragment>
           ))}
         </p>
-        <p className="mt-5 max-w-[60ch] leading-relaxed">{paper.summary}</p>
-        <p className="mt-3 text-[0.875rem] text-muted-foreground">{paper.methods.join(", ")}</p>
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[0.9375rem]">
-          <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener" className="link inline-flex items-center gap-1">
+        <p className="mt-5 max-w-[60ch] text-band-text">{paper.summary}</p>
+        <p className="mt-3 text-[0.9375rem]">{paper.methods.join(", ")}</p>
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1 text-[1rem]">
+          <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener" className="link inline-flex items-center gap-1 font-medium">
             Read the paper <ArrowUpRight className="size-4" />
           </a>
           <CopyCitation paper={paper} />
         </div>
+      </div>
+      <div className="min-w-0 lg:col-span-4">
+        <button
+          type="button"
+          onClick={() => view({ title: paper.title, items: [{ src: paper.screenshot, caption: `${paper.venue}, ${paper.detail}` }] })}
+          className="block w-full overflow-hidden text-left outline-1 -outline-offset-1 outline-band-line transition-opacity duration-300 hover:opacity-90"
+          aria-label={`Open the publisher page for ${paper.title}`}
+        >
+          <span className="relative block aspect-[16/10]">
+            <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top" />
+            {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] shadow-print" />}
+          </span>
+        </button>
+        <HangingTools tools={paper.tools} size={30} align="start" rod className="mt-2 max-w-[17rem]" />
       </div>
     </article>
   );
@@ -300,7 +383,7 @@ function CopyCitation({ paper }: { paper: Paper }) {
   return (
     <button
       type="button"
-      className="inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+      className="inline-flex min-h-11 items-center gap-1.5 font-sans text-band-text-2 transition-colors hover:text-band-text"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(text);
@@ -321,25 +404,25 @@ function CopyCitation({ paper }: { paper: Paper }) {
 
 function CollectionLinks() {
   return (
-    <div>
-      <h3 className="mb-6 text-[1.5rem] leading-tight">More work</h3>
-      <div className="grid gap-4 md:grid-cols-2">
+    <div className="mt-28">
+      <h3 className="mb-6 text-title">More work</h3>
+      <div className="grid gap-x-[var(--gap-columns)] gap-y-10 md:grid-cols-2">
         {COLLECTIONS.map((c) => {
           const entries = ENTRIES.filter((e) => e.collection === c.id);
           return (
-            <a key={c.id} href={c.path} className="surface group flex min-w-0 flex-col p-6 transition-colors hover:border-border-strong sm:p-7">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-[1.25rem] font-semibold tracking-[-0.03em]">{c.title}</p>
-                  <p className="kicker mt-1">{entries.length} projects</p>
-                </div>
-                <ArrowRight className="mt-1 size-5 text-muted-foreground transition-[transform,color] duration-300 group-hover:translate-x-1 group-hover:text-foreground" />
+            <a key={c.id} href={c.path} className="surface group flex min-w-0 flex-col p-6 transition-colors hover:bg-card-2 sm:p-8">
+              <div className="flex items-baseline justify-between gap-4">
+                <p className="font-display text-[1.375rem] font-semibold tracking-[-0.02em] text-foreground">{c.title}</p>
+                <ArrowRight className="size-5 shrink-0 self-center text-muted-foreground transition-[transform,color] duration-300 group-hover:translate-x-1 group-hover:text-foreground" />
               </div>
-              <ul className="mt-6 border-t border-border">
+              <p className="kicker mt-1">
+                <span className="num">{entries.length}</span> projects
+              </p>
+              <ul className="mt-6 border-t-2 border-rule-2">
                 {entries.map((e) => (
-                  <li key={e.id} className="flex items-baseline justify-between gap-4 border-b border-border py-2.5 text-[0.9375rem] last:border-b-0">
-                    <span className="min-w-0 truncate">{e.title}</span>
-                    <span className="kicker shrink-0">{e.year}</span>
+                  <li key={e.id} className="flex items-baseline justify-between gap-4 border-b border-border py-3 text-[1rem] last:border-b-0">
+                    <span className="min-w-0 truncate text-foreground">{e.title}</span>
+                    <span className="num shrink-0 text-[0.875rem] text-muted-foreground">{e.year}</span>
                   </li>
                 ))}
               </ul>
@@ -359,28 +442,28 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
   return (
     <>
       <section className="container-x pt-10 pb-14 sm:pt-16">
-        <a href="/#work" className="inline-flex items-center gap-1.5 text-[0.9375rem] text-muted-foreground hover:text-foreground">
+        <a href="/#work" className="inline-flex min-h-11 items-center gap-1.5 text-[1rem] font-medium text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" /> Back home
         </a>
-        <h1 className="mt-10 text-[clamp(2.5rem,1.6rem+3.6vw,4rem)] leading-[1]">{c.title}</h1>
-        <p className="mt-4 max-w-[62ch] text-[1.125rem] leading-relaxed text-muted-foreground">{c.intro}</p>
+        <div className="mt-8 border-t-2 border-rule-2 pt-6">
+          <h1 className="text-display-s leading-[1] tracking-[-0.03em]">{c.title}</h1>
+          <p className="mt-4 max-w-[62ch] text-lead text-ink-2">{c.intro}</p>
+        </div>
       </section>
       <section className="container-x pb-16">
-        <ol className="grid gap-5">
-          {entries.map((e, i) => (
-            <Reveal as="li" key={e.id} delay={i * 0.04} className="min-w-0">
+        <ol className="grid gap-8">
+          {entries.map((e) => (
+            <Reveal as="li" key={e.id} className="min-w-0">
               <EntryRow entry={e} />
             </Reveal>
           ))}
         </ol>
       </section>
       <section className="container-x pb-24">
-        <Reveal>
-          <a href={other.path} className="surface group flex items-center justify-between gap-4 p-6 hover:border-border-strong sm:p-8">
-            <span className="text-[1.5rem] font-semibold tracking-[-0.03em]">{other.title}</span>
-            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-          </a>
-        </Reveal>
+        <a href={other.path} className="surface group flex items-center justify-between gap-4 p-6 transition-colors hover:bg-card-2 sm:p-8">
+          <span className="font-display text-[1.5rem] font-semibold tracking-[-0.02em] text-foreground">{other.title}</span>
+          <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+        </a>
       </section>
     </>
   );
@@ -391,16 +474,16 @@ function EntryRow({ entry }: { entry: Entry }) {
     <article className="surface min-w-0 p-6 sm:p-8">
       <div className="grid gap-6 md:grid-cols-[1fr_auto] md:gap-10">
         <div className="min-w-0">
-          <h2 className="text-[1.5rem] leading-tight">{entry.title}</h2>
+          <h2 className="text-title tracking-[-0.02em] sm:text-[1.75rem]">{entry.title}</h2>
           <p className="kicker mt-1">
-            <time>{entry.year}</time>
+            <time className="num">{entry.year}</time>
           </p>
-          <p className="mt-3 max-w-[68ch] leading-relaxed text-muted-foreground">{entry.summary}</p>
-          <p className="mt-3 text-[0.875rem] text-muted-foreground">{entry.methods.join(", ")}</p>
+          <p className="mt-3 max-w-[68ch] text-ink-2">{entry.summary}</p>
+          <p className="mt-3 text-[0.9375rem] text-muted-foreground">{entry.methods.join(", ")}</p>
           {entry.links && (
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[0.9375rem]">
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[1rem]">
               {entry.links.map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener" download={l.download || undefined} className="link inline-flex items-center gap-1">
+                <a key={l.href} href={l.href} target="_blank" rel="noopener" download={l.download || undefined} className="link inline-flex items-center gap-1 font-medium">
                   {l.label} {l.download ? <Download className="size-4" /> : <ArrowUpRight className="size-4" />}
                 </a>
               ))}
@@ -418,36 +501,36 @@ function EntryRow({ entry }: { entry: Entry }) {
   );
 }
 
-/* ───────── Experience ───────── */
+/* ───────── Experience: the record, as a table ───────── */
 
 export function Experience() {
   return (
-    <Section id="experience" title="Experience" className="border-t border-border">
+    <Section id="experience" title="Experience" className="pt-[calc(var(--section-gap-l)/2)]">
       <ol className="border-b border-border">
         {EXPERIENCE.map((job, i) => (
-          <Reveal as="li" key={job.org} delay={i * 0.05} className="grid gap-5 border-t border-border py-10 md:grid-cols-[12rem_1fr_auto] md:gap-10">
-            <div className="flex items-center gap-4 md:block">
+          <li key={job.org} className={cn(GRID, "gap-y-5 py-10", i > 0 && "border-t border-border")}>
+            <div className="flex items-center gap-4 lg:col-span-3 lg:block">
               <Logo src={job.logo} name={job.org} />
-              <p className="kicker md:mt-4">{job.when}</p>
+              <p className="kicker lg:mt-4">{job.when}</p>
             </div>
-            <div>
-              <h3 className="text-[1.25rem] leading-tight">{job.org}</h3>
-              <p className="mt-1 text-muted-foreground">{job.role}</p>
-              <ul className="mt-5 grid max-w-[66ch] list-disc gap-2 pl-5 text-[0.96875rem] leading-relaxed marker:text-border-strong">
+            <div className="min-w-0 lg:col-span-6">
+              <h3 className="text-title tracking-[-0.02em]">{job.org}</h3>
+              <p className="mt-1 text-[1.0625rem] text-muted-foreground">{job.role}</p>
+              <ul className="mt-5 grid max-w-[66ch] list-disc gap-2 pl-5 marker:text-border-strong">
                 {job.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </ul>
             </div>
-            <HangingTools tools={job.tools} rod size={32} align="center" className="w-fit min-w-[8rem]" />
-          </Reveal>
+            <HangingTools tools={job.tools} rod size={32} align="center" className="w-fit min-w-[8rem] lg:col-span-3 lg:justify-self-end" />
+          </li>
         ))}
       </ol>
     </Section>
   );
 }
 
-/* ───────── Credentials ───────── */
+/* ───────── Certifications, then the reading shelf ───────── */
 
 export function Credentials() {
   const [current, setCurrent] = useState(CERTS[2].id);
@@ -458,108 +541,62 @@ export function Credentials() {
     view({ title: "Certificates", items: CERTS.map((c) => ({ src: c.preview, file: c.pdf, caption: `${c.title}, ${c.issuer}, ${c.date}` })), start: index });
 
   return (
-    <Section id="credentials" title="Certifications" className="border-t border-border">
-      <Reveal>
-        <div className="surface overflow-hidden">
-          <div className="grid lg:grid-cols-12">
-            <div className="border-b border-border p-4 lg:col-span-5 lg:border-r lg:border-b-0">
-              <ArcPicker
-                aria-label="Certificates"
-                options={CERTS.map((c) => ({ value: c.id, label: c.short }))}
-                value={cert.id}
-                onValueChange={setCurrent}
-                side="right"
-                radius={380}
-                itemHeight={54}
-                visibleCount={7}
-              />
+    <Section id="credentials" title="Certifications">
+      <div className="surface overflow-hidden">
+        <div className="grid lg:grid-cols-12">
+          <div className="border-b border-border p-4 lg:col-span-5 lg:border-r lg:border-b-0">
+            <ArcPicker
+              aria-label="Certificates"
+              options={CERTS.map((c) => ({ value: c.id, label: c.short }))}
+              value={cert.id}
+              onValueChange={setCurrent}
+              side="right"
+              radius={380}
+              itemHeight={54}
+              visibleCount={7}
+            />
+          </div>
+          <div className="p-5 sm:p-8 lg:col-span-7">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.button
+                key={cert.id}
+                type="button"
+                onClick={openCert}
+                aria-label={`Open the ${cert.title} certificate`}
+                className="block w-full overflow-hidden bg-card outline-1 -outline-offset-1 outline-border"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: EASE }}
+              >
+                <img src={cert.preview} alt="" className="block h-auto w-full" />
+              </motion.button>
+            </AnimatePresence>
+            <div className={cert.tools.length ? "h-[7.75rem]" : "h-5"}>
+              <HangingTools key={cert.id} tools={cert.tools} size={32} align="center" />
             </div>
-            <div className="p-5 sm:p-8 lg:col-span-7">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.button
-                  key={cert.id}
-                  type="button"
-                  onClick={openCert}
-                  aria-label={`Open the ${cert.title} certificate`}
-                  className="block w-full overflow-hidden rounded-lg bg-white ring-1 ring-border"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.3, ease: EASE }}
-                >
-                  <img src={cert.preview} alt="" className="block h-auto w-full" />
-                </motion.button>
-              </AnimatePresence>
-              <div className={cert.tools.length ? "h-[7.75rem]" : "h-5"}>
-                <HangingTools key={cert.id} tools={cert.tools} size={32} align="center" />
-              </div>
-              <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
-                <div className="flex items-center gap-4">
-                  <Logo src={cert.issuer === "DataCamp" ? "/logos/datacamp.png" : "/logos/365-data-science.png"} name={cert.issuer} wide={cert.issuer !== "DataCamp"} />
-                  <div>
-                    <p className="font-medium">{cert.title}</p>
-                    <p className="text-[0.875rem] text-muted-foreground">
-                      {cert.issuer}, {cert.date}
-                      {cert.length ? `, ${cert.length}` : ""}
-                    </p>
-                    <p className="mt-0.5 text-[0.8125rem] text-muted-foreground">Credential {cert.credential}</p>
-                  </div>
+            <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 border-t border-border pt-5">
+              <div className="flex items-center gap-4">
+                <Logo src={cert.issuer === "DataCamp" ? "/logos/datacamp.png" : "/logos/365-data-science.png"} name={cert.issuer} wide={cert.issuer !== "DataCamp"} />
+                <div>
+                  <p className="font-display font-semibold text-foreground">{cert.title}</p>
+                  <p className="text-[0.9375rem] text-muted-foreground">
+                    {cert.issuer}, {cert.date}
+                    {cert.length ? `, ${cert.length}` : ""}
+                  </p>
+                  <p className="mt-0.5 text-[0.875rem] text-muted-foreground">
+                    Credential <span className="num">{cert.credential}</span>
+                  </p>
                 </div>
-                <a href={cert.pdf} download className="link inline-flex items-center gap-1.5 text-[0.9375rem]">
-                  <Download className="size-4" /> PDF
-                </a>
               </div>
+              <a href={cert.pdf} download className="link inline-flex min-h-11 items-center gap-1.5 text-[1rem] font-medium">
+                <Download className="size-4" /> PDF
+              </a>
             </div>
           </div>
         </div>
-      </Reveal>
-
-      <div className="mt-14 grid gap-12 md:grid-cols-2">
-        <Reveal>
-          <h3 className="text-[1.125rem]">School</h3>
-          <ul className="mt-5 grid gap-6">
-            {EDUCATION.map((e) => (
-              <li key={e.org} className="flex gap-4">
-                <Logo src={e.logo} name={e.org} />
-                <div>
-                  <p className="font-medium">{e.org}</p>
-                  <p className="text-[0.9375rem]">{e.role}</p>
-                  <p className="text-[0.875rem] text-muted-foreground">
-                    {e.when}
-                    {e.note ? `. ${e.note}` : ""}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <h3 className="text-[1.125rem]">Outside class</h3>
-          <ul className="mt-5 grid gap-4">
-            {ACTIVITIES.map((a) => (
-              <li key={a.name} className="flex items-center gap-4">
-                <Logo src={a.logo} name={a.name} />
-                <div>
-                  <p className="font-medium">{a.name}</p>
-                  <p className="text-[0.875rem] text-muted-foreground">{a.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
       </div>
-    </Section>
-  );
-}
-
-/* ───────── Photos ───────── */
-
-export function Moments() {
-  return (
-    <Section id="moments" title="Photos" className="border-t border-border">
-      <Reveal>
-        <PhotoWall />
-      </Reveal>
+      <Reading />
     </Section>
   );
 }
@@ -568,53 +605,60 @@ export function Moments() {
 
 export function Reading() {
   return (
-    <Section id="reading" title="Reading" className="border-t border-border">
-      <ul className="grid max-w-3xl grid-cols-3 gap-4 sm:gap-8">
-        {BOOKS.map((book, i) => (
-          <Reveal as="li" key={book.id} delay={i * 0.06}>
-            <BookCover book={book} className="overflow-hidden rounded-md shadow-book" />
+    <div id="reading" className={cn(GRID, "mt-28 scroll-mt-24 gap-y-10")}>
+      <h3 className="text-title lg:col-span-3">Reading</h3>
+      <ul className="grid grid-cols-3 gap-x-4 sm:gap-x-[var(--gap-columns)] lg:col-span-7 lg:col-start-6">
+        {BOOKS.map((book) => (
+          <li key={book.id} className="min-w-0">
+            <BookCover book={book} className="overflow-hidden outline-1 -outline-offset-1 outline-rule-2/30" />
             <div className="h-[7.5rem]">
               <HangingTools tools={book.tools} size={30} align="center" />
             </div>
-            <p className="text-[0.9375rem] leading-snug font-medium">{book.title}</p>
-            <p className="text-[0.8125rem] text-muted-foreground">{book.author}</p>
-          </Reveal>
+            <p className="font-display text-[1rem] leading-snug font-semibold text-foreground">{book.title}</p>
+            <p className="text-[0.875rem] text-muted-foreground">{book.author}</p>
+          </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+/* ───────── Photos ───────── */
+
+export function Moments() {
+  return (
+    <Section id="moments" title="Photos">
+      <PhotoWall />
     </Section>
   );
 }
 
-/* ───────── Contact ───────── */
+/* ───────── Contact: the letter's close ───────── */
 
 export function Contact() {
   const openCv = useCv();
   return (
-    <section id="contact" className="container-x border-t border-border py-20 sm:py-24">
-      <Reveal>
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-          <div>
-            <h2 className="section-title">Say hi.</h2>
-            <p className="mt-4 max-w-[40ch] text-[1.0625rem] text-muted-foreground">Email is the quickest way to reach me.</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href={`mailto:${PROFILE.email}`} className="btn">
-                <Mail className="size-4" /> Email me
-              </a>
-              <a href={PROFILE.github} target="_blank" rel="noopener" className="btn btn-ghost">
-                <GithubMark className="size-4" /> GitHub
-              </a>
-              <button type="button" onClick={openCv} className="btn btn-ghost">
-                <FileText className="size-4" /> CV
-              </button>
-            </div>
-          </div>
-          <div className="flex min-w-0 flex-col items-center gap-3 lg:items-end">
-            <ContactCard />
-            <p className="text-[0.8125rem] text-muted-foreground">Tap the card</p>
-          </div>
+    <div id="contact" className={cn(GRID, "scroll-mt-24 gap-y-14 border-t-2 border-rule-2 pt-8 lg:items-center")}>
+      <div className="lg:col-span-6">
+        <h2 className="text-display-s leading-[1] tracking-[-0.03em]">Say hi.</h2>
+        <p className="mt-5 max-w-[40ch] text-lead text-ink-2">Email is the quickest way to reach me.</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href={`mailto:${PROFILE.email}`} className="btn">
+            <Mail className="size-4" /> Email me
+          </a>
+          <a href={PROFILE.github} target="_blank" rel="noopener" className="btn btn-ghost">
+            <GithubMark className="size-4" /> GitHub
+          </a>
+          <button type="button" onClick={openCv} className="btn btn-ghost">
+            <FileText className="size-4" /> CV
+          </button>
         </div>
-      </Reveal>
-    </section>
+      </div>
+      <div className="flex min-w-0 flex-col items-center gap-3 lg:col-span-5 lg:col-start-8 lg:items-end">
+        <ContactCard />
+        <p className="text-[0.875rem] font-medium text-muted-foreground">Tap the card</p>
+      </div>
+    </div>
   );
 }
 
@@ -629,7 +673,7 @@ function ContactCard() {
   return (
     <CardFolder
       title={`contact card for ${PROFILE.name}`}
-      className="w-[26rem]"
+      className="w-[26rem] max-w-full"
       fields={[{ label: "Phone", value: PROFILE.phone, masked: MASKED_PHONE }]}
       secret={{ label: "Email", value: PROFILE.email, masked: MASKED_EMAIL }}
       card={<ContactArtwork />}
@@ -707,18 +751,25 @@ function ContactDetails() {
   );
 }
 
+/* ───────── Footer: the close, then a colophon line ───────── */
+
 export function Footer() {
   return (
-    <footer className="container-x flex flex-wrap items-center justify-between gap-3 border-t border-border py-8 text-[0.875rem] text-muted-foreground">
-      <span>
-        © {new Date().getFullYear()} {PROFILE.name}
-      </span>
-      <span className="inline-flex items-center gap-1.5">
-        <MapPin className="size-3.5" /> {PROFILE.location}
-      </span>
-      <a href={PROFILE.github} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 hover:text-foreground">
-        <GithubMark className="size-3.5" /> GitHub
-      </a>
+    <footer className="bg-card-2 pt-[var(--section-gap-s)]">
+      <div className="container-x">
+        <Contact />
+        <div className="mt-[var(--section-gap-s)] flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border py-8 text-[0.9375rem] text-muted-foreground">
+          <span>
+            © <span className="num">{new Date().getFullYear()}</span> {PROFILE.name}
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <MapPin className="size-3.5" /> {PROFILE.location}
+          </span>
+          <a href={PROFILE.github} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-1.5 hover:text-foreground">
+            <GithubMark className="size-3.5" /> GitHub
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }
@@ -740,8 +791,8 @@ function Logo({ src, name, wide }: { src?: string; name: string; wide?: boolean 
         bare
           ? ""
           : src
-            ? cn("rounded-lg border border-border", src.includes("datacamp") ? "" : "bg-white p-1", wide && "px-2")
-            : "rounded-lg border border-border bg-card-2",
+            ? cn("outline-1 -outline-offset-1 outline-border", src.includes("datacamp") ? "" : "bg-card p-1", wide && "px-2")
+            : "bg-card-3",
       )}
     >
       {src ? (

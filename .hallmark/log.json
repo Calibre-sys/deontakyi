@@ -1,6 +1,42 @@
 [
  {
   "mode": "redesign",
+  "depth": "full",
+  "scope": "page",
+  "prompt": "portfolio of a petroleum engineer who builds machine learning software for rock, well and reservoir data, for recruiters and research collaborators",
+  "theme": "almanac",
+  "genre": "editorial",
+  "shape": "Map / Diagram",
+  "axes": "mid/grotesk-sans/chromatic-magenta",
+  "hero": "Ledge",
+  "nav": "slab",
+  "footer": "letter close",
+  "imagery": "the product and the owner photographs",
+  "photos": [],
+  "entry": "draw 25958c",
+  "fingerprint": "almanac/map/ledge/slab/letter",
+  "sections": [
+   "Hero (reservoir field)",
+   "Split (photo stack, school, outside class)",
+   "Map (data, method, result)",
+   "Split + Showcase + Grid + Index (work)",
+   "Band rows (research)",
+   "Table rows (experience)",
+   "Switcher + shelf (certifications, reading)",
+   "Masonry (photos)",
+   "Close (contact card) + colophon"
+  ],
+  "signature": "the reservoir drawn in moving dots above the name, then the map of rocks and wells in, tools out",
+  "waived": [
+   "39b",
+   "80",
+   "81",
+   "37"
+  ],
+  "date": "2026-11-18"
+ },
+ {
+  "mode": "redesign",
   "depth": "polish",
   "scope": "page",
   "prompt": "portfolio of a petroleum engineer who builds ML software for subsurface data",

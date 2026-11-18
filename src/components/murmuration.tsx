@@ -351,7 +351,11 @@ export function Murmuration() {
       cellStart = new Int32Array(cols * rows + 1);
       cellFill = new Int32Array(cols * rows);
       for (const k of Object.keys(BUILD) as Shape[]) shapes[k] = BUILD[k](W, H, N);
+      // A resize clears the canvas; under reduced motion nothing else would redraw it.
+      still?.();
     };
+    /** Set under reduced motion: redraws the one still frame. */
+    let still: (() => void) | null = null;
 
     readColor();
     resize();
@@ -381,7 +385,10 @@ export function Murmuration() {
       clearTimeout(resizeTimer);
       resizeTimer = window.setTimeout(resize, 150);
     };
-    const themeObs = new MutationObserver(readColor);
+    const themeObs = new MutationObserver(() => {
+      readColor();
+      still?.();
+    });
     themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     window.addEventListener("resize", onResize);
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -424,7 +431,9 @@ export function Murmuration() {
     };
 
     if (reduce) {
-      snapTo(shapes.neural!);
+      // One still frame: the reservoir, settled.
+      still = () => snapTo(shapes.subsurface!);
+      still();
       return cleanup;
     }
 

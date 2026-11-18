@@ -42,8 +42,8 @@ export function LiveDemo() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h3 className="text-[1.25rem] leading-tight">Try RescharAI</h3>
-        <a href={DEMO_URL} target="_blank" rel="noopener" className="link inline-flex items-center gap-1 text-[0.9375rem]">
+        <h3 className="text-title">Try RescharAI</h3>
+        <a href={DEMO_URL} target="_blank" rel="noopener" className="link inline-flex min-h-11 items-center gap-1 text-[1rem] font-medium">
           Open full screen <ArrowUpRight className="size-4" />
         </a>
       </div>
@@ -78,7 +78,7 @@ export function LiveDemo() {
                 className="absolute inset-0 flex items-end justify-center p-4"
                 aria-label="Use the RescharAI demo here"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-md bg-neutral-900 px-3 py-1.5 text-[0.875rem] font-medium text-white shadow-sm">
+                <span className="inline-flex min-h-11 items-center gap-1.5 rounded-[2px] bg-primary px-4 font-display text-[0.9375rem] font-medium text-primary-foreground">
                   <MousePointer2 className="size-3.5" /> Click to try it
                 </span>
               </button>
@@ -87,7 +87,7 @@ export function LiveDemo() {
         ) : (
           <a href={DEMO_URL} target="_blank" rel="noopener" className="absolute inset-0 block">
             <img src="/media/reschar-poster.jpg" alt="RescharAI app" loading="lazy" className="size-full object-cover" />
-            <span className="absolute bottom-4 left-4 inline-flex items-center gap-1.5 rounded-md bg-background/90 px-3 py-1.5 text-[0.875rem] font-medium">
+            <span className="absolute bottom-4 left-4 inline-flex min-h-11 items-center gap-1.5 rounded-[2px] bg-primary px-4 font-display text-[0.9375rem] font-medium text-primary-foreground">
               open the demo <ArrowUpRight className="size-3.5" />
             </span>
           </a>
@@ -95,7 +95,7 @@ export function LiveDemo() {
       </div>
 
       </WindowFrame>
-      <p className="text-[0.8125rem] text-muted-foreground">Runs on sample wells. Uploads and exports are turned off.</p>
+      <p className="text-[0.875rem] font-medium text-muted-foreground">Runs on sample wells. Uploads and exports are turned off.</p>
     </div>
   );
 }
