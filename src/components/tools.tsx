@@ -286,7 +286,7 @@ function Charm({ tool, index, size, group }: { tool: ToolKey; index: number; siz
           onPointerDown={down}
           onPointerUp={up}
           onPointerCancel={up}
-          className="flex cursor-grab touch-none items-center justify-center rounded-full border border-border-strong shadow-[0_10px_20px_-8px_rgb(0_0_0/0.5)] transition-colors duration-300 select-none active:cursor-grabbing"
+          className="flex cursor-grab touch-none items-center justify-center rounded-full border border-border-strong shadow-charm transition-colors duration-300 select-none active:cursor-grabbing"
           style={{ width: size, height: size, background: ballFor(icon.hex) }}
         >
           <svg

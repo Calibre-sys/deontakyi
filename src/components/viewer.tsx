@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { SPRING_PANEL } from "@/lib/ease";
 
-export type ViewerItem = { src: string; caption?: string; /** Original file to open or download, when src is only a preview. */ file?: string };
+export type ViewerItem = { src: string; caption?: string; /** Original file to open or download, when src is only a preview. */ file?: string; /** Poster frame for a video. */ poster?: string };
 export type ViewerRequest = { title: string; items: ViewerItem[]; start?: number; download?: boolean };
 
 const ViewerContext = createContext<(request: ViewerRequest) => void>(() => {});
@@ -146,7 +146,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
                         </a>
                       </div>
                     ) : kind(item.src) === "video" ? (
-                      <video src={item.src} controls autoPlay playsInline className="max-h-full max-w-full" />
+                      <video src={item.src} poster={item.poster} controls autoPlay muted playsInline className="max-h-full max-w-full" />
                     ) : (
                       <img src={item.src} alt={item.caption ?? request.title} className="max-h-full max-w-full object-contain p-2 sm:p-6" />
                     )}

@@ -80,7 +80,7 @@ export function PageLoader({ onDone }: { onDone: () => void }) {
               <span className="tabular-nums text-foreground">{pct}%</span>
             </div>
             <div className="h-px w-full overflow-hidden bg-border">
-              <div className="h-full bg-foreground transition-[width] duration-150" style={{ width: `${pct}%` }} />
+              <div className="h-full origin-left bg-foreground transition-transform duration-150" style={{ transform: `scaleX(${pct / 100})` }} />
             </div>
           </div>
         </motion.div>

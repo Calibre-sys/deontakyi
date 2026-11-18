@@ -5,21 +5,14 @@ import { Loader } from "@/components/motion/loader";
 import { useViewer } from "@/components/viewer";
 import { cn } from "@/lib/utils";
 
-/* ───────── Window frame: a macOS-style window around media ───────── */
+/* ───────── Frame: a plain border around media, the address as a caption ───────── */
 
-export function WindowFrame({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
+export function WindowFrame({ title, children, className }: { title?: string; children: ReactNode; className?: string }) {
   return (
-    <div className={cn("overflow-hidden rounded-xl border border-border bg-card shadow-[0_24px_48px_-28px_rgb(0_0_0/0.35)]", className)}>
-      <div className="relative flex h-9 items-center border-b border-border bg-card px-3.5">
-        <div className="flex gap-2" aria-hidden>
-          <span className="size-3 rounded-full bg-[#ff5f57]" />
-          <span className="size-3 rounded-full bg-[#febc2e]" />
-          <span className="size-3 rounded-full bg-[#28c840]" />
-        </div>
-        <span className="pointer-events-none absolute inset-x-20 truncate text-center text-[0.8125rem] font-medium text-muted-foreground">{title}</span>
-      </div>
-      <div className="relative">{children}</div>
-    </div>
+    <figure className={cn("min-w-0", className)}>
+      <div className="relative overflow-hidden rounded-xl border border-border bg-card shadow-frame">{children}</div>
+      {title && <figcaption className="mt-3 text-[0.8125rem] text-muted-foreground">{title}</figcaption>}
+    </figure>
   );
 }
 
@@ -45,14 +38,14 @@ export function CaseVideo({ src, poster, title }: { src: string; poster?: string
     <div ref={box} className="group relative aspect-[16/10] bg-black">
       <video ref={ref} src={src} poster={poster} muted loop playsInline preload="metadata" onPlaying={() => setReady(true)} className="size-full object-cover" />
       {!ready && inView && !reduce && (
-        <div className="pointer-events-none absolute right-3 bottom-3 rounded-md bg-black/60 p-2 text-white/90 backdrop-blur">
+        <div className="pointer-events-none absolute right-3 bottom-3 rounded-md bg-black/75 p-2 text-white/90">
           <Loader variant="dither" size={16} speed={1} label="Loading video" />
         </div>
       )}
       <button
         type="button"
-        onClick={() => view({ title, items: [{ src }], download: false })}
-        className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-md bg-black/60 px-2.5 py-1.5 text-[0.75rem] font-medium text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+        onClick={() => view({ title, items: [{ src, poster }], download: false })}
+        className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-md bg-black/75 px-2.5 py-1.5 text-[0.75rem] font-medium text-white opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
         aria-label={`Watch the ${title} demo full screen`}
       >
         <Maximize2 className="size-3.5" /> Full screen
@@ -236,7 +229,7 @@ export function RecruiterFlow() {
         <button
           type="button"
           onClick={() => setRun((r) => r + 1)}
-          className="inline-flex h-7 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-[0.75rem] font-medium"
+          className="inline-flex h-7 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-[0.75rem] font-medium whitespace-nowrap"
         >
           {done ? (
             <>

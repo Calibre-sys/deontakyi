@@ -47,7 +47,7 @@ export function LiveDemo() {
           Open full screen <ArrowUpRight className="size-4" />
         </a>
       </div>
-      <WindowFrame title="RescharAI">
+      <WindowFrame>
 
       <div
         ref={box}

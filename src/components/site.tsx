@@ -71,7 +71,7 @@ export function Header() {
     <header
       className={cn(
         "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-300",
-        scrolled ? "border-border bg-background/80 backdrop-blur-xl" : "border-transparent bg-transparent",
+        scrolled ? "border-border bg-background" : "border-transparent bg-transparent",
       )}
     >
       <div className="container-x flex h-16 items-center gap-4">
@@ -121,21 +121,18 @@ export function Hero() {
       <div className="container-x relative pt-12 pb-16 sm:pt-20 sm:pb-20">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
-            <motion.p {...rise(0)} className="text-[0.9375rem] text-muted-foreground">
-              Petroleum engineer in {PROFILE.location}
-            </motion.p>
-            <motion.h1 {...rise(1)} className="mt-5 text-[clamp(2.75rem,1.6rem+4.4vw,4.75rem)] leading-[0.98]">
-              Hi, I'm Deon.
+            <motion.h1 {...rise(0)} className="text-[clamp(2.75rem,1.6rem+4.4vw,4.75rem)] leading-[0.98]">
+              Hi, I’m Deon.
+              <span className="mt-4 block max-w-[20ch] text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] leading-[1.15] tracking-[-0.03em] text-muted-foreground">
+                I build software for subsurface data.
+              </span>
             </motion.h1>
-            <motion.p {...rise(2)} className="mt-4 max-w-[20ch] text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] leading-[1.15] font-medium tracking-[-0.03em] text-muted-foreground">
-              I build software for subsurface data.
+            <motion.p {...rise(1)} className="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-muted-foreground">
+              Petroleum engineer in {PROFILE.location}, and a self-taught developer. I use machine learning on rocks, wells and reservoirs, and turn it into tools people use.
             </motion.p>
-            <motion.p {...rise(3)} className="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-muted-foreground">
-              Self-taught developer. I use machine learning on rocks, wells and reservoirs, and turn it into tools people use.
-            </motion.p>
-            <motion.div {...rise(4)} className="mt-8 flex flex-wrap gap-3">
+            <motion.div {...rise(2)} className="mt-8 flex flex-wrap gap-3">
               <a href="#work" className="btn">
-                See the work <ArrowRight className="size-4" />
+                See the work
               </a>
               <a href={PROFILE.github} target="_blank" rel="noopener" className="btn btn-ghost">
                 <GithubMark className="size-4" /> GitHub
@@ -190,7 +187,7 @@ function Case({ project, flip }: { project: Project; flip?: boolean }) {
   return (
     <article id={`case-${project.id}`} className="grid scroll-mt-24 items-center gap-10 lg:grid-cols-12 lg:gap-14">
       <Reveal className={cn("lg:col-span-7", flip && "lg:order-2")}>
-        <WindowFrame title={project.address}>
+        <WindowFrame title={project.address !== project.name ? project.address : undefined}>
           {project.video ? (
             <CaseVideo src={project.video} poster={project.poster} title={project.name} />
           ) : project.visual === "outreach" ? (
@@ -202,12 +199,12 @@ function Case({ project, flip }: { project: Project; flip?: boolean }) {
       </Reveal>
 
       <Reveal delay={0.08} className={cn("lg:col-span-5", flip && "lg:order-1")}>
-        <p className="kicker">
-          {project.year}
+        <h3 className="text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-[1.05]">{project.name}</h3>
+        <p className="mt-2 text-[1.0625rem] text-muted-foreground">{project.tagline}</p>
+        <p className="kicker mt-3">
+          <time>{project.year}</time>
           {project.private && <span className="ml-3">Private</span>}
         </p>
-        <h3 className="mt-2 text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-[1.05]">{project.name}</h3>
-        <p className="mt-2 text-[1.0625rem] text-muted-foreground">{project.tagline}</p>
 
         {project.outcome && (
           <div className="mt-8">
@@ -257,27 +254,25 @@ function PaperCase({ paper }: { paper: Paper }) {
         <button
           type="button"
           onClick={() => view({ title: paper.title, items: [{ src: paper.screenshot, caption: `${paper.venue}, ${paper.detail}` }] })}
-          className="group block w-full text-left"
+          className="block w-full overflow-hidden rounded-lg text-left transition-opacity duration-300 hover:opacity-90"
           aria-label={`Open the publisher page for ${paper.title}`}
         >
-          <WindowFrame title={paper.venue}>
-            <div className="relative aspect-[16/10] overflow-hidden bg-white">
-              <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top transition-transform duration-700 group-hover:scale-[1.03]" />
-              {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] rounded-sm shadow-lg ring-1 ring-black/10" />}
-            </div>
-          </WindowFrame>
+          <span className="relative block aspect-[16/10]">
+            <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top" />
+            {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] rounded-sm shadow-lg ring-1 ring-black/10" />}
+          </span>
         </button>
         <HangingTools tools={paper.tools} size={30} align="start" rod className="mt-2 max-w-[17rem]" />
       </div>
       <div className="min-w-0 lg:col-span-7">
-        <p className="kicker">
-          {paper.venue}, {paper.year}
-        </p>
-        <h3 className="mt-2 font-sans text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.375rem]">
+        <h3 className="font-sans text-[1.25rem] leading-snug font-semibold tracking-[-0.02em] sm:text-[1.375rem]">
           <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener" className="hover:underline hover:decoration-border-strong hover:underline-offset-4">
             {paper.title}
           </a>
         </h3>
+        <p className="mt-2 text-[0.9375rem]">
+          {paper.venue}, <time>{paper.year}</time>
+        </p>
         <p className="mt-3 text-[0.875rem] leading-relaxed text-muted-foreground">
           {paper.authors.map((a, j) => (
             <Fragment key={a}>
@@ -305,7 +300,7 @@ function CopyCitation({ paper }: { paper: Paper }) {
   return (
     <button
       type="button"
-      className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+      className="inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(text);
@@ -332,7 +327,7 @@ function CollectionLinks() {
         {COLLECTIONS.map((c) => {
           const entries = ENTRIES.filter((e) => e.collection === c.id);
           return (
-            <a key={c.id} href={c.path} className="surface group flex flex-col p-6 transition-colors hover:border-border-strong sm:p-7">
+            <a key={c.id} href={c.path} className="surface group flex min-w-0 flex-col p-6 transition-colors hover:border-border-strong sm:p-7">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-[1.25rem] font-semibold tracking-[-0.03em]">{c.title}</p>
@@ -343,7 +338,7 @@ function CollectionLinks() {
               <ul className="mt-6 border-t border-border">
                 {entries.map((e) => (
                   <li key={e.id} className="flex items-baseline justify-between gap-4 border-b border-border py-2.5 text-[0.9375rem] last:border-b-0">
-                    <span className="truncate">{e.title}</span>
+                    <span className="min-w-0 truncate">{e.title}</span>
                     <span className="kicker shrink-0">{e.year}</span>
                   </li>
                 ))}
@@ -396,8 +391,10 @@ function EntryRow({ entry }: { entry: Entry }) {
     <article className="surface min-w-0 p-6 sm:p-8">
       <div className="grid gap-6 md:grid-cols-[1fr_auto] md:gap-10">
         <div className="min-w-0">
-          <p className="kicker">{entry.year}</p>
-          <h2 className="mt-1 text-[1.5rem] leading-tight">{entry.title}</h2>
+          <h2 className="text-[1.5rem] leading-tight">{entry.title}</h2>
+          <p className="kicker mt-1">
+            <time>{entry.year}</time>
+          </p>
           <p className="mt-3 max-w-[68ch] leading-relaxed text-muted-foreground">{entry.summary}</p>
           <p className="mt-3 text-[0.875rem] text-muted-foreground">{entry.methods.join(", ")}</p>
           {entry.links && (
@@ -575,7 +572,7 @@ export function Reading() {
       <ul className="grid max-w-3xl grid-cols-3 gap-4 sm:gap-8">
         {BOOKS.map((book, i) => (
           <Reveal as="li" key={book.id} delay={i * 0.06}>
-            <BookCover book={book} className="overflow-hidden rounded-md shadow-[0_20px_40px_-24px_rgb(0_0_0/0.5)]" />
+            <BookCover book={book} className="overflow-hidden rounded-md shadow-book" />
             <div className="h-[7.5rem]">
               <HangingTools tools={book.tools} size={30} align="center" />
             </div>
@@ -643,19 +640,19 @@ function ContactCard() {
 
 function ContactArtwork() {
   return (
-    <span className="relative block size-full overflow-hidden bg-[linear-gradient(135deg,#1f3b38_0%,#122422_48%,#0a1312_100%)] text-white">
+    <span className="contact-art relative block size-full overflow-hidden text-white">
       <svg aria-hidden viewBox="0 0 640 404" className="absolute inset-0 size-full">
         {CONTOURS.map((r, i) => (
           <circle key={r} cx="660" cy="-30" r={r} fill="none" stroke="currentColor" strokeOpacity={0.22 - i * 0.011} strokeWidth="1.5" />
         ))}
       </svg>
-      <span className="absolute inset-0 bg-[radial-gradient(circle_at_12%_6%,rgb(45_212_191/0.16),transparent_40%)]" />
+      <span className="contact-art-light absolute inset-0" />
       <span className="absolute top-[8%] left-[6%] flex flex-col gap-1">
         <span className="font-display text-[1.0625rem] leading-tight font-semibold tracking-[-0.02em]">{PROFILE.name}</span>
         <span className="text-[0.75rem] text-white/60">{PROFILE.role}</span>
       </span>
       <span className="absolute top-[8%] right-[6%] hidden items-center gap-1.5 font-display sm:flex text-sm font-semibold text-white/80">
-        DTA <span className="block size-2 rotate-45 rounded-[2px] bg-[#2dd4bf]" />
+        DTA <span className="block size-2 rotate-45 rounded-[2px] bg-signal" />
       </span>
     </span>
   );
@@ -673,7 +670,7 @@ function ContactDetails() {
     }
   };
   const link =
-    "truncate rounded-sm text-white/90 underline-offset-2 outline-none hover:text-[#5eead4] hover:underline focus-visible:ring-2 focus-visible:ring-[#2dd4bf]";
+    "truncate rounded-sm text-white/90 underline-offset-2 outline-none hover:text-signal-soft hover:underline focus-visible:ring-2 focus-visible:ring-signal";
   return (
     <div className="absolute inset-x-[6%] bottom-[7%] flex flex-col gap-1.5 text-[0.6875rem] text-white sm:gap-2 sm:text-[0.8125rem]">
       <span className="flex min-w-0 items-center gap-2">
@@ -685,7 +682,7 @@ function ContactDetails() {
           type="button"
           onClick={copy}
           aria-label={copied ? "Email copied" : "Copy email"}
-          className="-my-1 grid size-6 shrink-0 cursor-pointer place-items-center rounded-full text-white/55 outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-[#2dd4bf]"
+          className="-my-1 grid size-6 shrink-0 cursor-pointer place-items-center rounded-full text-white/55 outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-signal"
         >
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
         </button>

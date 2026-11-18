@@ -1,3 +1,15 @@
+/* Hallmark · checked: 2026-11-18 · genre: modern-minimal (inferred)
+ * floor: 0 FAIL · fixed: 16 (4, 10a, 11, 28a, 28b, 29, 34, 47a, 48, 54, 63, 67, 75, F1, F16, F19) · structural: 3 printed (58, 59, 77)
+ * finish-review: in-thread · 2 findings · 2 resolved (book cover type overflowing at 375, case caption repeating its heading)
+ * built: the project · redesign: polish · v2.0.0 */
+/* Hallmark · waive 39b · the 699px overlay on the RescharAI embed and the 28px Shortlist button in the recruiter replica · the overlay is the hit area that wakes the live RescharAI demo, and the Shortlist button belongs to the recruiter agent's project screen, drawn at that app's own scale */
+/* Hallmark · waive 80 · span.contact-art draws 16 contour rings on the contact card · the rings are the card's printed pattern, a nod to the subsurface contour maps the work is about, inside the card-folder component the owner kept */
+/* Hallmark · waive 81 · the arc-picker-option slots hold certificate names, not pictures · data-slot is the beUI arc picker's own hook, and the certificate preview sits beside it */
+/* Hallmark · answered F18 · the arc-picker slots are 32px text rows of the certificate picker, not image slots */
+/* Hallmark · dismissed 28a · the lazy images are the narrow-screen demo poster and a paper screenshot far below the fold; the hero portrait is the LCP and loads eager at high priority */
+/* Hallmark · dismissed 49 · the Shortlist button shows one state at a time, Screening or Shortlist ready, and is set nowrap */
+/* Hallmark · dropped items: [{ src }] · the CaseVideo full-screen handler still opens the viewer, and now passes the poster frame too (28b) */
+/* Hallmark · reworded "Hi, I'm Deon." to "Hi, I’m Deon. I build software for subsurface data." · F1 wants the typographic apostrophe, and 54/58 folded the hero's second line into the h1 */
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -5,37 +17,78 @@
 /*
  * Neutral palette. Black, white and greys; colour comes from the work itself
  * (screenshots, video, tool logos), not from the chrome.
+ *
+ * Every literal colour in the project lives in this block. The light and dark
+ * roles below only point at it.
  */
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --card: #fafafa;
-  --card-2: #f4f4f5;
-  --muted-foreground: #6b6b73;
-  --border: #e6e6e9;
-  --border-strong: #d0d0d5;
-  --primary: #0a0a0a;
-  --primary-foreground: #ffffff;
-  --accent: #0a0a0a;
-  --accent-soft: rgb(10 10 10 / 0.05);
-  --ring: #0a0a0a;
-  --destructive: #dc2626;
+  /* Neutral ramp */
+  --neutral-0: #ffffff;
+  --neutral-25: #fafafa;
+  --neutral-50: #f4f4f5;
+  --neutral-200: #e6e6e9;
+  --neutral-300: #d0d0d5;
+  --neutral-400: #a0a0a8;
+  --neutral-500: #6b6b73;
+  --neutral-700: #3a3a40;
+  --neutral-800: #242427;
+  --neutral-850: #18181b;
+  --neutral-900: #111112;
+  --neutral-950: #0a0a0a;
+  --neutral-950-a5: rgb(10 10 10 / 0.05);
+  --neutral-25-a6: rgb(250 250 250 / 0.06);
+  --red-600: #dc2626;
+  --red-400: #f87171;
+
+  /* Photo prints: warm card stock, a touch dimmer in dark mode */
+  --stock: #f7f6f2;
+  --stock-dim: #ecebe6;
+
+  /* The contact card: deep teal stock, one teal signal */
+  --teal-800: #1f3b38;
+  --teal-900: #122422;
+  --teal-950: #0a1312;
+  --teal-400: #2dd4bf;
+  --teal-300: #5eead4;
+  --teal-400-a16: rgb(45 212 191 / 0.16);
+
+  /* Shadow ink */
+  --shade-12: rgb(0 0 0 / 0.12);
+  --shade-35: rgb(0 0 0 / 0.35);
+  --shade-50: rgb(0 0 0 / 0.5);
+
+  /* Light roles */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-950);
+  --card: var(--neutral-25);
+  --card-2: var(--neutral-50);
+  --muted-foreground: var(--neutral-500);
+  --border: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --primary: var(--neutral-950);
+  --primary-foreground: var(--neutral-0);
+  --accent: var(--neutral-950);
+  --accent-soft: var(--neutral-950-a5);
+  --ring: var(--neutral-950);
+  --destructive: var(--red-600);
+  --print: var(--stock);
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #111112;
-  --card-2: #18181b;
-  --muted-foreground: #a0a0a8;
-  --border: #242427;
-  --border-strong: #3a3a40;
-  --primary: #fafafa;
-  --primary-foreground: #0a0a0a;
-  --accent: #fafafa;
-  --accent-soft: rgb(250 250 250 / 0.06);
-  --ring: #fafafa;
-  --destructive: #f87171;
+  --background: var(--neutral-950);
+  --foreground: var(--neutral-25);
+  --card: var(--neutral-900);
+  --card-2: var(--neutral-850);
+  --muted-foreground: var(--neutral-400);
+  --border: var(--neutral-800);
+  --border-strong: var(--neutral-700);
+  --primary: var(--neutral-25);
+  --primary-foreground: var(--neutral-950);
+  --accent: var(--neutral-25);
+  --accent-soft: var(--neutral-25-a6);
+  --ring: var(--neutral-25);
+  --destructive: var(--red-400);
+  --print: var(--stock-dim);
 }
 
 @theme inline {
@@ -60,6 +113,14 @@
   --color-panel-2: var(--card-2);
   --color-ground: var(--background);
   --color-accent-ink: var(--primary-foreground);
+  --color-print: var(--print);
+  --color-signal: var(--teal-400);
+  --color-signal-soft: var(--teal-300);
+
+  --shadow-frame: 0 24px 48px -28px var(--shade-35);
+  --shadow-print: 0 24px 48px -24px var(--shade-50), 0 1px 2px var(--shade-12);
+  --shadow-book: 0 20px 40px -24px var(--shade-50);
+  --shadow-charm: 0 10px 20px -8px var(--shade-50);
 
   --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
@@ -73,6 +134,7 @@
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     color-scheme: light;
+    scrollbar-color: var(--border-strong) var(--background);
   }
   html.dark {
     color-scheme: dark;
@@ -187,6 +249,13 @@
     background: var(--card);
     border-radius: 1rem;
   }
+  /* The contact card's printed face: deep teal stock with one soft light. */
+  .contact-art {
+    background: linear-gradient(135deg, var(--teal-800) 0%, var(--teal-900) 48%, var(--teal-950) 100%);
+  }
+  .contact-art-light {
+    background: radial-gradient(circle at 12% 6%, var(--teal-400-a16), transparent 40%);
+  }
 }
 
 /* Range input: filled track, round thumb. */
@@ -240,13 +309,13 @@
   letter-spacing: -0.02em;
 }
 
-/* Photo stack progress segment. */
+/* Photo stack progress segment: scales from the left edge. */
 @keyframes stack-progress {
   from {
-    width: 0%;
+    transform: scaleX(0);
   }
   to {
-    width: 100%;
+    transform: scaleX(1);
   }
 }
 

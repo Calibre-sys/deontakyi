@@ -23,9 +23,9 @@ export function BookCover({ book, className, eager }: { book: Book; className?: 
           className="size-full object-cover"
         />
       ) : (
-        <div className="flex size-full flex-col justify-between p-[9%]" style={{ background: book.tint[0], color: book.tint[1] }}>
-          <span className="font-display text-[clamp(1rem,1.6vw,1.6rem)] leading-[1] font-extrabold tracking-[-0.02em]">{book.title}</span>
-          <span className="text-[0.8125rem] leading-snug">{book.author}</span>
+        <div className="@container flex size-full flex-col justify-between gap-2 overflow-hidden p-[9%]" style={{ background: book.tint[0], color: book.tint[1] }}>
+          <span className="font-display text-[clamp(0.75rem,11cqw,1.6rem)] leading-[1] font-semibold tracking-[-0.02em]">{book.title}</span>
+          <span className="text-[clamp(0.6875rem,6.5cqw,0.8125rem)] leading-snug">{book.author}</span>
         </div>
       )}
     </div>

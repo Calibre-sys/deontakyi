@@ -1,0 +1,18 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "polish",
+  "scope": "page",
+  "prompt": "portfolio of a petroleum engineer who builds ML software for subsurface data",
+  "theme": "project (neutral Geist, kept)",
+  "genre": "modern-minimal",
+  "waived": [
+   "39b",
+   "80",
+   "81"
+  ],
+  "before": "Floor 37 FAIL, Reflex 7",
+  "after": "Floor 0 FAIL, Reflex 0 open (3 waived)",
+  "date": "2026-11-18"
+ }
+]

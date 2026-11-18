@@ -235,7 +235,7 @@ export function CardFolder({
             <span className="flex shrink-0 items-end gap-3.5 pt-2">
               {fields.map((field) => (
                 <span key={field.label} className="flex flex-col gap-0.5">
-                  <span className="text-[9px] font-medium tracking-[0.12em] text-muted-foreground uppercase">{field.label}</span>
+                  <span className="text-[11px] font-medium text-muted-foreground">{field.label}</span>
                   <DigitSwap {...swap(field)} className="text-xs font-medium text-foreground tabular-nums" />
                 </span>
               ))}
@@ -243,13 +243,13 @@ export function CardFolder({
           </span>
 
           <span className="flex min-w-0 items-baseline justify-between gap-3">
-            <span className="text-[9px] font-medium tracking-[0.12em] text-muted-foreground uppercase">{secret.label}</span>
+            <span className="text-[11px] font-medium text-muted-foreground">{secret.label}</span>
             <DigitSwap
               {...swap(secret)}
               glyphClassName={visible ? "text-foreground" : "text-muted-foreground"}
               suffixLength={secret.value.includes("@") ? secret.value.length - secret.value.indexOf("@") : 0}
               suffixClassName="text-foreground"
-              className="min-w-0 truncate font-mono text-[11px] tracking-[0.04em] sm:text-xs"
+              className="min-w-0 truncate font-mono text-[11px] sm:text-xs"
             />
           </span>
         </span>

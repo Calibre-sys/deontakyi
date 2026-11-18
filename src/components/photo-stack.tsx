@@ -117,7 +117,7 @@ export function PhotoStack() {
             <motion.figure
               key={print.src}
               aria-hidden={depth !== 0}
-              className="absolute inset-0 flex flex-col bg-[#f7f6f2] p-[4.5%] pb-0 shadow-[0_24px_48px_-24px_rgb(0_0_0/0.5),0_1px_2px_rgb(0_0_0/0.12)] dark:bg-[#ecebe6]"
+              className="absolute inset-0 flex flex-col bg-print p-[4.5%] pb-0 shadow-print"
               style={{ zIndex: z }}
               initial={false}
               animate={pose}
@@ -129,13 +129,14 @@ export function PhotoStack() {
                   alt={depth === 0 ? print.alt : ""}
                   draggable={false}
                   loading={i === 0 ? "eager" : "lazy"}
+                  fetchPriority={i === 0 ? "high" : "auto"}
                   className="absolute inset-0 size-full object-cover"
                   style={{ objectPosition: print.position }}
                 />
               </div>
-              <figcaption className="flex items-baseline justify-between gap-3 px-[1%] py-[3.5%] font-[family-name:var(--font-hand)] text-[clamp(1.25rem,1rem+0.7vw,1.6rem)] leading-none font-semibold text-neutral-800">
+              <figcaption className="flex items-baseline justify-between gap-3 px-[1%] py-[3.5%] font-hand text-[clamp(1.25rem,1rem+0.7vw,1.6rem)] leading-none font-semibold text-neutral-800">
                 <span className="truncate">{print.place}</span>
-                <span className="shrink-0 text-neutral-600">'{print.year.slice(2)}</span>
+                <span className="shrink-0 text-neutral-600">’{print.year.slice(2)}</span>
               </figcaption>
             </motion.figure>
           );
@@ -167,9 +168,8 @@ export function PhotoStack() {
                 {i === front && (
                   <span
                     key={tick}
-                    className="absolute inset-y-0 left-0 bg-foreground"
+                    className="absolute inset-0 origin-left bg-foreground"
                     style={{
-                      width: reduce ? "100%" : undefined,
                       animation: reduce ? undefined : `stack-progress ${INTERVAL}ms linear forwards`,
                       animationPlayState: paused ? "paused" : "running",
                     }}
