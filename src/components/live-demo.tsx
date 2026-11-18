@@ -47,7 +47,7 @@ export function LiveDemo() {
           Open full screen <ArrowUpRight className="size-4" />
         </a>
       </div>
-      <WindowFrame>
+      <WindowFrame title="RescharAI">
 
       <div
         ref={box}
@@ -78,7 +78,7 @@ export function LiveDemo() {
                 className="absolute inset-0 flex items-end justify-center p-4"
                 aria-label="Use the RescharAI demo here"
               >
-                <span className="inline-flex min-h-11 items-center gap-1.5 rounded-[2px] bg-primary px-4 font-display text-[0.9375rem] font-medium text-primary-foreground">
+                <span className="inline-flex min-h-11 items-center gap-1.5 rounded-md bg-neutral-900 px-3.5 text-[0.875rem] font-medium text-white shadow-sm">
                   <MousePointer2 className="size-3.5" /> Click to try it
                 </span>
               </button>
@@ -87,7 +87,7 @@ export function LiveDemo() {
         ) : (
           <a href={DEMO_URL} target="_blank" rel="noopener" className="absolute inset-0 block">
             <img src="/media/reschar-poster.jpg" alt="RescharAI app" loading="lazy" className="size-full object-cover" />
-            <span className="absolute bottom-4 left-4 inline-flex min-h-11 items-center gap-1.5 rounded-[2px] bg-primary px-4 font-display text-[0.9375rem] font-medium text-primary-foreground">
+            <span className="absolute bottom-4 left-4 inline-flex min-h-11 items-center gap-1.5 rounded-md bg-background/90 px-3.5 text-[0.875rem] font-medium">
               open the demo <ArrowUpRight className="size-3.5" />
             </span>
           </a>

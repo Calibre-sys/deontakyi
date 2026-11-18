@@ -24,7 +24,7 @@ export function PhotoWall() {
           <button
             type="button"
             onClick={() => view({ title: "Photos", items: MOMENTS.map((x) => ({ src: x.src, caption: x.caption })), start: i, download: false })}
-            className="block w-full overflow-hidden bg-card-2 transition-opacity duration-300 hover:opacity-90"
+            className="block w-full overflow-hidden rounded-xl bg-card-2 transition-opacity duration-300 hover:opacity-90"
             aria-label={`Open photo: ${m.caption}`}
           >
             <img
@@ -32,11 +32,11 @@ export function PhotoWall() {
               alt={m.caption}
               loading="lazy"
               decoding="async"
-              className="block w-full object-cover outline-1 -outline-offset-1 outline-rule-2/40"
+              className="block w-full object-cover"
               style={{ aspectRatio: `${m.w} / ${m.h}` }}
             />
           </button>
-          <figcaption className="pt-2.5 text-[0.875rem] font-medium text-muted-foreground">{m.caption}</figcaption>
+          <figcaption className="px-1 pt-2.5 text-[0.875rem] text-muted-foreground">{m.caption}</figcaption>
         </figure>
       )}
     />

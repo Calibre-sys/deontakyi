@@ -8,18 +8,18 @@
       name="description"
       content="Petroleum engineer and self-taught developer. Machine learning on rocks, wells and reservoirs, built into tools people use."
     />
-    <meta name="theme-color" content="#bbc2c8" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#091017" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#09090a" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090a" media="(prefers-color-scheme: dark)" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23060e15'/><text x='16' y='22.5' font-size='17' font-family='Helvetica,Arial,sans-serif' font-weight='700' text-anchor='middle' fill='%23e5eaef'>DT</text></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2309090a'/><text x='16' y='22.5' font-size='17' font-family='Helvetica,Arial,sans-serif' font-weight='700' text-anchor='middle' fill='%23ffffff'>DT</text></svg>"
     />
     <script>
       // Apply the saved or system theme before first paint to avoid a flash.
       (function () {
         var t;
         try { t = localStorage.getItem("theme"); } catch (e) {}
-        if (t !== "light" && t !== "dark") t = "light";
+        if (t !== "light" && t !== "dark") t = "dark";
         document.documentElement.classList.toggle("dark", t === "dark");
         document.documentElement.style.colorScheme = t;
       })();

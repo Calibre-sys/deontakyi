@@ -1,6 +1,6 @@
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Copy, Download, FileText, Mail, MapPin, Phone } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { siGithub } from "simple-icons";
 import { ArcPicker } from "@/components/motion/arc-picker";
 import { CardFolder } from "@/components/motion/card-folder";
@@ -60,26 +60,34 @@ export function GithubMark({ className }: { className?: string }) {
   );
 }
 
-/* ───────── Header: a slab ───────── */
+/* ───────── Header ───────── */
 
 export function Header() {
   const openCv = useCv();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 8);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   return (
-    <header className="sticky top-0 z-40 border-b-2 border-rule-2 bg-card-2">
-      <div className="container-x flex h-[var(--nav-h)] items-center gap-3">
-        <a href="/" className="mr-auto flex items-center gap-3">
-          <span className="flex size-8 items-center justify-center bg-foreground font-display text-[0.75rem] font-semibold text-background" data-no-scramble>
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b transition-[background-color,border-color] duration-300",
+        scrolled ? "border-border bg-background" : "border-transparent bg-background",
+      )}
+    >
+      <div className="container-x flex h-16 items-center gap-4">
+        <a href="/" className="mr-auto flex items-center gap-2.5">
+          <span className="flex size-7 items-center justify-center rounded-md bg-foreground text-[0.6875rem] font-semibold text-background" data-no-scramble>
             DT
           </span>
-          <span className="hidden font-display text-[1.0625rem] font-semibold tracking-[-0.02em] text-foreground sm:inline">Deon Takyi-Amponsem</span>
+          <span className="hidden text-[0.9375rem] font-semibold tracking-[-0.02em] sm:inline">Deon Takyi-Amponsem</span>
         </a>
-        <nav aria-label="Sections" className="mr-3 hidden items-center gap-1 lg:flex">
+        <nav aria-label="Sections" className="hidden items-center gap-1 lg:flex">
           {NAV.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="px-3 py-2 text-[1rem] font-medium text-muted-foreground underline-offset-[0.3em] transition-colors hover:text-foreground hover:underline hover:decoration-accent"
-            >
+            <a key={item.href} href={item.href} className="rounded-md px-3 py-1.5 text-[0.875rem] text-muted-foreground transition-colors hover:text-foreground">
               {item.label}
             </a>
           ))}
@@ -89,12 +97,12 @@ export function Header() {
           target="_blank"
           rel="noopener"
           aria-label="GitHub"
-          className="flex size-11 items-center justify-center text-muted-foreground transition-colors hover:bg-card-3 hover:text-foreground"
+          className="flex size-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-card-2 hover:text-foreground"
         >
           <GithubMark className="size-[1.125rem]" />
         </a>
-        <ThemeToggle variant="circle-blur" start="top-right" className="size-11 rounded-none text-muted-foreground hover:bg-card-3 hover:text-foreground" iconClassName="size-4" />
-        <button type="button" onClick={openCv} className="btn btn-ghost px-4">
+        <ThemeToggle variant="circle-blur" start="top-right" className="size-9 rounded-lg text-muted-foreground hover:bg-card-2 hover:text-foreground" iconClassName="size-4" />
+        <button type="button" onClick={openCv} className="btn h-9 px-3.5 text-[0.875rem]">
           CV
         </button>
       </div>
@@ -112,7 +120,7 @@ export function Hero() {
         <Murmuration />
       </div>
       <div className="container-x pb-12 lg:pb-14">
-        <div className={cn(GRID, "gap-y-8 border-t-2 border-rule-2 pt-7 lg:items-end")}>
+        <div className={cn(GRID, "gap-y-8 border-t border-border pt-7 lg:items-end")}>
           <h1 className="max-w-none text-display leading-[0.9] tracking-[-0.04em] lg:col-span-8">
             Hi, I’m Deon.
             <span className="mt-4 block max-w-[19ch] text-display-s leading-[1.02] tracking-[-0.03em] text-ink-2">
@@ -154,7 +162,7 @@ export function About() {
           <h2 className="section-title">{PROFILE.location}</h2>
           <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
             <div>
-              <h3 className="border-b-2 border-rule-2 pb-3 text-[1.125rem]">School</h3>
+              <h3 className="border-b border-border pb-3 text-[1.125rem]">School</h3>
               <ul className="divide-y divide-border">
                 {EDUCATION.map((e) => (
                   <li key={e.org} className="flex gap-4 py-4">
@@ -172,7 +180,7 @@ export function About() {
               </ul>
             </div>
             <div>
-              <h3 className="border-b-2 border-rule-2 pb-3 text-[1.125rem]">Outside class</h3>
+              <h3 className="border-b border-border pb-3 text-[1.125rem]">Outside class</h3>
               <ul className="divide-y divide-border">
                 {ACTIVITIES.map((a) => (
                   <li key={a.name} className="flex items-center gap-4 py-3">
@@ -312,7 +320,7 @@ export function Publications() {
   return (
     <section id="research" className="band-ink py-[var(--section-gap-s)]">
       <div className="container-x">
-        <div className={cn(GRID, "mb-4 gap-y-4 border-t-2 border-band-line pt-6")}>
+        <div className={cn(GRID, "mb-4 gap-y-4 border-t border-band-line pt-6")}>
           <h2 className="section-title lg:col-span-6">Research</h2>
         </div>
         <ol>
@@ -363,13 +371,15 @@ function PaperRow({ paper }: { paper: Paper }) {
         <button
           type="button"
           onClick={() => view({ title: paper.title, items: [{ src: paper.screenshot, caption: `${paper.venue}, ${paper.detail}` }] })}
-          className="block w-full overflow-hidden text-left outline-1 -outline-offset-1 outline-band-line transition-opacity duration-300 hover:opacity-90"
+          className="group block w-full text-left"
           aria-label={`Open the publisher page for ${paper.title}`}
         >
-          <span className="relative block aspect-[16/10]">
-            <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top" />
-            {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] shadow-print" />}
-          </span>
+          <WindowFrame title={paper.venue}>
+            <span className="relative block aspect-[16/10] bg-white">
+              <img src={paper.screenshot} alt="" loading="lazy" className="size-full object-cover object-left-top" />
+              {paper.cover && <img src={paper.cover} alt={`${paper.venue} cover`} loading="lazy" className="absolute right-3 bottom-3 w-[24%] rounded-sm shadow-lg ring-1 ring-black/10" />}
+            </span>
+          </WindowFrame>
         </button>
         <HangingTools tools={paper.tools} size={30} align="start" rod className="mt-2 max-w-[17rem]" />
       </div>
@@ -410,7 +420,7 @@ function CollectionLinks() {
         {COLLECTIONS.map((c) => {
           const entries = ENTRIES.filter((e) => e.collection === c.id);
           return (
-            <a key={c.id} href={c.path} className="surface group flex min-w-0 flex-col p-6 transition-colors hover:bg-card-2 sm:p-8">
+            <a key={c.id} href={c.path} className="surface group flex min-w-0 flex-col p-6 transition-colors hover:border-border-strong sm:p-8">
               <div className="flex items-baseline justify-between gap-4">
                 <p className="font-display text-[1.375rem] font-semibold tracking-[-0.02em] text-foreground">{c.title}</p>
                 <ArrowRight className="size-5 shrink-0 self-center text-muted-foreground transition-[transform,color] duration-300 group-hover:translate-x-1 group-hover:text-foreground" />
@@ -418,7 +428,7 @@ function CollectionLinks() {
               <p className="kicker mt-1">
                 <span className="num">{entries.length}</span> projects
               </p>
-              <ul className="mt-6 border-t-2 border-rule-2">
+              <ul className="mt-6 border-t border-border">
                 {entries.map((e) => (
                   <li key={e.id} className="flex items-baseline justify-between gap-4 border-b border-border py-3 text-[1rem] last:border-b-0">
                     <span className="min-w-0 truncate text-foreground">{e.title}</span>
@@ -445,7 +455,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
         <a href="/#work" className="inline-flex min-h-11 items-center gap-1.5 text-[1rem] font-medium text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" /> Back home
         </a>
-        <div className="mt-8 border-t-2 border-rule-2 pt-6">
+        <div className="mt-8 border-t border-border pt-6">
           <h1 className="text-display-s leading-[1] tracking-[-0.03em]">{c.title}</h1>
           <p className="mt-4 max-w-[62ch] text-lead text-ink-2">{c.intro}</p>
         </div>
@@ -460,7 +470,7 @@ export function ProjectsPage({ id }: { id: CollectionId }) {
         </ol>
       </section>
       <section className="container-x pb-24">
-        <a href={other.path} className="surface group flex items-center justify-between gap-4 p-6 transition-colors hover:bg-card-2 sm:p-8">
+        <a href={other.path} className="surface group flex items-center justify-between gap-4 p-6 transition-colors hover:border-border-strong sm:p-8">
           <span className="font-display text-[1.5rem] font-semibold tracking-[-0.02em] text-foreground">{other.title}</span>
           <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
         </a>
@@ -563,11 +573,11 @@ export function Credentials() {
                 type="button"
                 onClick={openCert}
                 aria-label={`Open the ${cert.title} certificate`}
-                className="block w-full overflow-hidden bg-card outline-1 -outline-offset-1 outline-border"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: EASE }}
+                className="block w-full overflow-hidden rounded-lg bg-white ring-1 ring-border"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3, ease: EASE }}
               >
                 <img src={cert.preview} alt="" className="block h-auto w-full" />
               </motion.button>
@@ -610,7 +620,7 @@ export function Reading() {
       <ul className="grid grid-cols-3 gap-x-4 sm:gap-x-[var(--gap-columns)] lg:col-span-7 lg:col-start-6">
         {BOOKS.map((book) => (
           <li key={book.id} className="min-w-0">
-            <BookCover book={book} className="overflow-hidden outline-1 -outline-offset-1 outline-rule-2/30" />
+            <BookCover book={book} className="overflow-hidden rounded-md shadow-book" />
             <div className="h-[7.5rem]">
               <HangingTools tools={book.tools} size={30} align="center" />
             </div>
@@ -638,7 +648,7 @@ export function Moments() {
 export function Contact() {
   const openCv = useCv();
   return (
-    <div id="contact" className={cn(GRID, "scroll-mt-24 gap-y-14 border-t-2 border-rule-2 pt-8 lg:items-center")}>
+    <div id="contact" className={cn(GRID, "scroll-mt-24 gap-y-14 border-t border-border pt-8 lg:items-center")}>
       <div className="lg:col-span-6">
         <h2 className="text-display-s leading-[1] tracking-[-0.03em]">Say hi.</h2>
         <p className="mt-5 max-w-[40ch] text-lead text-ink-2">Email is the quickest way to reach me.</p>
@@ -755,7 +765,7 @@ function ContactDetails() {
 
 export function Footer() {
   return (
-    <footer className="bg-card-2 pt-[var(--section-gap-s)]">
+    <footer className="border-t border-border pt-[var(--section-gap-s)]">
       <div className="container-x">
         <Contact />
         <div className="mt-[var(--section-gap-s)] flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border py-8 text-[0.9375rem] text-muted-foreground">
@@ -791,8 +801,8 @@ function Logo({ src, name, wide }: { src?: string; name: string; wide?: boolean 
         bare
           ? ""
           : src
-            ? cn("outline-1 -outline-offset-1 outline-border", src.includes("datacamp") ? "" : "bg-card p-1", wide && "px-2")
-            : "bg-card-3",
+            ? cn("rounded-lg border border-border", src.includes("datacamp") ? "" : "bg-white p-1", wide && "px-2")
+            : "rounded-lg border border-border bg-card-2",
       )}
     >
       {src ? (

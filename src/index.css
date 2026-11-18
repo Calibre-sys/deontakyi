@@ -1,16 +1,11 @@
-/* Hallmark · shape: Map / Diagram (draw 25958c) · genre: editorial · theme: Almanac (deal 1/3, seed portfolio-petroleum-engineer-who-22a1·d22dd6b1·2026-11-18·r0) · redesign: full
- * hero: Ledge (the draw said Poster; the canvas forms shapes across its centre, so the head rests under the field) · nav: slab · footer: letter close · imagery: the product (screen recordings, the live demo, the replays) and the owner's photographs · signature: the reservoir drawn in moving dots above the name, then a map of rocks and wells in, tools out
- * axes: mid/grotesk-sans/chromatic-magenta · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: E, the kept components bring their own radii, shadows and reveals; squared the frames and controls, stilled the reveals, and let the tokens re-ink the rest */
-/* Hallmark · hero-review: in-thread · ship · 0 findings · finish-review: in-thread · 4 findings · 4 resolved (map lines shared vertical runs, photo wall clipped under the footer, paper titles leaded 1.2, reading shelf a screen tall) · gap: none */
+/* Hallmark · shape: Map / Diagram (draw 25958c) · genre: modern-minimal · theme: the project's own (neutral Geist, rounded, restored by request) · redesign: full
+ * hero: Ledge · nav: edge-aligned · footer: letter close · imagery: the product (screen recordings, the live demo, the replays) and the owner's photographs · signature: the reservoir drawn in moving dots above the name, then a map of rocks and wells in, tools out
+ * the owner kept the macOS window frames, rounded cards and shadows on purpose (47a, 4 are the owner's call) · v2.0.0 */
 /* Hallmark · waive 39b · the 699px overlay on the RescharAI embed and the 28px Shortlist button in the recruiter replica · the overlay is the hit area that wakes the live RescharAI demo, and the Shortlist button belongs to the recruiter agent's project screen, drawn at that app's own scale */
 /* Hallmark · waive 80 · span.contact-art draws 16 contour rings on the contact card · the rings are the card's printed pattern, a nod to the subsurface contour maps the work is about, inside the card-folder component the owner kept */
 /* Hallmark · waive 81 · the arc-picker-option slots hold certificate names, not pictures · data-slot is the beUI arc picker's own hook, and the certificate preview sits beside it */
-/* Hallmark · waive 37 · Caveat is the fourth family, on the photo prints and the pencilled notes on the project charts · it writes the place and year on each polaroid and annotates a chart the way a hand would, and never sets page text */
-/* Hallmark · answered F25 · below 64rem the map becomes a list of the same results, each with its data and methods; only the column labels drop */
 /* Hallmark · answered F18 · the arc-picker slots are 32px text rows of the certificate picker, not image slots */
-/* Hallmark · dismissed 28a · the lazy images are the narrow-screen demo poster and screenshots far below the fold; the hero is a canvas with no image to prioritise */
-/* Hallmark · dismissed 49 · the Shortlist button shows one state at a time, Screening or Shortlist ready, and is set nowrap */
+/* Hallmark · answered F25 · below 64rem the map becomes a list of the same results, each with its data and methods; only the column labels drop */
 /* Hallmark · dropped items: [{ src }] · the CaseVideo full-screen handler still opens the viewer, and now passes the poster frame too (28b) */
 /* Hallmark · reworded "Hi, I'm Deon." to "Hi, I’m Deon. I build software for subsurface data." · F1 wants the typographic apostrophe, and 54/58 folded the hero's second line into the h1 */
 @import "tailwindcss";
@@ -18,48 +13,32 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Almanac: cool slate stock, blue-black ink, a pale printed sheet, two rule
- * weights, square corners and one chart magenta kept small. Dark mode is the
- * ink band: the same rules and magenta on blue-black stock.
+ * Neutral palette. Black, white and greys; colour comes from the work itself
+ * (screenshots, video, tool logos), not from the chrome.
  *
- * Every literal colour in the project lives in this :root block. The light and
- * dark roles only point at it, under the names the components already use.
+ * Every literal colour in the project lives in this block. The light and dark
+ * roles below only point at it.
  */
 :root {
-  /* Slate stock and ink (light) */
-  --slate-paper: #c4cbd2;
-  --slate-paper-2: #bbc2c8;
-  --slate-paper-3: #aeb5bb;
-  --slate-sheet: #e5eaef;
-  --slate-ink: #060e15;
-  --slate-ink-2: #182027;
-  --slate-muted: #3b434b;
-  --slate-rule: #a1a9af;
-  --slate-rule-mid: #737c82;
-  --slate-rule-2: #2b343b;
-  --chart-magenta: #970d63;
-  --chart-magenta-2: #76004b;
-  --chart-magenta-ink: #f2f6f9;
-  --chart-magenta-focus: #9d0367;
-  --signal-red: #be2323;
+  /* Neutral ramp */
+  --neutral-0: #ffffff;
+  --neutral-25: #fafafa;
+  --neutral-50: #f4f4f5;
+  --neutral-200: #e6e6e9;
+  --neutral-300: #d0d0d5;
+  --neutral-400: #a0a0a8;
+  --neutral-500: #6b6b73;
+  --neutral-700: #3a3a40;
+  --neutral-800: #242427;
+  --neutral-850: #18181b;
+  --neutral-900: #111112;
+  --neutral-950: #0a0a0a;
+  --neutral-950-a5: rgb(10 10 10 / 0.05);
+  --neutral-25-a6: rgb(250 250 250 / 0.06);
+  --red-600: #dc2626;
+  --red-400: #f87171;
 
-  /* Ink band (dark) */
-  --band-paper: #091017;
-  --band-paper-2: #10181f;
-  --band-paper-3: #182027;
-  --band-sheet: #141c23;
-  --band-ink: #e5eaef;
-  --band-ink-2: #ccd2d7;
-  --band-muted: #9ea6ad;
-  --band-rule: #293238;
-  --band-rule-mid: #575f65;
-  --band-rule-2: #c4cbd2;
-  --band-magenta: #dd84af;
-  --band-magenta-fill: #ab3276;
-  --band-magenta-fill-2: #942464;
-  --band-red: #ed756a;
-
-  /* Photo prints: warm card stock, a touch dimmer on the ink band */
+  /* Photo prints: warm card stock, a touch dimmer in dark mode */
   --stock: #f7f6f2;
   --stock-dim: #ecebe6;
 
@@ -71,124 +50,92 @@
   --teal-300: #5eead4;
   --teal-400-a16: rgb(45 212 191 / 0.16);
 
-  /* Shadow ink, for physical objects only (prints, charms) */
+  /* Shadow ink */
   --shade-12: rgb(0 0 0 / 0.12);
   --shade-35: rgb(0 0 0 / 0.35);
   --shade-50: rgb(0 0 0 / 0.5);
+  --mac-red: #ff5f57;
+  --mac-yellow: #febc2e;
+  --mac-green: #28c840;
 
-  /* Light roles */
-  --background: var(--slate-paper);
-  --foreground: var(--slate-ink);
-  --ink-2: var(--slate-ink-2);
-  --card: var(--slate-sheet);
-  --card-2: var(--slate-paper-2);
-  --card-3: var(--slate-paper-3);
-  --muted-foreground: var(--slate-muted);
-  --border: var(--slate-rule);
-  --border-strong: var(--slate-rule-mid);
-  --rule-2: var(--slate-rule-2);
-  --primary: var(--chart-magenta);
-  --primary-hover: var(--chart-magenta-2);
-  --primary-foreground: var(--chart-magenta-ink);
-  --accent: var(--chart-magenta);
-  --accent-soft: var(--slate-paper-2);
-  --ring: var(--chart-magenta-focus);
-  --destructive: var(--signal-red);
-  --print: var(--stock);
-  /* The ink band inside the light page */
-  --band: var(--slate-ink);
-  --band-text: var(--slate-sheet);
-  --band-text-2: var(--slate-paper);
-  --band-line: var(--slate-rule-2);
-
-  /* Scale (Hallmark scaffold) */
-  --space-3xs: 2px;
-  --space-2xs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 40px;
-  --space-2xl: 64px;
-  --space-3xl: 96px;
-  --space-4xl: 144px;
-  --container: 1440px;
-  --gutter: 64px;
+  /* Layout scale */
   --gap-columns: 32px;
   --section-gap-s: 120px;
   --section-gap: 144px;
   --section-gap-l: 176px;
   --nav-h: 64px;
-  --rule-hair: 1px;
-  --rule-bar: 2px;
-}
 
+  /* Light roles */
+  --background: var(--neutral-0);
+  --foreground: var(--neutral-950);
+  --card: var(--neutral-25);
+  --card-2: var(--neutral-50);
+  --muted-foreground: var(--neutral-500);
+  --border: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --primary: var(--neutral-950);
+  --primary-foreground: var(--neutral-0);
+  --accent: var(--neutral-950);
+  --accent-soft: var(--neutral-950-a5);
+  --ring: var(--neutral-950);
+  --destructive: var(--red-600);
+  --print: var(--stock);
+  --ink-2: var(--neutral-500);
+  --card-3: var(--neutral-200);
+  --rule-2: var(--neutral-300);
+  --primary-hover: var(--neutral-800);
+  --band: var(--neutral-950);
+  --band-text: var(--neutral-25);
+  --band-text-2: var(--neutral-400);
+  --band-line: var(--neutral-800);
+}
 @media (max-width: 60rem) {
-  :root {
-    --gutter: 24px;
-    --section-gap-s: 80px;
-    --section-gap: 96px;
-    --section-gap-l: 120px;
-  }
+  :root { --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; }
 }
 @media (max-width: 40rem) {
-  :root {
-    --gutter: 16px;
-    --section-gap-s: 56px;
-    --section-gap: 72px;
-    --section-gap-l: 96px;
-    --gap-columns: 16px;
-  }
+  :root { --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; }
 }
 
 .dark {
-  --background: var(--band-paper);
-  --foreground: var(--band-ink);
-  --ink-2: var(--band-ink-2);
-  --card: var(--band-sheet);
-  --card-2: var(--band-paper-2);
-  --card-3: var(--band-paper-3);
-  --muted-foreground: var(--band-muted);
-  --border: var(--band-rule);
-  --border-strong: var(--band-rule-mid);
-  --rule-2: var(--band-rule-2);
-  --primary: var(--band-magenta-fill);
-  --primary-hover: var(--band-magenta-fill-2);
-  --primary-foreground: var(--chart-magenta-ink);
-  --accent: var(--band-magenta);
-  --accent-soft: var(--band-paper-2);
-  --ring: var(--band-magenta);
-  --destructive: var(--band-red);
+  --background: var(--neutral-950);
+  --foreground: var(--neutral-25);
+  --card: var(--neutral-900);
+  --card-2: var(--neutral-850);
+  --muted-foreground: var(--neutral-400);
+  --border: var(--neutral-800);
+  --border-strong: var(--neutral-700);
+  --primary: var(--neutral-25);
+  --primary-foreground: var(--neutral-950);
+  --accent: var(--neutral-25);
+  --accent-soft: var(--neutral-25-a6);
+  --ring: var(--neutral-25);
+  --destructive: var(--red-400);
   --print: var(--stock-dim);
-  /* On the ink page the band is one step up, not darker */
-  --band: var(--band-paper-3);
-  --band-text: var(--band-ink);
-  --band-text-2: var(--band-ink-2);
-  --band-line: var(--band-rule-mid);
+  --ink-2: var(--neutral-400);
+  --card-3: var(--neutral-800);
+  --rule-2: var(--neutral-700);
+  --primary-hover: var(--neutral-300);
+  --band: var(--neutral-900);
+  --band-text: var(--neutral-25);
+  --band-text-2: var(--neutral-400);
+  --band-line: var(--neutral-800);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-ink-2: var(--ink-2);
   --color-card: var(--card);
   --color-card-2: var(--card-2);
-  --color-card-3: var(--card-3);
   --color-card-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
-  --color-rule-2: var(--rule-2);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
-  --color-band: var(--band);
-  --color-band-text: var(--band-text);
-  --color-band-text-2: var(--band-text-2);
-  --color-band-line: var(--band-line);
   /* Aliases used by the calculator and fragments. */
   --color-ink: var(--foreground);
   --color-muted: var(--card-2);
@@ -198,31 +145,39 @@
   --color-accent-ink: var(--primary-foreground);
   --color-print: var(--print);
   --color-signal: var(--teal-400);
+  --color-ink-2: var(--ink-2);
+  --color-card-3: var(--card-3);
+  --color-rule-2: var(--rule-2);
+  --color-band: var(--band);
+  --color-band-text: var(--band-text);
+  --color-band-text-2: var(--band-text-2);
+  --color-band-line: var(--band-line);
+  --color-mac-red: var(--mac-red);
+  --color-mac-yellow: var(--mac-yellow);
+  --color-mac-green: var(--mac-green);
+  --text-display: clamp(3.25rem, 6.4vw + 0.5rem, 6.75rem);
+  --text-display-s: clamp(2rem, 3.4vw + 0.5rem, 3.25rem);
+  --text-section: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+  --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem);
+  --text-lead: clamp(1.0625rem, 0.3vw + 1rem, 1.25rem);
   --color-signal-soft: var(--teal-300);
 
-  --shadow-frame: none;
+  --shadow-frame: 0 24px 48px -28px var(--shade-35);
   --shadow-print: 0 24px 48px -24px var(--shade-50), 0 1px 2px var(--shade-12);
-  --shadow-book: none;
-  --shadow-charm: 0 10px 20px -8px var(--shade-35);
+  --shadow-book: 0 20px 40px -24px var(--shade-50);
+  --shadow-charm: 0 10px 20px -8px var(--shade-50);
 
-  --font-display: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Newsreader Variable", "Newsreader", ui-serif, Georgia, serif;
-  --font-body: "Newsreader Variable", "Newsreader", ui-serif, Georgia, serif;
+  --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-hand: "Caveat", "Segoe Print", cursive;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-
-  --text-display: clamp(3.25rem, 7vw + 0.5rem, 7.5rem);
-  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
-  --text-section: clamp(2.25rem, 2.5vw + 1rem, 3.5rem);
-  --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem);
-  --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
 @layer base {
   html {
     overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: calc(var(--nav-h) + var(--space-lg));
+    scroll-padding-top: 5rem;
     color-scheme: light;
     scrollbar-color: var(--border-strong) var(--background);
   }
@@ -231,27 +186,21 @@
   }
   body {
     background: var(--background);
-    color: var(--ink-2);
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    font-optical-sizing: auto;
-    line-height: 1.55;
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
-    font-synthesis: none;
-    caret-color: var(--accent);
+    font-feature-settings: "tnum" 1;
   }
   h1,
   h2,
   h3 {
-    color: var(--foreground);
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    letter-spacing: -0.035em;
     text-wrap: balance;
-    overflow-wrap: break-word;
-    min-width: 0;
   }
   p {
     text-wrap: pretty;
@@ -261,12 +210,9 @@
   summary {
     cursor: pointer;
   }
-  button {
-    font-family: var(--font-display);
-  }
   :focus-visible {
     outline: 2px solid var(--ring);
-    outline-offset: 2px;
+    outline-offset: 3px;
   }
   ::selection {
     background: var(--foreground);
@@ -282,92 +228,77 @@
 @layer components {
   .container-x {
     width: 100%;
-    max-width: var(--container);
+    max-width: 1200px;
     margin-inline: auto;
-    padding-inline: var(--gutter);
+    padding-inline: clamp(20px, 4vw, 40px);
   }
-  /* The one primary control: a magenta fill. The second: a hairline in ink. */
   .btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--space-xs);
-    min-height: 2.875rem;
-    padding: 0 var(--space-lg);
-    border: 1px solid var(--primary);
-    border-radius: 2px;
-    background: var(--primary);
-    color: var(--primary-foreground);
-    font-family: var(--font-display);
+    gap: 0.5rem;
+    height: 2.625rem;
+    padding: 0 1rem;
+    border-radius: 0.625rem;
+    background: var(--foreground);
+    color: var(--background);
     font-weight: 500;
     font-size: 0.9375rem;
-    white-space: nowrap;
     transition:
-      background-color 150ms,
-      border-color 150ms,
-      transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      transform 150ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 150ms;
   }
   .btn:hover {
-    background: var(--primary-hover);
-    border-color: var(--primary-hover);
+    opacity: 0.88;
   }
   .btn:active {
-    transform: translateY(1px);
-  }
-  .btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    transform: scale(0.97);
   }
   .btn-ghost {
-    border-color: var(--foreground);
     background: transparent;
     color: var(--foreground);
+    box-shadow: inset 0 0 0 1px var(--border);
   }
   .btn-ghost:hover {
-    border-color: var(--foreground);
     background: var(--card-2);
+    opacity: 1;
   }
   .link {
     color: var(--foreground);
     text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.18em;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.25em;
     transition: text-decoration-color 150ms;
   }
   .link:hover {
-    text-decoration-thickness: 2px;
+    text-decoration-color: var(--foreground);
   }
   .section-title {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: var(--text-section);
-    letter-spacing: -0.025em;
-    line-height: 1.02;
-    max-width: 30ch;
+    font-size: clamp(1.75rem, 1.35rem + 1.4vw, 2.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
   }
-  /* Small secondary text: dates, venues, captions. The body face, a step smaller. */
+  .btn-accent {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  /* Small secondary text: dates, venues, captions. */
   .kicker {
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: 0.875rem;
     color: var(--muted-foreground);
   }
-  /* Figures that compare: mono, tabular. Mono sets numerals and nothing else. */
+  .surface {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 1rem;
+  }
   .num {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
-  /* The printed sheet: pale stock with a firm ink rule at its head. */
-  .surface {
-    position: relative;
-    background: var(--card);
-    border-top: var(--rule-bar) solid var(--foreground);
-  }
-  .rule-firm {
-    border-top: var(--rule-bar) solid var(--rule-2);
-  }
-  /* The one ink band. */
   .band-ink {
     background: var(--band);
     color: var(--band-text-2);
@@ -380,6 +311,10 @@
   }
   .band-ink .link {
     color: var(--band-text);
+    text-decoration-color: var(--band-line);
+  }
+  .band-ink .link:hover {
+    text-decoration-color: var(--band-text);
   }
   /* The contact card's printed face: deep teal stock with one soft light. */
   .contact-art {
@@ -390,7 +325,7 @@
   }
 }
 
-/* Range input: filled track, square thumb. */
+/* Range input: filled track, round thumb. */
 .range {
   -webkit-appearance: none;
   appearance: none;
@@ -398,31 +333,34 @@
   background: transparent;
 }
 .range::-webkit-slider-runnable-track {
-  height: 0.25rem;
+  height: 0.375rem;
+  border-radius: 999px;
   background: linear-gradient(to right, var(--accent) var(--fill), var(--border-strong) var(--fill));
 }
 .range::-moz-range-track {
-  height: 0.25rem;
+  height: 0.375rem;
+  border-radius: 999px;
   background: var(--border-strong);
 }
 .range::-moz-range-progress {
-  height: 0.25rem;
+  height: 0.375rem;
+  border-radius: 999px;
   background: var(--accent);
 }
 .range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
   margin-top: -0.4375rem;
-  border-radius: 2px;
+  border-radius: 999px;
   background: var(--foreground);
   transition: transform 150ms;
 }
 .range::-moz-range-thumb {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
   border: 0;
-  border-radius: 2px;
+  border-radius: 999px;
   background: var(--foreground);
 }
 .range:active::-webkit-slider-thumb {
@@ -445,5 +383,28 @@
   }
   to {
     transform: scaleX(1);
+  }
+}
+
+/* Idle sway for hanging tool charms. */
+@keyframes charm-sway {
+  from {
+    transform: rotate(-3.5deg);
+  }
+  to {
+    transform: rotate(3.5deg);
+  }
+}
+
+
+@keyframes ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  80%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
   }
 }

@@ -1,15 +1,16 @@
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/**
- * A plain wrapper. The Almanac theme keeps still: nothing fades or rises on
- * scroll, so content is there from the first paint (and with scripts off).
- * The props stay so every caller keeps working.
- */
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Fades and rises in once, the first time it scrolls into view. */
 export function Reveal({
   children,
+  delay = 0,
   className,
   as = "div",
+  y = 20,
   id,
 }: {
   children: ReactNode;
@@ -19,27 +20,33 @@ export function Reveal({
   y?: number;
   id?: string;
 }) {
-  const Tag = as;
+  const reduce = useReducedMotion();
+  const Tag = motion[as];
   return (
-    <Tag id={id} className={className}>
+    <Tag
+      id={id}
+      className={className}
+      initial={reduce ? false : { opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -6% 0px" }}
+      transition={{ duration: 0.7, ease: EASE, delay }}
+    >
       {children}
     </Tag>
   );
 }
 
-/**
- * A page section: a head block (the title, with an optional line or link set
- * on the right of the same baseline), then its body.
- */
+/** A page section with a title row: title on the left, an optional note or link on the right. */
 export function Section({
   id,
+  index,
   title,
   aside,
   children,
   className,
 }: {
   id: string;
-  /** Kept for callers; not rendered (no numbered labels over heads). */
+  /** Section number shown above the title, e.g. "01". */
   index?: string;
   title: string;
   aside?: ReactNode;
@@ -47,14 +54,12 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={cn("py-[calc(var(--section-gap)/2)]", className)}>
-      <div className="container-x">
-        <div className="mb-12 grid gap-x-[var(--gap-columns)] gap-y-4 border-t-2 border-rule-2 pt-6 md:grid-cols-12 md:items-baseline lg:mb-16">
-          <h2 className="section-title md:col-span-6">{title}</h2>
-          {aside && <div className="kicker md:col-span-5 md:col-start-8">{aside}</div>}
-        </div>
-        {children}
-      </div>
+    <section id={id} className={cn("container-x py-20 sm:py-24", className)}>
+      <Reveal className="mb-10 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 sm:mb-12">
+        <h2 className="section-title">{title}</h2>
+        {aside && <div className="text-[0.9375rem] text-muted-foreground">{aside}</div>}
+      </Reveal>
+      {children}
     </section>
   );
 }

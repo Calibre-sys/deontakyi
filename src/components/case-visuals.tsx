@@ -5,14 +5,21 @@ import { Loader } from "@/components/motion/loader";
 import { useViewer } from "@/components/viewer";
 import { cn } from "@/lib/utils";
 
-/* ───────── Frame: a plain border around media, the address as a caption ───────── */
+/* ───────── Window frame: a macOS-style window around media ───────── */
 
 export function WindowFrame({ title, children, className }: { title?: string; children: ReactNode; className?: string }) {
   return (
-    <figure className={cn("min-w-0", className)}>
-      <div className="relative overflow-hidden bg-card outline-1 -outline-offset-1 outline-rule-2">{children}</div>
-      {title && <figcaption className="mt-3 text-[0.875rem] font-medium text-muted-foreground">{title}</figcaption>}
-    </figure>
+    <div className={cn("overflow-hidden rounded-xl border border-border bg-card shadow-frame", className)}>
+      <div className="relative flex h-9 items-center border-b border-border bg-card px-3.5">
+        <div className="flex gap-2" aria-hidden>
+          <span className="size-3 rounded-full bg-mac-red" />
+          <span className="size-3 rounded-full bg-mac-yellow" />
+          <span className="size-3 rounded-full bg-mac-green" />
+        </div>
+        {title && <span className="pointer-events-none absolute inset-x-20 truncate text-center text-[0.8125rem] font-medium text-muted-foreground">{title}</span>}
+      </div>
+      <div className="relative">{children}</div>
+    </div>
   );
 }
 

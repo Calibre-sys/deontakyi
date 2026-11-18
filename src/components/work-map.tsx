@@ -150,7 +150,7 @@ export function WorkMap() {
   });
 
   return (
-    <figure className="surface">
+    <figure className="surface overflow-hidden">
       {/* The diagram, from 64rem up */}
       <div ref={box} className="relative hidden px-10 py-12 lg:block xl:px-14">
         <svg aria-hidden className="pointer-events-none absolute inset-0" width={size.w} height={size.h}>
@@ -182,7 +182,7 @@ export function WorkMap() {
                   tabIndex={0}
                   {...hover(n.id)}
                   className={cn(
-                    "border-r-2 border-rule-2 py-1 pr-3 text-right text-[1.0625rem] font-medium text-foreground outline-offset-4 transition-opacity duration-150",
+                    "border-r-2 border-border-strong py-1 pr-3 text-right text-[1.0625rem] font-medium text-foreground outline-offset-4 transition-opacity duration-150",
                     !onPath(n.id) && "opacity-40",
                   )}
                 >
@@ -200,7 +200,7 @@ export function WorkMap() {
                   tabIndex={0}
                   {...hover(n.id)}
                   className={cn(
-                    "bg-card-2 px-4 py-2 text-center text-[1rem] leading-snug text-ink-2 outline-offset-4 transition-opacity duration-150",
+                    "rounded-lg border border-border bg-background px-4 py-2 text-center text-[1rem] leading-snug text-ink-2 outline-offset-4 transition-opacity duration-150",
                     !onPath(n.id) && "opacity-40",
                   )}
                 >
@@ -220,7 +220,7 @@ export function WorkMap() {
                     href={n.href}
                     {...hover(n.id)}
                     className={cn(
-                      "link border-l-2 border-rule-2 py-1 pl-3 font-display text-[1.1875rem] font-semibold tracking-[-0.015em] no-underline transition-opacity duration-150 hover:underline",
+                      "link border-l-2 border-border-strong py-1 pl-3 font-display text-[1.1875rem] font-semibold tracking-[-0.015em] no-underline transition-opacity duration-150 hover:underline",
                       !onPath(n.id) && "opacity-40",
                     )}
                   >
